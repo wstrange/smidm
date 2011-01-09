@@ -7,15 +7,15 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.matchers.ShouldMatchers
 
 
-import org.squeryl.adapters.H2Adapter
-import org.squeryl.{Session, SessionFactory}
-import org.squeryl.PrimitiveTypeMode._
 import com.my2do.idm.model._
 import net.liftweb.common.Logger
 
 abstract class BaseTest  extends FunSuite with AssertionsForJUnit with Logger {
 	
-	import com.my2do.idm.model._
-	DB.initOracle
+	//val context = (MyBean)javax.ejb.embeddable.EJBContainer.createEJBContainer().getContext()
+	
+	// context.lookup("java:global/classes/MyBean");
+
+	
 }
 

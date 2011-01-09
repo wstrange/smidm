@@ -1,8 +1,14 @@
 package com.my2do.idm.model
 
 import scala.reflect.BeanProperty
-import org.squeryl.annotations.{Column}
 
+
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -13,18 +19,7 @@ import org.squeryl.annotations.{Column}
  */
 class LDAPAccount(val accountId:String,
 		val repoId:Long,
-		@Column("LDAP_UID") 
+		
 		@BeanProperty var uid:String, 
-		@BeanProperty var cn:String) extends Account(accountId,repoId) {
-}
-
-
-class LDAPGroup extends BaseDbObject {
-	 
-}
-
-class ADAccount(val accountId:String,
-		val repoId:Long,
-		@Column("AD_UID") 
-		@BeanProperty var cn:String) extends Account(accountId,repoId) {
+		@BeanProperty var cn:String) extends Serializable {
 }

@@ -1,6 +1,5 @@
 package com.my2do.idm.connector
 
-import com.my2do.idm.model.DB
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -64,12 +63,14 @@ class ConnectorManager {
    * with the API implementation - assuming a matching bundle is available
    * in WEB-INF/bundles.
    */
+  /*
   def getConfiguredBundles() = {
     val bundles = Bundle.allBundles
     // todo: instantiate bundles from the db
     val bundleInstances:Seq[BundleInstance]    = Nil
     bundles.map( new BundleInstance(_))
   }
+  */
 
 }
 

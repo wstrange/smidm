@@ -1,11 +1,19 @@
 package com.my2do.idmsvc
 
-import com.my2do.idm.model.DB
+
 import net.liftweb.common.Logger
 import com.my2do.idm.model.UserRepo
-import org.squeryl.PrimitiveTypeMode._
 
 
+import javax.ejb.Stateless;
+
+@Stateless
+class UserEJB {
+	
+	def getUser() = {
+		new UserRepo("fred","fred@foo.com")
+	}
+}
 /**
  * todo: add auditing here..
  * 
@@ -17,17 +25,17 @@ trait UserServiceComponent  {
 	
 	class UserService extends Logger {
 		def saveOrUpdateUser(user: UserRepo) = {
-			transaction {
+			
 				info("Saving user " + user)     
-				DB.repo.insertOrUpdate(user)
-			}
+				//DB.repo.insertOrUpdate(user)
+			
 		}
 		
 		def deleteUser(user:UserRepo) = {
-			 transaction {
+			 
 				 info("Deleted user" + user)
-				 DB.repo.delete(user.id)
-			 }
+				 //DB.repo.delete(user.id)
+			
 		}
 	}
 }

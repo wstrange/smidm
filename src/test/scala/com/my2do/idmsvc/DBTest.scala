@@ -1,75 +1,73 @@
 package com.my2do.idmsvc
 
-import com.my2do.idm.model.UserRepo
-
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
-
-
-import org.squeryl.adapters.H2Adapter
-import org.squeryl.{Session, SessionFactory}
-import org.squeryl.PrimitiveTypeMode._
 import com.my2do.idm.model._
 
-@RunWith(classOf[JUnitRunner])
-class DBTest  extends BaseTest {
+import org.junit.runner.RunWith
+//import org.scalatest.junit.JUnitRunner
+import org.scalatest.junit._
 
-  test("Basic DB Test") {
+import org.junit.Test;
 
-    transaction  {
-    	
-      // un-comment to drop/create the schema
-      DB.initSchema
-      val b =  DB.bundles.insert( new Bundle("name","<somexml/>", "version1.0","connectorName", "instanceName"))
 
-      info("Inserted id=" + b.id)
-      val x = DB.bundles.lookup(b.id)
-      assert(x.get.id == b.id)
-      
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.transaction.UserTransaction;
 
-      //info("all=" + all)
-      Bundle.allBundles.foreach( result => info("Result=" + result))
-      DB.bundles.delete(b.id)
-      
-      val id = new UserRepo("fflinstone", "fred@test.com") 
-      //id.employeeId should equal("")
-      //id.employeeId = " "
-      val r = DB.repo.insert( id )
-      
-      var accounts = r.ldapAccounts 
-      assert( accounts.size == 0)
-      
-      val ldapAccount = new LDAPAccount("cn=Directory Manager",r.id, "Dir manager","cn=Directory Manager")
-      DB.ldapAccounts.insert( ldapAccount)
-      
-      accounts = r.ldapAccounts 
-      assert(accounts.size == 1)
-      assert(accounts.head.accountId == ldapAccount.accountId)
-      
-      
-      try { 
-    	  DB.repo.delete( r.id)
-    	  fail("Expected referential integrity violation")
-      }
-      catch {
-      	case e:Exception =>  //info("OK - expected exception =" + e)
-      }
-      
-      DB.ldapAccounts.delete(accounts.head.id)
-      DB.repo.delete( r.id)      
-    }
+import org.jboss.arquillian.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.Archive;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.WebArchive;
+import com.my2do.idm.model._
 
-  }
+import net.liftweb.common.Logger
+
+
+
+//@RunWith(classOf[JUnitRunner])
+@RunWith(classOf[Arquillian])
+class DBTest extends JUnitSuite  with Logger {
+   @PersistenceContext var em:EntityManager = _
+   
+   @Inject var utx: UserTransaction = _
+	
+	@Deployment
+	def createDeployment()= {
+	   
+	   debug("Creating deployment..")
+		ShrinkWrap.create(classOf[WebArchive], "test.war")
+            .addPackage(classOf[Bundle].getPackage())
+            .addManifestResource("test-persistence.xml", "persistence.xml")
+            .addWebResource(EmptyAsset.INSTANCE, "beans.xml")
+	}
   
-  test("User Repo Test") {
+	
+  //@Test
+  def testDB() = {
 	  
-	  transaction {
-		  val u1 = DB.repo.insert(new UserRepo("test01", "test01@test.com"))
-		  val u2 = DB.repo.insert(new UserRepo("test02", "test02@test.com"))
-		  assert( u1.id > 0 )
-		  assert( u1.userName == "test01")
-	  }
-  }
+	  info("testDB")
+      utx.begin();
+      em.joinTransaction();
+    
+      
+      //printStatus("Clearing the database...");
+      //em.createQuery("delete from Game").executeUpdate();
+    
+      //printStatus("Inserting records...");
+      val b = new Bundle()
+      em.persist(b)
+    
+      utx.commit();
+   }
+
+    
+
+  
   
 
 }

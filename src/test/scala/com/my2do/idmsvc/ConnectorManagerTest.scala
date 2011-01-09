@@ -12,7 +12,7 @@ import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import scala.collection.JavaConversions._
 
-import com.my2do.idm.model.{ Bundle, DB }
+import com.my2do.idm.model._
 import com.my2do.idm.connector.ConnectorManager
 import java.io.File
 import java.net.URL
@@ -20,7 +20,7 @@ import java.net.URL
 @RunWith(classOf[JUnitRunner])
 class ConnectorManagerTest extends BaseTest {
 	
-
+/*
   test("Connector Manager Test") {
 
     val cm = ConnectorManager.instance
@@ -42,11 +42,12 @@ class ConnectorManagerTest extends BaseTest {
       assert( apiConfig.getSupportedOperations.isEmpty === false)
     }
   }
+  */
   
   test("Bundle load: Test bundles loaded from DB can be initialized") {
 	 val cm = ConnectorManager.instance 
 	  
-	 val bundleInstances= cm.getConfiguredBundles
+	 //val bundleInstances= cm.getConfiguredBundles
 	 // todo: figure out how to get bundles loaded into the DB
   }
 
