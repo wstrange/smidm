@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
  * @author warren
  *
  */
-@Entity
+
 class UserRepo(	@BeanProperty var userName:String,
 			@BeanProperty var userEmail: String
 			)  {

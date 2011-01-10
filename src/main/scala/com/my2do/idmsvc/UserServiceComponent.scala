@@ -5,9 +5,9 @@ import net.liftweb.common.Logger
 import com.my2do.idm.model.UserRepo
 
 
-import javax.ejb.Stateless;
+//import javax.ejb.Stateless;
 
-@Stateless
+//@Stateless
 class UserEJB {
 	
 	def getUser() = {

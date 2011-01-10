@@ -14,7 +14,7 @@ class BundleInstance(@BeanProperty var bundle: Bundle)  {
 	// on initialization - dersialize our properties
 	deserializePropsFromXML()
 	
-	
+
 	log.debug("Config Props=" + configProperties + " Bundle=" + bundle + "  api="+ connectorAPIConfiguration)
 	
   /**
