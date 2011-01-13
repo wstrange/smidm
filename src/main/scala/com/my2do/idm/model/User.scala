@@ -10,18 +10,19 @@ class User {
   @Id
   var id:Long = _
   
+  
+  
   @BeanProperty
   var userName: String = _;
+  
+  @BeanProperty
+  var firstName: String = _;
+  
+  @BeanProperty
+  var lastName: String = _;
+  /*
   @BeanProperty
   @ManyToOne
   var department: Department = _;
-}
-
-@Entity
-class Department {
-  @BeanProperty
-  @Id
-  var id: Long = _;
-  @BeanProperty
-  var name: String = _;
+  */
 }

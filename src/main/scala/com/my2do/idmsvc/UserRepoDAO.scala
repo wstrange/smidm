@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository
 // must define an interface for proxying
 trait UserRepoDAO {
 	def save(u:User):Unit
+	def delete(u:User):Unit
 }
 
 @Named
@@ -25,5 +26,11 @@ class UserRepoDAOImpl extends UserRepoDAO {
 		 em.persist(u)
 		 em.flush()
 	 }
+	 
+	def delete(u:User) = {
+		val o = em.merge(u)
+		em.remove(o)
+		em.flush()
+	}
     
 }

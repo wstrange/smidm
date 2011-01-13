@@ -26,10 +26,12 @@
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 		p:dataSource-ref="dataSource" p:jpaVendorAdapter-ref="jpaAdapter">
+		<!-- not required for hibernate?
 		<property name="loadTimeWeaver">
 			<bean
 				class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
 		</property>
+		 -->
 		<property name="persistenceUnitName" value="wctemplatePU"></property>
 	</bean>
 

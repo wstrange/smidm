@@ -19,11 +19,11 @@ import org.springframework.transaction.annotation.Transactional
 import org.junit.Test;
 import com.my2do.idmsvc.UserRepoDAO
 
-@RunWith(classOf[SpringJUnit4ClassRunner])
-@ContextConfiguration(locations = Array("applicationContext.xml"))
-class SpringTest {
+//@RunWith(classOf[SpringJUnit4ClassRunner])
+//@ContextConfiguration(locations = Array("/mapplicationContext.xml"))
+class SpringTest extends TestBase {
+	/*
 	@Autowired var applicationContext:ApplicationContext = _
-	
 	
 	@PersistenceContext
 	var em:EntityManager = _
@@ -31,19 +31,25 @@ class SpringTest {
 	 //@Resource(name ="userRepoDAO")
      @Inject var userRepoDAO:UserRepoDAO = _
      //@Autowired var userRepoDAO:UserRepoDAO = _
+	*/
 	
 	
-	@Test
-	//@Transactional 
+	@Test()
+	@Transactional 
 	def doTest2() = {
 		var u = new User()
-		/*
 		u.userName = "test"
+		u.firstName = "First"
+		u.lastName = "Last"
+		/*
+		
 		em.persist(u)
 		em.flush()
 		*/
 		
 		//assert( u.id > 0 )
+	    userRepoDAO.save( u)
+	    
 		println("**** User=" + u.id)
 		
 		userRepoDAO.save( u)
