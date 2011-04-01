@@ -4,7 +4,10 @@
     version="2.0">
     <persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        
+        <!--  
         <class>com.my2do.idm.model.User</class>
+        -->
         <!-- 
         <mapping-file>META-INF/orm.xml</mapping-file>
 		<exclude-unlisted-classes/>

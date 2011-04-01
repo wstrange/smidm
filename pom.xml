@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<properties>
 		<jetty.version>6.1.4</jetty.version>
-		<hibernate.version>3.5.1-Final</hibernate.version>
+		<hibernate.version>3.5.6-Final</hibernate.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<hsqldb.version>1.8.0.7</hsqldb.version>
 		<commons-dbcp.version>1.4</commons-dbcp.version>
@@ -16,6 +16,16 @@
 		<scala.version>2.8.1</scala.version>
 		<querydsl.version>2.0.8</querydsl.version>
 	</properties>
+
+    <!--
+   <repositories>
+    <repository>
+    <id>org.springframework.maven.snapshot</id>
+    <name>Maven Central Compatible Spring Snapshot Repository</name>
+    <url>http:// maven.springframework.org/snapshot</url>
+    </repository>
+    </repositories>
+    -->
 
 	<!-- <repositories> <repository> <id>jboss-repo</id> <url>http://repository.jboss.org/maven2</url> 
 		</repository> <repository> <id>spring-repo</id> <url>http://maven.springframework.org</url> 
@@ -29,6 +39,18 @@
 			<version>${spring.version}</version>
 		</dependency>
 
+         <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>1.0.0.BUILD-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>1.0.0.BUILD-SNAPSHOT</version>
+        </dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -36,7 +58,25 @@
 			<scope>test</scope>
 		</dependency>
 
+        <!--  do we want / need this
+
+        <dependency>
+            <groupId>org.scala-libs</groupId>
+            <artifactId>jpaextension</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
+		</dependency>
+           -->
+
+
+        <dependency>
+            <groupId>com.mongodb.casbah</groupId>
+            <artifactId>casbah_2.8.1</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+
 		<!--Web tier -->
+
 
 		<!--Misc dependencies -->
 
@@ -101,6 +141,7 @@
 			<artifactId>connector-framework-internal</artifactId>
 			<version>1.1</version>
 		</dependency>
+
 		<dependency>
 			<groupId>idmconnectors</groupId>
 			<artifactId>connector-framework</artifactId>
@@ -122,6 +163,23 @@
 			<artifactId>logback-classic</artifactId>
 			<version>0.9.26</version>
 		</dependency>
+
+        <!-- Hack to make sure any libs that use commons-logging get faked into
+        thinking it is there
+        -->
+        <dependency>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+          <version>1.1.1</version>
+          <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>jcl-over-slf4j</artifactId>
+          <version>1.6.1</version>
+        </dependency>
+
 		<dependency>
 			<groupId>org.scala-lang</groupId>
 			<artifactId>scala-compiler</artifactId>
@@ -176,6 +234,11 @@
 					<args>
 						<!-- arg>-unchecked</arg -->
 						<arg>-deprecation</arg>
+						<!-- 
+						<arg>-make:transitive</arg>
+						<arg>-dependencyfile</arg>
+						<arg>${project.build.directory}/.scala_dependencies</arg>
+ 						-->
 					</args>
 				</configuration>
 				<executions>
@@ -229,6 +292,7 @@
 					<downloadSources>true</downloadSources>
 				</configuration>
 			</plugin>
+			<!--  
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -247,27 +311,13 @@
 					</classpathContainers>
 				</configuration>
 			</plugin>
-			<!--   
-			
-			only needed if using Java QueryDSL
-			
-			<plugin>
-				<groupId>com.mysema.maven</groupId>
-				<artifactId>maven-apt-plugin</artifactId>
-				<version>1.0</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>process</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>target/generated-sources/java</outputDirectory>
-							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 			-->
+			<!-- only needed if using Java QueryDSL <plugin> <groupId>com.mysema.maven</groupId> 
+				<artifactId>maven-apt-plugin</artifactId> <version>1.0</version> <executions> 
+				<execution> <goals> <goal>process</goal> </goals> <configuration> <outputDirectory>target/generated-sources/java</outputDirectory> 
+				<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor> </configuration> 
+				</execution> </executions> </plugin> -->
 		</plugins>
+		
 	</build>
 </project>

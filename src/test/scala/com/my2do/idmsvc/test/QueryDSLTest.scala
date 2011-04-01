@@ -11,24 +11,28 @@ import com.mysema.query.types.path._
 import org.junit.Assert._
 
 import org.junit.Test
+import com.my2do.repo.UserRepository
+import javax.inject.Inject
 
 @RunWith(classOf[SpringJUnit4ClassRunner])
 class QueryDSLTest extends TestBase {
 
   var u:User = _
+  @Inject
+  var userRepository:UserRepository = _
   
   @Before
   def setUp() = {
     u = new User()
-    u.userName = "Freddy"
+    u.accountId = "Freddy"
     u.firstName = "Fred"
     u.lastName + "Flinstone"
-    userRepoDAO.save(u)
+    userRepository.save(u)
   }
 
   @After
   def tearDown() = {
-	  userRepoDAO.delete(u)
+	  userRepository.delete(u)
   }
 
   @Test
@@ -41,7 +45,7 @@ class QueryDSLTest extends TestBase {
 
     assertEquals(1, query from user list user size);
 
-    assertEquals("Freddy", query from user where (user.userName $eq "Freddy") uniqueResult user.userName);
+    assertEquals("Freddy", query from user where (user.firstName $eq "Freddy") uniqueResult user.firstName);
 
     /*
     // list

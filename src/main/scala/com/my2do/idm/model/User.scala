@@ -5,24 +5,50 @@ import javax.persistence._
 
 
 @Entity
-class User {
+@serializable
+class User extends BaseEntity {
+
   @BeanProperty
-  @Id
-  var id:Long = _
-  
-  
-  
-  @BeanProperty
-  var userName: String = _;
+  @Column(unique = true, nullable=false)
+  var accountId: String = _
   
   @BeanProperty
-  var firstName: String = _;
+  var firstName: String = _
   
   @BeanProperty
-  var lastName: String = _;
-  /*
+  var lastName: String = _
+
   @BeanProperty
-  @ManyToOne
-  var department: Department = _;
-  */
+  var email:String = _
+
+  @BeanProperty
+  var employeeId: String = _
+
+  @BeanProperty
+  var department: String = _
+
+  @BeanProperty
+  var managerEmpId:String = _
+
+  override def toString() =
+    "user: " + id + " accountId=" + accountId + " " + firstName + "," + lastName
+
+
+
+  /**
+   * Role Assignments along with status
+   */
+  @BeanProperty @OneToMany(fetch=FetchType.EAGER, cascade = Array(CascadeType.ALL))
+  var roleAssignments:java.util.List[RoleAssignment] =  new java.util.ArrayList[RoleAssignment]()
+
+
+  // put all joined account types here..
+
+  @BeanProperty
+  //@OneToMany(mappedBy="user", cascade = Array(CascadeType.ALL))
+  @OneToMany( cascade = Array(CascadeType.ALL))
+	var  ldapAccounts:java.util.List[LDAPAccount] = new java.util.ArrayList[LDAPAccount]()
+
+
+
 }
