@@ -1,7 +1,7 @@
 package com.my2do.idm.util
 
 import com.my2do.idm.model.User
-import com.my2do.idm.connector.util.{ConnectorObjectWrapper, ICFAttributes}
+import com.my2do.idm.connector.util.{ConnectorObjectWrapper, ICAttributes}
 
 /**
  *
@@ -14,12 +14,12 @@ import com.my2do.idm.connector.util.{ConnectorObjectWrapper, ICFAttributes}
  */
 
 
-class AttributeMapper(var funcList:List[(User, ICFAttributes) => Unit]  = Nil) {
-  def doMap(u:User, s: ICFAttributes) = {
+class AttributeMapper(var funcList:List[(User, ICAttributes) => Unit]  = Nil) {
+  def doMap(u:User, s: ICAttributes) = {
     funcList.foreach( action => action(u,s) )
   }
 
-  def addMapping(func:((User,  ICFAttributes) => Unit) ) = {
+  def addMapping(func:((User,  ICAttributes) => Unit) ) = {
     funcList +:= func
   }
 }

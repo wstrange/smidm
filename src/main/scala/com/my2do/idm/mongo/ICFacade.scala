@@ -1,38 +1,48 @@
-package com.my2do.idm.connector
+package com.my2do.idm.mongo
 
 
-import com.my2do.idm.model.ConnectorEntity
-import org.identityconnectors.framework.common.objects.filter.{FilterBuilder, Filter}
+
 import org.identityconnectors.framework.common.objects._
+import org.identityconnectors.framework.api.ConnectorFacade
+import com.my2do.idm.connector.ConnectorConfig
+import com.my2do.idm.connector.util.ICAttributes
+import com.my2do.idm.connector.util.ConnectorObjectWrapper
+import com.my2do.idm.model.ConnectorEntity
 
 /**
  *
  * Convenience wrapper on top of ICF facade. The intent of this
  * is the "scalaify" some of the ICF methods
  *
+ * This is mongo oriented...
+ *
  * User: warren
  * Date: 3/19/11
  * Time: 10:45 PM
- * 
+ *
  */
 
-class ICFWrapper(connector: ConnectorConfig)  {
-  def facade = connector.getFacade
+class ICFacade(val facade: ConnectorFacade, config:ConnectorConfig) {
+
 
   /**
-   * return some kind of iterator
+   * Iterate over accounts
    */
-  def foreachAccount( f: (ConnectorEntity) => Unit )= foreachObject(ObjectClass.ACCOUNT,f)
+  def foreachAccount( f: (ICAttributes) => Unit )= foreachObject(ObjectClass.ACCOUNT,f)
 
-  def foreachGroup( f: (ConnectorEntity) => Unit )=  foreachObject(ObjectClass.GROUP,f)
+  /**
+   * iterate over groups
+   */
+  def foreachGroup( f: (ICAttributes) => Unit )=  foreachObject(ObjectClass.GROUP,f)
 
+  /**
+   * iterate over objects of the given objectclass
+   */
 
-  def foreachObject(objectClass:ObjectClass, f: ((ConnectorEntity) => Unit ))= {
+  def foreachObject(objectClass:ObjectClass, f: ((ICAttributes) => Unit ))= {
     facade.search(objectClass,null, new ResultsHandler() {
         def handle(obj:ConnectorObject) = {
-          val entity = connector.newConnectorEntity(objectClass)
-          entity.setConnectorObject(obj)
-          f(entity)
+          f(new ConnectorObjectWrapper(obj,config.schemaForObjectClass(objectClass))
           true
         }
       }, null)
@@ -43,6 +53,7 @@ class ICFWrapper(connector: ConnectorConfig)  {
    * Should accept a closure to handle the iterations - allow breaking out
    */
 
+  /*
   def search[ T <: ConnectorEntity](clazz:Class[T], criteria:String, f: ((ConnectorEntity) => Unit )):List[T] = {
     val attr = AttributeBuilder.build("sn","Test")
     val filter = FilterBuilder.startsWith(attr)
@@ -63,8 +74,9 @@ class ICFWrapper(connector: ConnectorConfig)  {
 
     Nil
   }
+  */
 
-  def create(entity:ConnectorEntity)= {
+  def create()= {
     //entity.connectorNAME = entity.uid
     val u = facade.create(entity.connectorObjectClass, entity.marshall, null)
     entity.accountUid = u.getUidValue

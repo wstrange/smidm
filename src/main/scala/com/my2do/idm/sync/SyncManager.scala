@@ -8,9 +8,9 @@ import com.my2do.idm.event.SyncEvent
 import com.my2do.idm.rule.{Context, Rule}
 import com.my2do.idm.util._
 import net.liftweb.common.Logger
-import com.my2do.idm.connector.util.ICFAttributes
+import com.my2do.idm.connector.util.ICAttributes
 import scala._
-import com.my2do.idm.connector.{ConnectorConfig, ICFWrapper}
+import com.my2do.idm.connector.{ConnectorConfig, ICFacade}
 
 /**
  * 
@@ -23,7 +23,7 @@ import com.my2do.idm.connector.{ConnectorConfig, ICFWrapper}
 @Component
 class SyncManager extends Logger {
 
-  type SyncFunc = (User, ICFAttributes) => Unit
+  type SyncFunc = (User, ICAttributes) => Unit
 
   @Inject var userRepo:UserRepository = _
 
@@ -41,7 +41,7 @@ class SyncManager extends Logger {
    * todo: How to specify correlation rules/
    * what if there are multiple matches?
    */
-  def sync(entity:ConnectorEntity ,  mapper:AttributeMapper, attrs:ICFAttributes, createOnMissing:Boolean = true) = {
+  def sync(entity:ConnectorEntity ,  mapper:AttributeMapper, attrs:ICAttributes, createOnMissing:Boolean = true) = {
     info("Sync attrs=" + attrs)
     val uid = attrs.uidAttribute
     correlateAccountId(uid) match {
@@ -51,13 +51,13 @@ class SyncManager extends Logger {
     }
   }
 
-  def updateOp(u:User, mapper:AttributeMapper , attrs:ICFAttributes) = {
+  def updateOp(u:User, mapper:AttributeMapper , attrs:ICAttributes) = {
     //syncFunc(u,attrs)
     mapper.doMap(u, attrs)
     userRepo.save(u)
   }
 
-  def createAccount(uid:String,mapper:AttributeMapper,attrs:ICFAttributes) = {
+  def createAccount(uid:String,mapper:AttributeMapper,attrs:ICAttributes) = {
     val u = new User()
     u.accountId = uid;
     info("Creating User Account uid=" + uid)

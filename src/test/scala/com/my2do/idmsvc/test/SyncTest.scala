@@ -47,7 +47,7 @@ class SyncTest extends TestBase {
 
     // create mapper function
     val mapper = new AttributeMapper(List(
-        { (u:User,in:ICFAttributes) =>
+        { (u:User,in:ICAttributes) =>
           u.department = in.asString("department")
           u.firstName = in.asString("firstName")
           u.lastName = in.asString("lastName")

@@ -22,7 +22,7 @@ import org.identityconnectors.framework.common.objects.{AttributeInfo, Connector
  * Convenience wrappers for accessing an ICF ConnectorObject in a more scala-ish fashion
  */
 
-trait ICFAttributes {
+trait ICAttributes {
   def apply(name:String) = value(name)
   def value(name:String):AnyRef
   def asString(name:String):String
@@ -34,7 +34,7 @@ trait ICFAttributes {
 /**
  * Implements ICFAttributes trait
  */
-class ConnectorObjectWrapper(obj:ConnectorObject, attrInfo:Map[String,AttributeInfo]) extends ICFAttributes with Logger {
+class ConnectorObjectWrapper(obj:ConnectorObject, attrInfo:Map[String,AttributeInfo]) extends ICAttributes with Logger {
   def value(name:String) = attrValue(obj.getAttributeByName(name))
 
 
