@@ -1,11 +1,11 @@
 package com.my2do.idm.util
 
-import com.my2do.idm.model.User
+import com.my2do.idm.objects.User
 import com.my2do.idm.connector.util.{ConnectorObjectWrapper, ICAttributes}
 
 /**
  *
- * Map input variable to multiple output variables in the user object
+ * Map input variable to multiple output variables in the user objects
  *
  * User: warren
  * Date: 3/26/11

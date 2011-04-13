@@ -1,7 +1,6 @@
 package com.my2do.idm.rule
 
-import com.my2do.idm.model.User
-import com.my2do.idm.event.{SyncEvent, Event}
+import com.my2do.idm.objects.User
 
 /**
  *

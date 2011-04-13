@@ -1,6 +1,6 @@
 package com.my2do.idm.event
 
-import com.my2do.idm.model.{Resource, Role}
+import com.my2do.idm.objects.{ Role}
 import org.identityconnectors.framework.common.objects.ConnectorObject
 
 /**
@@ -22,7 +22,7 @@ case class ConnectorSyncEvent(obj:ConnectorObject) extends Event
 
 // kludgy....
 
-case class RoleAssignmentEvent(role:Role, resource:Resource,group:String ) extends Event
+case class RoleAssignmentEvent(role:Role,group:String ) extends Event
 
 case class RoleDeAssignmentEvent(r:Role) extends Event
 

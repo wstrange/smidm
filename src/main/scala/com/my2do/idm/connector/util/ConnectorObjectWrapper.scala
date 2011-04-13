@@ -4,8 +4,7 @@ import scala.collection.JavaConversions._
 
 import net.liftweb.common.Logger
 import collection.mutable.HashSet
-import org.identityconnectors.framework.common.objects.{AttributeInfo, ConnectorObject, Attribute}
-
+import org.identityconnectors.framework.common.objects.{ObjectClass, AttributeInfo, ConnectorObject, Attribute}
 
 /**
  *
@@ -26,20 +25,40 @@ trait ICAttributes {
   def apply(name:String) = value(name)
   def value(name:String):AnyRef
   def asString(name:String):String
+  def firstValueAsString(name:String):String
   def attributeMap:Map[String,AnyRef]
-  def uidAttribute:String
-  def nameAttribute:String
+
+  def getUuid:String
+  def getName:String
+
+  def connectorObject:ConnectorObject
 }
 
 /**
  * Implements ICFAttributes trait
+ * @param obj - the wrapped connector objects
+ * @param attrInfo - map of attribute schema info. Needed so we know the data type of the attr
  */
 class ConnectorObjectWrapper(obj:ConnectorObject, attrInfo:Map[String,AttributeInfo]) extends ICAttributes with Logger {
+
+  private var map:Map[String,AnyRef] = _
+
+  def attributeMap() = {
+    if(map == null) {
+       val m = new scala.collection.mutable.HashMap[String,AnyRef]
+      obj.getAttributes.foreach( a =>  m.put(a.getName, attrValue(a)))
+      map = m toMap
+    }
+    map
+  }
+
   def value(name:String) = attrValue(obj.getAttributeByName(name))
+  def connectorObject = obj
 
 
   /**
-   *  The ICF framework stores single values in lists. This flattens single values out
+   *  The ICF framework stores single values in lists.
+   *  If the attribute is not multi-valued we flatten it to a scalar
    */
    private def attrValue(a:Attribute):AnyRef = {
     val n = a.getName
@@ -47,8 +66,7 @@ class ConnectorObjectWrapper(obj:ConnectorObject, attrInfo:Map[String,AttributeI
     val attrVal = a.getValue
     info match {
       case Some(i) => if( i.isMultiValued) attrVal else attrVal.head
-      case None =>  debug("Warning. Missing attrInfo for attr name= " + n)
-        attrVal.head
+      case None =>  attrVal.head // __UID__ will not have attrInfo associated with it
     }
   }
 
@@ -57,18 +75,9 @@ class ConnectorObjectWrapper(obj:ConnectorObject, attrInfo:Map[String,AttributeI
    *
    */
   def asString(name:String) = value(name).asInstanceOf[String]
-  def uidAttribute = obj.getUid.getUidValue
-  def nameAttribute = obj.getName.getNameValue
-
-
-  /**
-   * Create a map of attr name / value pairs
-   */
-  def attributeMap() = {
-    val m = new scala.collection.mutable.HashMap[String,AnyRef]
-    obj.getAttributes.foreach( a =>  m.put(a.getName, attrValue(a)))
-    m toMap
-   }
+  def firstValueAsString(name:String):String = obj.getAttributeByName(name).getValue.head.asInstanceOf[String]
+  def getUuid = obj.getUid.getUidValue
+  def getName = obj.getName.getNameValue
 
 
   override def toString() = "Attrs=" + attributeMap.toString()

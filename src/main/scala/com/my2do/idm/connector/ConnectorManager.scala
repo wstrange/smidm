@@ -5,14 +5,12 @@ package com.my2do.idm.connector
  * and open the template in the editor.
  */
 
-import com.my2do.idm.model.Resource
-
-import scala.collection.Set
 import scala.collection.JavaConversions._
 
 import net.liftweb.common.Logger
 import org.identityconnectors.framework.api._
 import java.io.File
+import collection.mutable.HashMap
 
 // singleton - need only one connector manager for each app
 object ConnectorManager  {
@@ -24,7 +22,7 @@ object ConnectorManager  {
   }
 
   /**
-   * Create a connector manager from a given directory
+   * Create a connector manager from a given directory that contains a number of ICF bundles
    */
   def apply(directory:String) = {
     val bundleFiles = new File(directory).listFiles()
@@ -35,7 +33,13 @@ object ConnectorManager  {
 
 class ConnectorManager(bundleUrls:Array[java.net.URL]) extends Logger {
 
-  private val connectorMap = new scala.collection.mutable.HashMap[ConnectorKey, ConnectorInfo]
+  private val connectorMap = new HashMap[ConnectorKey, ConnectorInfo]
+
+  private val configuredConnectors = new HashMap[ConnectorConfig,ConnectorFacade]
+
+
+  def getFacade(config:ConnectorConfig) = configuredConnectors.getOrElse(config,
+      throw new IllegalStateException("Connector not configured? config=" + config.instanceName))
 
 
   // call init to trigger loading of the bundles
@@ -71,7 +75,7 @@ class ConnectorManager(bundleUrls:Array[java.net.URL]) extends Logger {
    * Configures the bundles
    * Assumes the bundles have been loaded
    *
-   * Configure the bundles by setting the connector params from each ConnectorConfig listed in the companion object
+   * Configure the bundles by setting the connector params from each ConnectorConfig listed in the companion objects
    *
    */
   def configureBundles() = {
@@ -88,14 +92,23 @@ class ConnectorManager(bundleUrls:Array[java.net.URL]) extends Logger {
         error("Perhaps the bundle location is not configured properly or the Configuraition has the wrong bundle name/version/")
         throw new RuntimeException(msg )
       }
-      // initialzie the connector - cauases the facade to be created
-      connector.configure(apiConfig)
+      try {
+        connector.init(apiConfig)// sets the api config parameters
+        val facade = ConnectorManager.getFacade(apiConfig)
+        connector.initSchema(facade)
+        configuredConnectors.put(connector,facade)
+
+    } catch {
+      case e:Exception =>
+        error("Can't initialize  Connector. Retry later", e)
+    }
+
   }
 
   def connectorKeys = connectorMap.keySet
 
   /**
-   * Get teh API connector object for a given key
+   * Get teh API connector objects for a given key
    *
    */
   def defaultAPIConfigForKey(key: ConnectorKey):APIConfiguration = {
@@ -106,6 +119,7 @@ class ConnectorManager(bundleUrls:Array[java.net.URL]) extends Logger {
 
   // todo: Remove this - The CodeGen module is the only client...
   def getConnectorInfo(key: ConnectorKey) =  connectorMap.get(key)
+
 
 }
 

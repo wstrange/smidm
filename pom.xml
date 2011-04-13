@@ -45,11 +45,6 @@
             <version>1.0.0.BUILD-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>1.0.0.BUILD-SNAPSHOT</version>
-        </dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -67,12 +62,19 @@
 		</dependency>
            -->
 
+        <dependency>
+            <groupId>com.novus</groupId>
+            <artifactId>salat-core_2.8.1</artifactId>
+            <version>0.0.7-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>com.mongodb.casbah</groupId>
             <artifactId>casbah_2.8.1</artifactId>
             <version>2.1.1</version>
         </dependency>
+
+
 
 
 		<!--Web tier -->
@@ -111,25 +113,6 @@
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
 			<version>${commons-dbcp.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
-			<artifactId>querydsl-scala</artifactId>
-			<version>${querydsl.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
-			<version>${querydsl.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.mysema.querydsl</groupId>
-			<artifactId>querydsl-jpa</artifactId>
-			<version>${querydsl.version}</version>
 		</dependency>
 
 		<!-- LOGGING DEPENDENCIES - LOG4J -->
@@ -186,12 +169,7 @@
 			<version>${scala.version}</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-			<version>10.4.2.0</version>
-			<optional>true</optional>
-		</dependency>
+
 		<dependency>
 			<groupId>net.liftweb</groupId>
 			<artifactId>lift-common_2.8.1</artifactId>

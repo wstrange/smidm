@@ -22,7 +22,7 @@ import org.identityconnectors.common.security.{GuardedByteArray, GuardedString}
 object CodeGen extends Logger {
 
   /**
-   * Utility method to create a base class declaration for a connector connector object
+   * Utility method to create a base class declaration for a connector connector objects
    * Run this from a unit test
    * Output is written to target/
    */

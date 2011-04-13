@@ -1,9 +1,6 @@
 package com.my2do.idm.util
 
 import java.lang.reflect.{Method, Field}
-import com.my2do.idm.connector.annotation.ConnectorAttribute
-import com.my2do.idm.model.AttributeBeanMethod
-import collection.mutable.HashMap._
 import net.liftweb.common.Logger
 
 

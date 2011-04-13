@@ -1,2 +1,4 @@
-accountId,firstName,lastName,email,department
-test1,fred,flinstone,fred@foo.com,a12345
+accountId,firstName,lastName,email,department,employeeId
+test1,fred,flinstone,fred@foo.com,a12345,9000
+test2,Wilma,flinstone,wilma@foo.com,a12345,9001
+

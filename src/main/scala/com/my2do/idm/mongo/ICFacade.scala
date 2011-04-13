@@ -7,7 +7,7 @@ import org.identityconnectors.framework.api.ConnectorFacade
 import com.my2do.idm.connector.ConnectorConfig
 import com.my2do.idm.connector.util.ICAttributes
 import com.my2do.idm.connector.util.ConnectorObjectWrapper
-import com.my2do.idm.model.ConnectorEntity
+import com.mongodb.casbah.commons.MongoDBObject
 
 /**
  *
@@ -42,7 +42,7 @@ class ICFacade(val facade: ConnectorFacade, config:ConnectorConfig) {
   def foreachObject(objectClass:ObjectClass, f: ((ICAttributes) => Unit ))= {
     facade.search(objectClass,null, new ResultsHandler() {
         def handle(obj:ConnectorObject) = {
-          f(new ConnectorObjectWrapper(obj,config.schemaForObjectClass(objectClass))
+          f(new ConnectorObjectWrapper(obj,config.schemaForObjectClass(objectClass)))
           true
         }
       }, null)
@@ -76,25 +76,18 @@ class ICFacade(val facade: ConnectorFacade, config:ConnectorConfig) {
   }
   */
 
-  def create()= {
+  def create(obj:MongoDBObject)= {
     //entity.connectorNAME = entity.uid
-    val u = facade.create(entity.connectorObjectClass, entity.marshall, null)
-    entity.accountUid = u.getUidValue
+
+    val u = facade.create(ObjectClass.ACCOUNT,null , null)
+
+    // todoo: update mongo uid objects value
   }
 
-  def delete(entity:ConnectorEntity) = {
-    val uid = new Uid(entity.accountUid)
-    facade.delete(entity.connectorObjectClass, uid, null)
+  def delete(obj:MongoDBObject) = {
+    //val uid = new Uid(entity.accountUid)
+    //facade.delete(entity.connectorObjectClass, uid, null)
   }
 
-  def getEntity[T <: ConnectorEntity](uid:String, clazz:Class[T]):Option[T] = {
-    val entity = clazz.newInstance
-    val obj = facade.getObject(entity.connectorObjectClass, new Uid(uid), null)
-    if( obj != null ) {
-      entity.setConnectorObject(obj)
-      entity.unmarshall
-      return Some(entity)
-    }
-    None
-  }
+
 }

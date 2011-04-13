@@ -21,11 +21,10 @@ import com.my2do.idm.connector.{ConnectorConfig, ConnectorManager, CodeGen}
 import org.identityconnectors.framework.common.objects.{ConnectorObject, ObjectClass, ResultsHandler}
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.junit.{Before, BeforeClass, Test}
-import com.my2do.idm.model.{LDAPAccount, Resource}
 import config.LDAP_Prod
 
 /*
-object ConnectorManagerTest {
+objects ConnectorManagerTest {
   @BeforeClass
   def setUpConnectors() = {
     val cm = ConnectorManager.connectorManager
@@ -49,7 +48,7 @@ class CodeGenTest  extends TestBase {
   @Test
   def testCodeGen() = {
 
-    val keys = cm.connectorKeys
+    val keys = connectorManager.connectorKeys
     assert( keys.size >= 1)
 
     println("Keys=" + keys.size + " set=" + keys)
@@ -57,7 +56,7 @@ class CodeGenTest  extends TestBase {
       //val facade = cm.getFacade(key)
       // todo: flat file has no schema. Depends on file
       //CodeGen.makeEntityClasses(key.getBundleName, facade.schema)
-      CodeGen.makeConfigClass(cm.getConnectorInfo(key).get)
+      CodeGen.makeConfigClass(connectorManager.getConnectorInfo(key).get)
       //facade.test()
     }
   }

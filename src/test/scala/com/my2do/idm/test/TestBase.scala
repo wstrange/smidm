@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4._
 import org.springframework.test.context._
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation ._
-import com.my2do.repo.UserRepository
 import com.my2do.idm.connector.util.SLF4JLogger
 import org.identityconnectors.common.logging.Log
 import java.io.File
@@ -28,30 +27,15 @@ class TestBase extends Logger {
   System.setProperty(Log.LOGSPI_PROP,  logc.getCanonicalName)
 
 
-  @Inject var cm:ConnectorManager = _
+  @Inject var connectorManager:ConnectorManager = _
 
   //var cm:ConnectorManager = ConnectorManager("src/test/resources/bundles")
 
 
- // set of connector object keys
+ // set of connector objects keys
   val keyset = ConnectorConfig.configObjectsKeySet
 
-  @Before
-  def setUpConnectors() =  {
-    // todo: Set this up via injection....
-    //ConnectorManager.baseUrls = bundleFiles.map(f => f.toURI.toURL)
-    //info( "Bundles loaded from URLS=" + ConnectorManager.baseUrls)
-    //cm = ConnectorManager.connectorManager
-  }
 
-
-	@PersistenceContext
-	var em:EntityManager = _
-	
-	def getEntityManager() = em
-
-  @Inject
-  var userRepo:UserRepository = _
 
   @Ignore
   @Test

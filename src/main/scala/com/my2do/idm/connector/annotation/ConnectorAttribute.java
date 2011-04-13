@@ -9,7 +9,7 @@ import java.lang.annotation.RetentionPolicy;
  * We use this annotation to generate getter/setters that know how to marshall to/from a
  * a POJO field and an ICF Connector Attribute.
  * For example, mapping the
- * attribute "uid" to a object field "var uid:String"
+ * attribute "uid" to a objects field "var uid:String"
  */
 
 
