@@ -18,27 +18,19 @@
 package com.my2do.idm
 
 import connector.ConnectorManager
-import resource.Resource
-import rules.{FFRules, LDAPRules}
 import sync.SyncManager
-import config._
-
-
 /**
- * 
+ *
  * User: warren
  * Date: 4/12/11
  * Time: 7:52 PM
- * 
+ *
  */
 
-object ComponentRegistry   {
+object ComponentRegistry {
 
-  //lazy val connectorManager = ConnectorManager("src/test/resources/bundles")
   lazy val connectorManager = ConnectorManager("target/bundles")
 
   lazy val syncManager = new SyncManager()
-
-
 
 }
