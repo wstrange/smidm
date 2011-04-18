@@ -34,7 +34,8 @@ import config._
 
 object ComponentRegistry   {
 
-  lazy val connectorManager = ConnectorManager("src/test/resources/bundles")
+  //lazy val connectorManager = ConnectorManager("src/test/resources/bundles")
+  lazy val connectorManager = ConnectorManager("target/bundles")
 
   lazy val syncManager = new SyncManager()
 

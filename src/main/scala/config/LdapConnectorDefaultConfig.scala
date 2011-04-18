@@ -9,7 +9,7 @@ import com.my2do.idm.connector.ConnectorConfig
   * Subclass this and override any local connector parameters for each unique instance
   */
 abstract class LdapConnectorDefaultConfig extends ConnectorConfig {
-   override val connectorKey = new ConnectorKey("org.identityconnectors.ldap","1.0.5754","org.identityconnectors.ldap.LdapConnector")
+   override val connectorKey = new ConnectorKey("org.identityconnectors.ldap","1.0.5754openidm","org.identityconnectors.ldap.LdapConnector")
 
    // LDAP Filter for Accounts to Synchronize - An optional LDAP filter for the objects to synchronize. Because the change log is for all objects, this filter updates only objects that match the specified filter. If you specify a filter, an objects will be synchronized only if it matches the filter and includes a synchronized objects class.
    val accountSynchronizationFilter = ""
