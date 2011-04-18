@@ -15,46 +15,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.my2do.idm.dao
+package com.my2do.idm.objects
 
-import com.my2do.idm.mongo.MongoUtil
+import com.novus.salat.annotations._
 import com.mongodb.casbah.Imports._
-import com.novus.salat._
-import com.novus.salat.global._
-import dao.SalatDAO
-import com.my2do.idm.objects._
-import collection.mutable.ListBuffer
-import net.liftweb.common.Logger
 import com.my2do.idm.resource.Resource
-import net.liftweb.common.Logger
 
 /**
- *
+ *   Serves as a link to a ResourceObject
  * User: warren
  * Date: 4/2/11
- * Time: 4:20 PM
+ * Time: 3:07 PM
  *
  */
 
-object UserDAO extends SalatDAO[User, ObjectId] with Logger {
-  val _grater = grater[User]
-  val collection = MongoUtil.userCollection
+object ResourceReference {
 
-  def findByEmployeeId(id: String): Option[User] = this.findOne(MongoDBObject("employeeId" -> id))
-
-  def findByAccountName(name: String): Option[User] = this.findOne(MongoUtil.makeNameAttribute(name))
-
-
-
+  val ldapTest = ResourceReference("ldapTest", Resource.ldapTest.instanceName)
+  val flatFile1 = ResourceReference("flatfile", Resource.flatfile1.instanceName)
 }
 
-
-
-
-
-object RoleDAO extends SalatDAO[Role,ObjectId] {
-  val _grater = grater[Role]
-  val collection = MongoUtil.roleCollection
-
-
+case class ResourceReference(resourceName:String, instanceKey:String,@Key("_id") id: ObjectId = new ObjectId()) {
+  val resource = Resource.getResourceByInstanceKey(instanceKey)
 }
+

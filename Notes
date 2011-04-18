@@ -70,4 +70,8 @@ role = { name, type (biz, etc.), containedRoles, accountsToAdd,
 
 
 
+TODO:
+
+implicit conversions - from connector obj to mongoobj to hashmap, etc.
+
 

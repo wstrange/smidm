@@ -21,7 +21,7 @@ import com.my2do.idm.connector.{ConnectorConfig, ConnectorManager, CodeGen}
 import org.identityconnectors.framework.common.objects.{ConnectorObject, ObjectClass, ResultsHandler}
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.junit.{Before, BeforeClass, Test}
-import config.LDAP_Prod
+import config.LDAP_Test
 
 /*
 objects ConnectorManagerTest {

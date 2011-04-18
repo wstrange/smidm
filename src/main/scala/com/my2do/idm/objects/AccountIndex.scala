@@ -17,34 +17,39 @@
 
 package com.my2do.idm.objects
 
+import com.novus.salat._
 import com.novus.salat.annotations._
+import com.novus.salat.global._
 import com.mongodb.casbah.Imports._
+import collection.mutable.HashMap
+import com.my2do.idm.dao.{ResourceDAO, AccountIndexDAO}
+import com.my2do.idm.connector.ConnectorConfig
+import com.my2do.idm.mongo.MongoUtil
 import com.my2do.idm.resource.Resource
 
 /**
- *
+ * 
  * User: warren
  * Date: 4/2/11
  * Time: 3:07 PM
- *
+ * 
  */
 
-case class User(accountName: String,
-                var firstName: String, var lastName: String,
-                var employeeId: String = null, var department: String = "",
-                var email: String = "",
-                var directlyAssignedResources:List[String] = Nil,
-                var roleAssignedResources:List[String] = Nil,
-                var roleIdList:List[ObjectId] = Nil,
-                @Key("_id") id: ObjectId = new ObjectId()) {
+case class AccountIndex(var userId:Option[ObjectId] = None,
+                        resourceKey:String,
+                        accountName:String = null,
+                        var needsSync:Boolean = true,
+                        var delete:Boolean = false,
+                        var lastSync:Long = System.currentTimeMillis,
+                        @Key("_id") var id: ObjectId = new ObjectId)  {
 
-  def isResourceDirectlyAssigned(resource:Resource) = directlyAssignedResources.contains(resource.resourceKey)
+  /**
+   *  Flag to indicate the index and the resource object need to be flushed
+   *  By default, newly created instances are dirty
+   *
+   */
 
-  def isResourceRoleAssigned(resource:Resource) = roleAssignedResources.contains(resource.resourceKey)
-
-  def unassignResource(resource:Resource) = directlyAssignedResources = directlyAssignedResources.filterNot( x => x.equals(resource.resourceKey))
-
+  var isDirty:Boolean = true
 }
-
 
 

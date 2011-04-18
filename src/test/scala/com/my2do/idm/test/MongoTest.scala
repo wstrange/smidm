@@ -1,60 +1,62 @@
-package com.my2do.idmsvc.test
+package com.my2do.idm.test
 
-import org.junit.Test
 
-import com.mongodb.casbah.Imports._
-import scala.collection.JavaConversions._
-import config.LDAP_Prod
-import org.identityconnectors.framework.common.objects.{Attribute, ObjectClass, ConnectorObject, ResultsHandler, AttributeInfo}
-import collection.mutable.{HashMap, HashSet}
-import com.my2do.idm.connector.{ConnectorManager, ConnectorConfig}
-import com.my2do.idm.mongo.{MongoUtil, ICFacade}
-import com.novus.salat._
-import com.novus.salat.global._
+import com.my2do.idm.mongo.MongoUtil
 import com.my2do.idm.objects._
-import org.junit.Assert._
-import com.my2do.idm.dao.{AccountIndexDAO, UserDAO}
-
+import com.my2do.idm.dao._
 
 /**
- * 
+ *
  * User: warren
  * Date: 3/31/11
  * Time: 5:03 PM
- * 
+ *
  */
 
-class MongoTest extends TestBase {
+class MongoTest extends FunTest {
 
 
   val db = MongoUtil.db
 
 
-
-  @Test
-  def testSalatDAO():Unit = {
+  test("SalatDAO test") {
 
     MongoUtil.dropAndCreateDB
 
-    val u = User("test1","test","tester")
-    val userWithSameId = User("test1","test","tester with new name")
+    val u = User("test1", "test", "tester")
+    val userWithSameId = User("test1", "test", "tester with new name")
 
-    val a1 = AccountIndex(Some(u.id),"ldap1")
-    val a2 = AccountIndex(Some(u.id),"ldap2")
-    val a3 = AccountIndex(None,"ldap2")
+    val a1 = AccountIndex(Some(u.id), "ldap1")
+    val a2 = AccountIndex(Some(u.id), "ldap2")
+    val a3 = AccountIndex(None, "ldap2")
 
     var r = UserDAO.insert(u)
-    assertTrue(r.isDefined)
+    assert(r.isDefined)
     r = UserDAO.insert(userWithSameId)
-    assertTrue("Should not be able to insert a duplicate user with same accountName", r.isEmpty)
+    assert(r.isEmpty, "Should not be able to insert a duplicate user with same accountName")
 
     AccountIndexDAO.insert(a1, a2, a3)
 
-    val iter = u.accountIndexIterator
-    assertEquals("User should have two associated accounts",iter.count,2 )
-    while( iter.hasNext){
+    val iter = AccountIndexDAO.findByUserId(u.id)
+    assert(iter.count == 2, "User should have two associated accoints")
+    while (iter.hasNext) {
       println("a=" + iter.next)
     }
+  }
 
+  test("Role DAO") {
+    MongoUtil.dropAndCreateDB
+    val p = Role("parent")
+
+    val itrole = Role("itrole1", Some(p.id))
+    val itrole2 = Role("ITRole2", Some(p.id))
+    p.childRoles = List(itrole.id,itrole2.id)
+
+    val e1 = Entitlement("ldap","groups","cn=foo,bar=bah", AssignmentType.MERGE)
+
+    itrole.entitlements = List(e1)
+    RoleDAO.save(p)
+    RoleDAO.save(itrole)
+    RoleDAO.save(itrole2)
   }
 }

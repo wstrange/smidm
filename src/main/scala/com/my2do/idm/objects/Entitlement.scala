@@ -28,21 +28,41 @@ import com.mongodb.casbah.Imports._
  *
  */
 
-object Role {
-  val ITROLE = 10
-  val BIZROLE = 20
 
+
+object AssignmentType extends Enumeration {
+  type AssignmentType = Value
+  val MERGE, REPLACE, REMOVE, RULE = Value
 }
 
-case class Role(name: String,
-                var parentId: Option[ObjectId] = None,
-                var childRoles: List[ObjectId] = Nil,
-                var entitlements: List[Entitlement] = Nil,
-                var description: String = "",
-                @Key("_id") id: ObjectId = new ObjectId())  {
 
-  def addEntitlement(e:Entitlement) = entitlements = e :: entitlements
-  def assignedResourceKeys = entitlements.map ( e => e.resourceKey)
+case class Entitlement(resourceKey: String,
+                       attribute: String,
+                       attrVal: AnyRef,
+                       assignmentType: AssignmentType.Value,
+                       @Key("_id") id: ObjectId = new ObjectId())  {
+
+  import AssignmentType._
+
+  def assign(dbo:DBObject) = {
+    assignmentType match {
+      case REPLACE => dbo.put(attribute,attrVal)
+      case MERGE =>  var list = dbo.get(attribute).asInstanceOf[List[AnyRef]]
+
+          if( attrVal.isInstanceOf[List[AnyRef]]) {
+            val l2 = attrVal.asInstanceOf[List[AnyRef]]
+            list =  l2 ++ list
+          }
+          else
+            list = list.+:(attrVal)
+          dbo.put(attribute,list  )
+
+    }
+  }
 }
+
+
+
+
 
 

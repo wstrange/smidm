@@ -1,3 +1,20 @@
+/*
+ * Copyright (c) 2011 - Warren Strange
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.my2do.idm.connector
 
 import java.lang.reflect.Method
@@ -35,7 +52,7 @@ object ConnectorConfig {
    *
    * todo: Should we make this more dynamic? Inject with Spring? reflect on connector.* to get configs
    */
-  val connectors: List[ConnectorConfig] = List(LDAP_Prod, FlatFile_TestFile1)
+  val connectors: List[ConnectorConfig] = List(LDAP_Test, FlatFile_TestFile1)
 
   /**return a set of all the Connector Keys configured in the system */
   def configObjectsKeySet = connectors.map(co => co.connectorKey)
@@ -51,7 +68,13 @@ object ConnectorConfig {
  */
 abstract class ConnectorConfig extends Logger {
 
-  val instanceName: String
+  /**
+   * A unique key to identify a Config object. Subclasses must override and
+   * provide a value. This should be an immutable / stable value that never
+   * changes (e.g. "ldap_config_april2011"). This value is used a a key to
+   * store and serialized a reference to the config object.
+   */
+  val instanceKey: String
 
   val connectorKey: ConnectorKey
   // subclass must define this

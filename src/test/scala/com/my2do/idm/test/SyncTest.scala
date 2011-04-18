@@ -1,4 +1,21 @@
-package com.my2do.idmsvc.test
+/*
+ * Copyright (c) 2011 - Warren Strange
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.my2do.idm.test
 
 /**
  *
@@ -8,110 +25,63 @@ package com.my2do.idmsvc.test
  *
  */
 
-import org.junit.Test
-import org.junit.Assert._
-import config._
-import javax.inject.Inject
-
 import com.my2do.idm.objects._
 
 import com.my2do.idm.sync.SyncManager
 import com.my2do.idm.connector.util._
 import com.my2do.idm.util.AttributeMapper
-import com.my2do.idm.mongo.{MongoUtil, ICFacade}
-import com.my2do.idm.correlate.{FFRules, LDAPRules}
+import com.my2do.idm.mongo.MongoUtil
+
 import com.my2do.idm.dao.UserDAO
-class SyncTest extends TestBase {
+import com.my2do.idm.ComponentRegistry
+import com.my2do.idm.resource.Resource
 
-  @Inject var syncManager: SyncManager = _
+class SyncTest extends FunTest {
 
+  val syncManager: SyncManager = ComponentRegistry.syncManager
 
-  //@Test
-  def testLoad(): Unit = {
-
+  ignore("Basic Sync Test") {
     MongoUtil.dropAndCreateDB
     // Create a test user to correlate against
     val u = User("test1", "Test", "Tester", employeeId = "99")
     UserDAO.save(u)
 
-    var count = syncManager.loadFromResource(LDAP_Prod, LDAPRules, createUserIfMissing = true)
+    val resource = Resource.ldapTest
 
-    assertTrue(count > 50)
+    var count = syncManager.loadFromResource(resource, createUserIfMissing = true)
+
+    assert(count > 50)
     // run a second time
     //syncManager.loadFromResource(LDAP_Prod, LDAPCorrelator, createUserIfMissing = true)
     // todo: What do we test?
-
   }
 
-  @Test
-  def testSync(): Unit = {
+
+  /**
+   * Tests sync from a flat file
+   */
+  test("Sync from Flat File") {
     MongoUtil.dropAndCreateDB
 
-    val facade = connectorManager.getFacade(FlatFile_TestFile1)
-    val icf = new ICFacade(facade, FlatFile_TestFile1)
+    val flatfile = Resource.flatfile1
+    val ldapResource = Resource.ldapTest
 
-    icf.foreachAccount {
-      a: ICAttributes =>
-        var user = FFRules.correlateUser(a)
-        if (user.isEmpty) {
-          user = FFRules.createUserFromAccountAttributes(a)
-        }
+    // create a closure to perform the sync transformations
+    // this is where you implement your sync logic to decide which attribute goes where
+    val f =  { (u:UserView, a:ICAttributes) =>
+        // update user attributes
+        u.user.department = a("department").asInstanceOf[String]
+        u.user.email = a("email").asInstanceOf[String]
+        u("email") = u.user.email
+        // set the LDAP employeeNumber according to some funky calculation..
+        u(ldapResource,"employeeNumber") = "C" + u.user.department
 
-        // update user attributes first.
-        val u: User = user.get
-
-        // save the user
-        UserDAO.save(u)
-
-        u.fetchLinkedAccounts
+        // should have the ldap account assigned
+        assert(u.user.isResourceDirectlyAssigned(ldapResource))
         u.printAccounts
-
-        val accountsToAdd = List(LDAP_Prod)
-
-        if (!u.hasResourceAccount(LDAP_Prod)) {
-          // add an ldap account
-          UserDAO.addAccount(u, LDAP_Prod, LDAPRules.newResourceObject(u))
-        }
-
-
-        u.fetchLinkedAccounts
-        assertEquals(1, u.accountMap.size)
-        u.printAccounts
-
-      // now update accounts
-      // see what accounts should be assigned...
-      // checkRoles
-      // (rolesToAdd,rolesToDelete,existingRoles) = checkRoles
-      // (accountsToAdd,accountsToDelete,accconts) = checkAccounts
-
-
-      // check accounts - to see which one we should have
-
-      //
-      // "department" -> List("user.department", "Account_ldapProd.departmentNumber"),
-
-      //doMap("department", "user.department", "Account_ldapProd.departmentNumber" )
-
-      //mapper.doMap(user, a)
-      //UserDAO.insert(user)
-      //UserDAO.update()
-
     }
+    syncManager.sync(flatfile, f, createMissingAccounts = true)  // trigger creation of any uncorrelated accounts
+
+
   }
-
-
-  def lookupMgr(u: String) = "5678"
-
-  val mapper = new AttributeMapper(List(
-  {
-    (u: User, in: ICAttributes) =>
-      u.department = in.asString("department")
-      u.firstName = in.asString("firstName")
-      u.lastName = in.asString("lastName")
-    //u.managerEmpId = lookupMgr(in.getUuid)
-    //u.ldapAccounts.foreach( a =>  a.departmentNumber = in.asString("department"))
-  }
-  ))
-
 }
-

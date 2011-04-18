@@ -15,34 +15,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.my2do.idm.objects
+package com.my2do.idm
 
-import com.novus.salat.annotations._
-import com.mongodb.casbah.Imports._
+import connector.ConnectorManager
+import resource.Resource
+import rules.{FFRules, LDAPRules}
+import sync.SyncManager
+import config._
+
 
 /**
- *
+ * 
  * User: warren
  * Date: 4/12/11
- * Time: 6:25 PM
- *
+ * Time: 7:52 PM
+ * 
  */
 
-object Role {
-  val ITROLE = 10
-  val BIZROLE = 20
+object ComponentRegistry   {
+
+  lazy val connectorManager = ConnectorManager("src/test/resources/bundles")
+
+  lazy val syncManager = new SyncManager()
+
+
 
 }
-
-case class Role(name: String,
-                var parentId: Option[ObjectId] = None,
-                var childRoles: List[ObjectId] = Nil,
-                var entitlements: List[Entitlement] = Nil,
-                var description: String = "",
-                @Key("_id") id: ObjectId = new ObjectId())  {
-
-  def addEntitlement(e:Entitlement) = entitlements = e :: entitlements
-  def assignedResourceKeys = entitlements.map ( e => e.resourceKey)
-}
-
-
