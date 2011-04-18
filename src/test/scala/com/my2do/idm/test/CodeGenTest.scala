@@ -1,4 +1,21 @@
-package com.my2do.idmsvc.test
+/*
+ * Copyright (c) 2011 - Warren Strange
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.my2do.idm.test
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,20 +25,9 @@ package com.my2do.idmsvc.test
  * To change this template use File | Settings | File Templates.
  */
 
-import org.junit.runner.RunWith
+import com.my2do.idm.connector.CodeGen
+import org.junit.Test
 
-import org.junit.Assert._
-
-import scala.collection.JavaConversions._
-
-import java.io.File
-import java.net.URL
-import org.identityconnectors.framework.api.ConfigurationProperty
-import com.my2do.idm.connector.{ConnectorConfig, ConnectorManager, CodeGen}
-import org.identityconnectors.framework.common.objects.{ConnectorObject, ObjectClass, ResultsHandler}
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import org.junit.{Before, BeforeClass, Test}
-import config.LDAP_Test
 
 /*
 objects ConnectorManagerTest {
@@ -38,25 +44,24 @@ objects ConnectorManagerTest {
 }
 */
 
-//@RunWith(classOf[SpringJUnit4ClassRunner])
-class CodeGenTest  extends TestBase {
+
+class CodeGenTest extends FunTest {
 
   /**
    * Calls code generation. Not really a test per se....
    * Generated code will be in the target/   directory
    */
-  @Test
-  def testCodeGen() = {
-
+  ignore("teset code gen") {
     val keys = connectorManager.connectorKeys
-    assert( keys.size >= 1)
+    assert(keys.size >= 1)
 
     println("Keys=" + keys.size + " set=" + keys)
-    keys.foreach { key =>
+    keys.foreach {
+      key =>
       //val facade = cm.getFacade(key)
       // todo: flat file has no schema. Depends on file
       //CodeGen.makeEntityClasses(key.getBundleName, facade.schema)
-      CodeGen.makeConfigClass(connectorManager.getConnectorInfo(key).get)
+        CodeGen.makeConfigClass(connectorManager.getConnectorInfo(key).get)
       //facade.test()
     }
   }

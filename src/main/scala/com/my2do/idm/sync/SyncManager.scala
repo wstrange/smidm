@@ -19,7 +19,6 @@ package com.my2do.idm.sync
 
 import javax.inject.Inject
 
-import org.springframework.stereotype.Component
 import com.my2do.idm.objects._
 import net.liftweb.common.Logger
 import com.my2do.idm.connector.util.ICAttributes
@@ -39,7 +38,6 @@ import com.my2do.idm.resource.Resource
  *
  */
 
-@Component
 class SyncManager extends Logger {
 
   type SyncFunc = (User, ICAttributes) => Unit
