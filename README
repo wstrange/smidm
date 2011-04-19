@@ -1,0 +1,15 @@
+
+
+
+This is mostly a science project :-)
+
+It is a simple Identity Management Synchronization engine written as a way to explore Scala and Mongo and the (now defunct)
+Identity Connector Framework (ICF).
+
+
+
+There is no GUI component. Have a look at the unit tests to get an idea of how to write synchronization scripts.
+
+
+Warren Strange - April 2011
+
