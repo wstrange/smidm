@@ -46,7 +46,7 @@ class RoleTest extends FunTest {
 
     val ldap = Resource.ldapTest
     val ldapkey = ldap.resourceKey
-    val e1 = Entitlement(ldap.resourceKey, "department", "newdept", AssignmentType.REPLACE)
+    val e1 = Entitlement(ldap.resourceKey, "departmentNumber", "newdept", AssignmentType.REPLACE)
     val e2 = Entitlement(ldap.resourceKey, "sn", "Added SN", AssignmentType.MERGE)
     val r1 = Role("TestRole", None, entitlements = List(e1, e2))
     RoleDAO.save(r1)
@@ -55,15 +55,15 @@ class RoleTest extends FunTest {
     uv.ensureHasResource(ldap)
 
     // check view for expected old values (before the role is added)
-    var dept = uv(ldap, "department")
+    var dept = uv(ldap, "departmentNumber")
     var sn1 = uv(ldap, "sn").asInstanceOf[Seq[AnyRef]]
-
-    debug("Dept=" + dept)
     assert("olddept".equals(dept))
     // add the role
     uv.addRole(r1)
+
+    uv.printAccounts
     // check that entitlements got set
-    dept = uv(ldap, "department")
+    dept = uv(ldap, "departmentNumber")
     assert("newdept".equals(dept))
     var sn = uv(ldap, "sn").asInstanceOf[Seq[String]]
     assert(sn.contains("Added SN"))

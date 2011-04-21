@@ -31,13 +31,6 @@ import net.liftweb.common.Logger
  *
  */
 
-object RegisterLogger {
-  val logc: Class[SLF4JLogger] = classOf[SLF4JLogger]
-
-  def setICFLogger = System.setProperty(Log.LOGSPI_PROP, logc.getCanonicalName)
-}
-
-
 // add this to the launch config:
 // -Dorg.identityconnectors.common.logging.class=com.my2do.idm.connector.util.SLF4JLogger
 
@@ -46,11 +39,10 @@ class FunTest extends FunSuite with Logger {
   val connectorManager = ComponentRegistry.connectorManager
 
 
-  // this does not work - as the connector framework sets the logger before this code is run
-  // the system property gets set too late.
-  // need to set this on the command line
-  val logc: Class[SLF4JLogger] = classOf[SLF4JLogger]
-  System.setProperty(Log.LOGSPI_PROP, logc.getCanonicalName)
-
+  val loggerName = classOf[SLF4JLogger].getCanonicalName  // logger to use for ICF
+  // unfortuneatly this does not seem to work. Gets set too late in the cycle
+  System.setProperty(Log.LOGSPI_PROP,  loggerName)
+  // this works...
+  debug("To use slf4j for ICF Logging use -D" +Log.LOGSPI_PROP +"=" +  loggerName)
 
 }

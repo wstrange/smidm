@@ -19,10 +19,7 @@ package com.my2do.idm.rules
 
 import com.my2do.idm.dao.UserDAO
 import com.my2do.idm.connector.util.ICAttributes
-import com.my2do.idm.objects.User
-import com.mongodb.casbah.commons.MongoDBObject._
-import com.my2do.idm.mongo.MongoUtil
-import com.mongodb.casbah.commons.MongoDBObject
+import com.my2do.idm.objects.{ResourceObject, User}
 
 /**
  *
@@ -33,13 +30,6 @@ import com.mongodb.casbah.commons.MongoDBObject
  */
 
 object LDAPRules extends AccountRules {
-
-  /**
-   * Correlate on employeeNumber
-   */
-  override def correlateUser(attrs: ICAttributes): Option[User] = {
-    UserDAO.findByEmployeeId(attrs.firstValueAsString("employeeNumber"))
-  }
 
   override def createUserFromAccountAttributes(a: ICAttributes): Option[User] = {
     val accountName = a.firstValueAsString("uid")
@@ -57,18 +47,22 @@ object LDAPRules extends AccountRules {
     Some(User(accountName, givenName, lastName, empId))
   }
 
-  override def newResourceObject(u:User) = {
-    var obj = MongoDBObject("uid" -> u.accountName,
-          "cn" -> (u.firstName + " " + u.lastName),
-          "sn" -> List(u.lastName),
-          "employeeNumber" -> u.employeeId,
-          // "department" -> u.department,          // not in ldap schema
-          "givenName" -> List(u.firstName))
+  /**
+   * Create a template LDAP user
+   */
+  override def newResourceObject(u: User) = {
 
-    val name =  "uid=" + u.accountName + ",ou=People,dc=example,dc=com"
-    obj.putAll(MongoUtil.makeNameAttribute(name))
+    val attrs = Map("uid" -> u.accountName,
+      "cn" -> (u.firstName + " " + u.lastName),
+      "sn" -> List(u.lastName),
+      "employeeNumber" -> u.employeeId,
+      "departmentNumber" -> u.department,          // not in ldap schema
+      "givenName" -> List(u.firstName))
 
-    obj
+    val name = "uid=" + u.accountName + ",ou=People,dc=example,dc=com"
+
+    // todo: Fix the __ACCOUNT__ hardwired....
+    ResourceObject(name, "__ACCOUNT__", u.accountName, attrs)
   }
 
 }

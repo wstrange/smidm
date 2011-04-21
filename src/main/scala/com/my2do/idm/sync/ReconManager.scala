@@ -19,10 +19,10 @@ package com.my2do.idm.sync
 
 import com.my2do.idm.resource.Resource
 import net.liftweb.common.Logger
-import com.my2do.idm.dao.{ResourceDAO, AccountIndexDAO}
 import com.mongodb.casbah.Imports._
-import com.my2do.idm.objects.AccountIndex
 import com.my2do.idm.mongo.{ICFacade, MongoUtil}
+import com.my2do.idm.dao.{ResourceDAO, AccountIndexDAO}
+import com.my2do.idm.objects.{ResourceObject, AccountIndex}
 
 /**
  *
@@ -35,7 +35,7 @@ import com.my2do.idm.mongo.{ICFacade, MongoUtil}
 class ReconManager extends Logger {
 
   def recon(resource: Resource) = {
-    val icf = resource.getFacade
+
     var count = 0
 
     val q = AccountIndexDAO.findByResourceNeedSynced(resource)
@@ -43,40 +43,40 @@ class ReconManager extends Logger {
     while (q.hasNext) {
       val ai = q.next
 
-      val obj = ResourceDAO.getResourceObject(ai).get
+      val obj = ResourceDAO(resource).findOneByID(ai.accountName).get
 
-      if( ai.delete )
-        deleteResourceObject(icf,ai,obj)
+      if (ai.delete)
+        deleteResourceObject(resource, ai, obj)
       else
-        if( updateResourceObject(icf,ai,obj) ) count += 1
+      if (updateResourceObject(resource, ai, obj)) count += 1
     }
     count
   }
 
 
-  def updateResourceObject(icf:ICFacade, ai:AccountIndex,o:MongoDBObject):Boolean= {
-   debug("recon account index =" + ai + " obj=" + o)
+  def updateResourceObject(resource:Resource, ai: AccountIndex, o: ResourceObject): Boolean = {
+    debug("recon account index =" + ai + " obj=" + o)
 
-    val uid = icf.save(o)
+    val uid = resource.getFacade.save(o)  // save to the real resource using ICF framework
     if (uid.isDefined) {
       ai.needsSync = false
       ai.lastSync = System.currentTimeMillis
       AccountIndexDAO.save(ai)
-      o.putAll(MongoUtil.makeUidAttribute(uid.get))
+
 
       // todo: We could optimize this to only save if UID has changed?
-      ResourceDAO.saveResourceObject(ai.resourceKey,o)
+      ResourceDAO(resource).save(o)
       debug("Synced account " + ai.accountName)
       return true
     }
     else
-      info("Could not update/create resource " +o)
+      info("Could not update/create resource " + o)
     false
   }
 
-  def deleteResourceObject(icf:ICFacade,ai:AccountIndex,obj:MongoDBObject) = {
-    icf.delete(obj)
-    ResourceDAO.remove(ai.resourceKey,obj)
+  def deleteResourceObject(resource:Resource, ai: AccountIndex, obj: ResourceObject) = {
+    resource.getFacade.delete(obj)
+    ResourceDAO(resource).remove(obj)
     // todo: Put remove method in AI DAO - so it cascades
     AccountIndexDAO.remove(ai)
   }

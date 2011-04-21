@@ -60,12 +60,11 @@ object AccountIndexDAO extends SalatDAO[AccountIndex, ObjectId] {
     list toList
   }
 
-   def addResourceObject(user:User, resource: Resource, dbo: DBObject):AccountIndex = {
+   def addResourceObject(user:User, resource: Resource, ro:ResourceObject):AccountIndex = {
     // insert the resource acccount
-    val collection = MongoUtil.collectionForResource(resource)
-    val nameAttr = ResourceDAO.insertAccountObject(collection, dbo)
+    ResourceDAO(resource).save(ro)
     // update the account index
-    val ai: AccountIndex = AccountIndex(Some(user.id), resource.instanceName, nameAttr.get, needsSync = true)
+    val ai: AccountIndex = AccountIndex(Some(user.id), resource.resourceKey, ro.accountName, needsSync = true)
     val id = AccountIndexDAO.insert(ai)
     if (id.isEmpty)
       error("Could not insert account index record=" + ai)

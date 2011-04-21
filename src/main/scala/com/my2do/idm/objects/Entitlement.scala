@@ -44,18 +44,21 @@ case class Entitlement(resourceKey: String,
 
   import AssignmentType._
 
-  def assign(dbo:DBObject) = {
+  /**
+   * Apply this entitlement to the resource object
+   */
+  def assign(ro:ResourceObject) = {
     assignmentType match {
-      case REPLACE => dbo.put(attribute,attrVal)
-      case MERGE =>  var list = dbo.get(attribute).asInstanceOf[List[AnyRef]]
-
-          if( attrVal.isInstanceOf[List[AnyRef]]) {
-            val l2 = attrVal.asInstanceOf[List[AnyRef]]
+      case REPLACE => ro.put(attribute,attrVal)
+      case MERGE =>  var list = ro.get(attribute).asInstanceOf[Seq[AnyRef]]
+          // todo: change to seq?
+          if( attrVal.isInstanceOf[Seq[AnyRef]]) {
+            val l2 = attrVal.asInstanceOf[Seq[AnyRef]]
             list =  l2 ++ list
           }
           else
             list = list.+:(attrVal)
-          dbo.put(attribute,list  )
+          ro.put(attribute,list  )
 
     }
   }

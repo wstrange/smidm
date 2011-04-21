@@ -67,8 +67,8 @@ trait UserRoleView extends Logger {  this: UserView =>
 
   def applyEntitlements(role:Role) = {
     role.entitlements.foreach{ e =>
-      resourceObjectsForResourceKey(e.resourceKey).foreach{ case(ai,dbo) =>
-        e.assign(dbo)
+      resourceObjectsForResourceKey(e.resourceKey).foreach{ case(ai,ro) =>
+        e.assign(ro)
       }
     }
   }

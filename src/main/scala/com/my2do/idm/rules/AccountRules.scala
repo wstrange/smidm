@@ -17,14 +17,11 @@
 
 package com.my2do.idm.rules
 
-import com.my2do.idm.objects.User
 import com.my2do.idm.dao.UserDAO
 
 import com.my2do.idm.connector.util.ICAttributes
 import net.liftweb.common.Logger
-import com.mongodb.DBObject
-import com.mongodb.casbah.commons.MongoDBObject
-import com.my2do.idm.mongo.MongoUtil
+import com.my2do.idm.objects.{ResourceObject, User}
 
 /**
  *
@@ -41,16 +38,6 @@ import com.my2do.idm.mongo.MongoUtil
 
 trait AccountRules extends Logger {
 
-  /**
-   * Attempt to correlate this account to a user
-   * the default is to correlate on Account Name
-   * ConnectorConfig Classes should mix this trait in and override the implementation to be specfic to their attributes
-   * For example - the ldap connector might try to correlate on first/lastname , employee number, etc.
-   *
-   */
-  def correlateUser(attrs:ICAttributes):Option[User] = {
-    UserDAO.findByAccountName(attrs.getName)
-  }
 
   /**
    * Given a set of account attributes - create the base account.
@@ -64,5 +51,5 @@ trait AccountRules extends Logger {
     Some(User(a.getName,"",""))
   }
 
-  def newResourceObject(u:User):DBObject = MongoUtil.makeNameAttribute(u.accountName)
+  def newResourceObject(u:User):ResourceObject   = null // default - no object is created
 }

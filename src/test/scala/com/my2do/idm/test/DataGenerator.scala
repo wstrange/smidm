@@ -32,7 +32,7 @@ object DataGenerator  {
   /*
   def createSampleUser(name:String, firstName:String = "First", lastName:String = "last") = {
     val u = new User()
-    u.accountId = name
+    u.accountName = name
     u.firstName = firstName
     u.lastName = lastName
 

@@ -29,18 +29,18 @@ import com.my2do.idm.objects._
 
 import com.my2do.idm.sync.SyncManager
 import com.my2do.idm.connector.util._
-import com.my2do.idm.util.AttributeMapper
 import com.my2do.idm.mongo.MongoUtil
 
 import com.my2do.idm.dao.UserDAO
 import com.my2do.idm.ComponentRegistry
 import com.my2do.idm.resource.Resource
+import com.my2do.idm.rules.{correlateByLDAPUid, correlateByAccountName}
 
 class SyncTest extends FunTest {
 
   val syncManager: SyncManager = ComponentRegistry.syncManager
 
-  ignore("Basic Sync Test") {
+  test("Load from Resource") {
     MongoUtil.dropAndCreateDB
     // Create a test user to correlate against
     val u = User("test1", "Test", "Tester", employeeId = "99")
@@ -48,9 +48,9 @@ class SyncTest extends FunTest {
 
     val resource = Resource.ldapTest
 
-    var count = syncManager.loadFromResource(resource, createUserIfMissing = true)
+    var count = syncManager.loadFromResource(resource, correlateByLDAPUid, createUserIfMissing = true)
 
-    assert(count > 50)
+    //assert(count > 50)
     // run a second time
     //syncManager.loadFromResource(LDAP_Prod, LDAPCorrelator, createUserIfMissing = true)
     // todo: What do we test?
@@ -68,20 +68,30 @@ class SyncTest extends FunTest {
 
     // create a closure to perform the sync transformations
     // this is where you implement your sync logic to decide which attribute goes where
-    val f =  { (u:UserView, a:ICAttributes) =>
-        // update user attributes
+    val f = {
+      (u: UserView, a: ICAttributes) =>
+      // update user attributes
         u.user.department = a("department").asInstanceOf[String]
         u.user.email = a("email").asInstanceOf[String]
-        u("email") = u.user.email
+        u("test") = u.user.email
+        u.user.managerId = a("managerId").asInstanceOf[String]
         // set the LDAP employeeNumber according to some funky calculation..
-        u(ldapResource,"employeeNumber") = "C" + u.user.department
+        u(ldapResource, "employeeNumber") = "C" + u.user.department
+
+        debug("Roles =" + a("roles"))
+
+        // test some extended attributes
+
+        u.user.attributes = Map("attr1" -> "foo", "attr2" -> 1.asInstanceOf[AnyRef])
 
         // should have the ldap account assigned
         assert(u.user.isResourceDirectlyAssigned(ldapResource))
         u.printAccounts
     }
-    syncManager.sync(flatfile, f, createMissingAccounts = true)  // trigger creation of any uncorrelated accounts
+    syncManager.sync(flatfile, f, correlateByAccountName, createMissingAccounts = true) // trigger creation of any uncorrelated accounts
 
+    val u = UserDAO.findByAccountName("test1")
+    debug("Got back a user=" + u.get)
 
   }
 }

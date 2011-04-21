@@ -92,7 +92,15 @@ class ConnectorObjectWrapper(obj:ConnectorObject, attrInfo:Map[String,AttributeI
    *
    */
   def asString(name:String) = value(name).asInstanceOf[String]
-  def firstValueAsString(name:String):String = obj.getAttributeByName(name).getValue.head.asInstanceOf[String]
+
+  def firstValueAsString(name:String):String = {
+    try {
+      obj.getAttributeByName(name).getValue.head.asInstanceOf[String]
+    }
+    catch {
+      case _ => null
+    }
+  }
   def getUuid = obj.getUid.getUidValue
   def getName = obj.getName.getNameValue
 

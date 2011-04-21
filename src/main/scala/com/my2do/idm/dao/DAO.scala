@@ -42,14 +42,10 @@ object UserDAO extends SalatDAO[User, ObjectId] with Logger {
 
   def findByEmployeeId(id: String): Option[User] = this.findOne(MongoDBObject("employeeId" -> id))
 
-  def findByAccountName(name: String): Option[User] = this.findOne(MongoUtil.makeNameAttribute(name))
-
+  def findByAccountName(name: String): Option[User] = this.findOne(MongoDBObject("accountName" -> name))
 
 
 }
-
-
-
 
 
 object RoleDAO extends SalatDAO[Role,ObjectId] {

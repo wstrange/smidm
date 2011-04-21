@@ -20,6 +20,7 @@ package com.my2do.idm.objects
 import com.novus.salat.annotations._
 import com.mongodb.casbah.Imports._
 import com.my2do.idm.resource.Resource
+import collection.mutable.HashMap
 
 /**
  *
@@ -33,9 +34,11 @@ case class User(accountName: String,
                 var firstName: String, var lastName: String,
                 var employeeId: String = null, var department: String = "",
                 var email: String = "",
+                var managerId:String = "", // managers employee Id
                 var directlyAssignedResources:List[String] = Nil,
                 var roleAssignedResources:List[String] = Nil,
                 var roleIdList:List[ObjectId] = Nil,
+                var attributes:Map[String,AnyRef] = Map(),
                 @Key("_id") id: ObjectId = new ObjectId()) {
 
   def isResourceDirectlyAssigned(resource:Resource) = directlyAssignedResources.contains(resource.resourceKey)

@@ -27,8 +27,9 @@ import com.my2do.idm.mongo.{MongoUtil}
 
 
 import com.mongodb.casbah.Imports._
-import com.my2do.idm.dao.{UserDAO, AccountIndexDAO}
 import com.my2do.idm.resource.Resource
+import com.my2do.idm.dao.{ResourceDAO, UserDAO, AccountIndexDAO}
+import com.my2do.idm.rules.CorrelationRule
 
 /**
  *
@@ -43,30 +44,31 @@ class SyncManager extends Logger {
   type SyncFunc = (User, ICAttributes) => Unit
 
 
-  def loadFromResource(resource:Resource, createUserIfMissing: Boolean = false): Int = {
+  def loadFromResource(resource:Resource, rule:CorrelationRule, createUserIfMissing: Boolean = false): Int = {
     var count = 0
 
     val icf =resource.getFacade
 
     val collection = resource.mongoCollection
 
+    val rdao = ResourceDAO(resource)
+
     icf.foreachAccount {
       a =>
         val name = a.getName
-        val nameAttr = MongoUtil.makeNameAttribute(name)
-        val result = collection.find(nameAttr)
-        val obj = MongoDBObject(a.attributeMap toList)
 
-        if (result.size > 0) {
-          info("Account exists - it will not be reloaded. name=" + nameAttr)
-        }
-        else {
-          debug("Saving account object  =" + obj)
-          collection.save(obj)
-          count += 1
+
+        rdao.findByAccountName(name) match {
+          case Some(x:ResourceObject) =>
+            info("Account exists - it will not be reloaded. account=" + name)
+          case _ =>   // does not exist - create a new entry
+            val o = ResourceObject(name,"__ACCOUNT__", a.getUuid, attributes = a.attributeMap)
+            debug("Saving resource object  =" + o)
+            rdao.save(o)
+            count += 1
         }
 
-        var user = resource.rule.correlateUser(a)
+        var user = rule.correlate(a)
 
         info("Correlated user =" + user)
         if (user == None && createUserIfMissing) {
@@ -77,16 +79,16 @@ class SyncManager extends Logger {
               error("Error trying to save user:" + r.getErrorMessage)
               user = None
             }
-            case None => error("Could not create user from account. attrs=" + obj)
+            case None => error("Could not create user from account. attrs=" + a)
           }
         }
-        updateAccountIndex(user, collection.getName, name)
+        updateAccountIndex(user, resource, name)
     }
     return count
   }
 
-  def updateAccountIndex(user: Option[User], collectionName: String, accountName: String) = {
-    val r = AccountIndexDAO.findByAccountName(collectionName, accountName)
+  def updateAccountIndex(user: Option[User], resource: Resource, accountName: String) = {
+    val r = AccountIndexDAO.findByAccountName(resource.resourceKey, accountName)
 
     val userId = user match {
       case Some(u: User) => Some(u.id)
@@ -95,10 +97,10 @@ class SyncManager extends Logger {
 
     if (r.count > 1)
       throw new IllegalStateException("Account Index is corrupt - contains multiple matches for the same account: "
-        + collectionName + "," + accountName)
+        + resource.resourceKey + "," + accountName)
 
     if (r.count == 0) {
-      val a = AccountIndex(userId, collectionName, accountName)
+      val a = AccountIndex(userId, resource.resourceKey, accountName, needsSync = false)
       debug("Creating AccountIndex entry a=" + a)
       AccountIndexDAO.save(a)
     }
@@ -113,16 +115,19 @@ class SyncManager extends Logger {
     }
   }
 
-  def sync(resource:Resource, transformFunction: (UserView,ICAttributes) => Unit, createMissingAccounts:Boolean = true) = {
+  def sync(resource:Resource, transformFunction: (UserView,ICAttributes) => Unit,
+           rule:CorrelationRule,
+           createMissingAccounts:Boolean = true) = {
+
     resource.getFacade.foreachAccount { a: ICAttributes =>
-        var user = resource.rule.correlateUser(a)
+        var user = rule.correlate(a)
         if (user.isEmpty && createMissingAccounts)
           user = resource.rule.createUserFromAccountAttributes(a)
 
         if( user.isDefined) {
            val u = new UserView(user.get)
            transformFunction(u,a)
-           u.flush()
+           u.flush(flushUserObject = true)
         }
         else
           info("Skipped update because no user correlation found. attrs=" + a)

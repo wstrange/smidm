@@ -21,6 +21,16 @@ import com.my2do.idm.mongo.MongoUtil
 import com.mongodb.casbah.Imports._
 import com.my2do.idm.objects._
 import net.liftweb.common.Logger
+
+
+import com.novus.salat._
+import com.novus.salat.global._
+import dao.SalatDAO
+
+
+
+import com.my2do.idm.resource.Resource
+
 /**
  *
  * User: warren
@@ -29,71 +39,21 @@ import net.liftweb.common.Logger
  *
  */
 
-object ResourceDAO extends Logger {
 
-  def getResourceObject(ai: AccountIndex): Option[DBObject] = {
-    val collection = MongoUtil.collectionForResourceKey(ai.resourceKey)
-    val obj:Option[DBObject] = collection.findOne[DBObject](MongoUtil.makeNameAttribute(ai.accountName))
-    normalize(obj)
-    obj
-  }
-
-  private def normalize(c:Option[DBObject]) = {
-    c match {
-      case Some(obj) =>
-        obj.foreach{  a =>
-          a._2 match {
-            case x: BasicDBList =>
-              val l = List[AnyRef]() ++ x
-              debug("replacing db list =" + l)
-              obj.put(a._1,l)
-            case _ => // do nothing
-          }
-        }
-      case None => // do nothing
-    }
-  }
-
-    /**
-     * Insert an account object into a resource collection.
-     *
-     * todo: Should we check for duplciates?
-     *
-     */
-    def insertAccountObject(collection: MongoCollection, dbo: DBObject): Option[String] = {
-      val nameAttr = checkNameAttribute(dbo)
-      val result = collection.insert(dbo)
-      if (result.getError != null) {
-        throw new RuntimeException("Could not insert into collection: error=" + result.getError)
-      }
-      nameAttr
-    }
-
-    def saveResourceObject(resourceKey: String, dbo: DBObject) = {
-      val c = MongoUtil.collectionForResourceKey(resourceKey)
-      val result = c.save(dbo)
-      if (result.getError != null) {
-        throw new RuntimeException("Could not insert into collection: error=" + result.getError)
-      }
-    }
-
-    def checkNameAttribute(dbo: DBObject) = {
-      val nameAttr = dbo.getAs[String](MongoUtil.NAME_ATTRIBUTE_STRING)
-
-      if (nameAttr.isEmpty) {
-        error("Missing manadatory account name attribute for object " + dbo)
-      }
-      nameAttr
-    }
-
-  def remove(resourceKey:String, dbo:DBObject) = {
-    val c = MongoUtil.collectionForResourceKey(resourceKey)
-    val n = MongoUtil.accountName(dbo)
-    c.remove( MongoUtil.makeNameAttribute(n))
-  }
+object ResourceDAO {
+  def apply(resource:Resource) = new ResourceDAO(resource.resourceKey)
+  def apply(resourceKey:String) = new ResourceDAO(resourceKey)
 
 }
 
+
+class ResourceDAO(resource:String) extends SalatDAO[ResourceObject, String] with Logger {
+  val _grater = grater[ResourceObject]
+  val collection = MongoUtil.collectionForResourceKey(resource)
+
+  def findByAccountName(id:String) = findOneByID(id)
+
+}
 
 
 

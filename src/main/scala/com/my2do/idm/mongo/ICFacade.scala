@@ -18,14 +18,13 @@
 package com.my2do.idm.mongo
 
 
-
 import org.identityconnectors.framework.api.ConnectorFacade
 import com.my2do.idm.connector.ConnectorConfig
 import com.my2do.idm.connector.util.ICAttributes
 import com.my2do.idm.connector.util.ConnectorObjectWrapper
-import com.mongodb.casbah.Imports._
 import org.identityconnectors.framework.common.objects._
 import net.liftweb.common.Logger
+import com.my2do.idm.objects.ResourceObject
 
 /**
  *
@@ -40,30 +39,30 @@ import net.liftweb.common.Logger
  *
  */
 
-class ICFacade(val facade: ConnectorFacade, config:ConnectorConfig) extends Logger {
+class ICFacade(val facade: ConnectorFacade, config: ConnectorConfig) extends Logger {
 
 
   /**
    * Iterate over accounts
    */
-  def foreachAccount( f: (ICAttributes) => Unit )= foreachObject(ObjectClass.ACCOUNT,f)
+  def foreachAccount(f: (ICAttributes) => Unit) = foreachObject(ObjectClass.ACCOUNT, f)
 
   /**
    * iterate over groups
    */
-  def foreachGroup( f: (ICAttributes) => Unit )=  foreachObject(ObjectClass.GROUP,f)
+  def foreachGroup(f: (ICAttributes) => Unit) = foreachObject(ObjectClass.GROUP, f)
 
   /**
    * iterate over objects of the given objectclass
    */
 
-  def foreachObject(objectClass:ObjectClass, f: ((ICAttributes) => Unit ))= {
-    facade.search(objectClass,null, new ResultsHandler() {
-        def handle(obj:ConnectorObject) = {
-          f(new ConnectorObjectWrapper(obj,config.schemaForObjectClass(objectClass)))
-          true
-        }
-      }, null)
+  def foreachObject(objectClass: ObjectClass, f: ((ICAttributes) => Unit)) = {
+    facade.search(objectClass, null, new ResultsHandler() {
+      def handle(obj: ConnectorObject) = {
+        f(new ConnectorObjectWrapper(obj, config.schemaForObjectClass(objectClass)))
+        true
+      }
+    }, null)
   }
 
   /**
@@ -98,76 +97,71 @@ class ICFacade(val facade: ConnectorFacade, config:ConnectorConfig) extends Logg
    * Update the object or create if it does not exists.
    *
    */
-  def save(obj:MongoDBObject):Option[String] = {
-    val id = MongoUtil.uid(obj)
-    val attrs = getObj(id)
-    debug("id= " + id )
-    attrs match {
-      case Some(ica:ICAttributes) =>
-        update(obj,ica)
-      case _ =>
-         create(obj)
-    }
 
+  def save(obj: ResourceObject): Option[String] = {
+    val attrs = getObj(obj.uid)
+    attrs match {
+      case Some(ica: ICAttributes) =>
+        update(obj, ica)
+      case _ =>
+        create(obj)
+    }
   }
 
-  def create(obj:MongoDBObject):Option[String] = {
+  def create(obj: ResourceObject): Option[String] = {
     try {
       debug("Create Op")
-      val uid = facade.create(ObjectClass.ACCOUNT, mongoObjToAttrSet(obj), null)
+      val uid = facade.create(ObjectClass.ACCOUNT, resourceObjectToAttrSet(obj), null)
       Some(uid.getUidValue)
     }
     catch {
-      case e:Exception => error("Exception trying to create account " + obj,  e)
-        None
+      case e: Exception => error("Exception trying to create account " + obj, e)
+      None
     }
   }
 
-  def update(obj:MongoDBObject, existingAttrs:ICAttributes):Option[String] = {
+  def update(obj: ResourceObject, existingAttrs: ICAttributes): Option[String] = {
     debug("Update Op")
-    val id = MongoUtil.uid(obj)
-    val u = facade.update(ObjectClass.ACCOUNT, new Uid(id), mongoObjToAttrSet(obj), null)
-    if( u != null && u.getUidValue != null )
+    val u = facade.update(ObjectClass.ACCOUNT, new Uid(obj.uid), resourceObjectToAttrSet(obj), null)
+    if (u != null && u.getUidValue != null)
       Some(u.getUidValue)
     None
   }
 
-  def getObj(id:String):Option[ICAttributes] = {
-    if( id == null )
+  def getObj(id: String): Option[ICAttributes] = {
+    if (id == null)
       return None
     val uid = new Uid(id)
     val obj = facade.getObject(ObjectClass.ACCOUNT, uid, null)
-    if( obj == null )
+    if (obj == null)
       return None
-    Some(new ConnectorObjectWrapper(obj,config.schemaForObjectClass(ObjectClass.ACCOUNT)))
+    Some(new ConnectorObjectWrapper(obj, config.schemaForObjectClass(ObjectClass.ACCOUNT)))
   }
 
-  private def mongoObjToAttrSet(obj:MongoDBObject):java.util.Set[Attribute] = {
+  private def resourceObjectToAttrSet(obj: ResourceObject): java.util.Set[Attribute] = {
     val s = new java.util.HashSet[Attribute]()
-     obj.foreach{ case (name,value) =>
-       if( ! name.equals("_id"))
-        s.add(normalize(name,value))
-     }
+    obj.attributes.foreach {
+      case (name, value) => s.add(normalize(name, value))
+    }
     s
   }
 
-  private def normalize(name:String,v:AnyRef):Attribute = {
+  private def normalize(name: String, v: AnyRef): Attribute = {
     val attr = new AttributeBuilder()
     attr.setName(name)
     v match {
-      case x:Iterable[AnyRef] =>
-        x.foreach( xx => attr.addValue(xx))
+      case x: Iterable[AnyRef] =>
+        x.foreach(xx => attr.addValue(xx))
       case _ => attr.addValue(v)
     }
     attr.build
   }
 
-  def delete(obj:MongoDBObject) = {
+  def delete(obj: ResourceObject) = {
     //val uid = new Uid(entity.accountUid)
     //facade.delete(entity.connectorObjectClass, uid, null)
-    val uid = new Uid( MongoUtil.uid(obj) )
+    val uid = new Uid(obj.uid)
     val r = facade.delete(ObjectClass.ACCOUNT, uid, null)
-
   }
 
 

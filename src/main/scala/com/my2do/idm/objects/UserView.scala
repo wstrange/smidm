@@ -23,7 +23,7 @@ import com.mongodb.casbah.Imports._
 import com.my2do.idm.resource.Resource
 import com.my2do.idm.mongo.MongoUtil
 import net.liftweb.common.Logger
-import com.my2do.idm.dao.{UserDAO, ResourceDAO, AccountIndexDAO}
+import com.my2do.idm.dao.{ResourceDAO, UserDAO, AccountIndexDAO}
 
 /**
  *
@@ -51,8 +51,8 @@ object UserView {
 class UserView(val user:User,
                createMissingAccounts:Boolean = true) extends Logger with UserRoleView {
 
-  // transient map of account objects - keyed by (resource,account?)
-  var accountMap   = new HashMap[AccountIndex,MongoDBObject]
+  // transient map of resource objects - keyed by the account index
+  private var accountMap   = new HashMap[AccountIndex,ResourceObject]
 
   refreshView // on construction we populate the list of resource accounts
 
@@ -63,23 +63,29 @@ class UserView(val user:User,
    *
    */
   def get(resourceKey:String,attribute:String):Option[AnyRef] = {
-    resourceObjectsForResourceKey(resourceKey:String).foreach {
-      case (ai,dbo) =>  val a = dbo.get(attribute)
-            if( a.isDefined ) return a
+    resourceObjectsForResourceKey(resourceKey).foreach { case (ai,ro) =>
+      val a = ro.attributes.get(attribute)
+      if( a.isDefined ) return a
     }
     None
   }
 
+  /**
+   * Get the attribute assoicated with the resource
+   */
   def apply(resource:Resource,attribute:String) = get(resource.resourceKey, attribute).get
 
-  //def apply(resource:Resource,attribute:String):Option[AnyRef] = apply(resource.resourceKey,attribute)
+  /**
+   * Get the user extended attribute.
+   */
+  def apply(attrName:String) = user.attributes(attrName)
 
-  def resourceObjectsForResourceKey(resourceKey:String) = accountMap.filter{ case(ai,dbo) => ai.resourceKey.equals(resourceKey)}
+  def resourceObjectsForResourceKey(resourceKey:String) = accountMap.filter{ case(ai,ro) => ai.resourceKey.equals(resourceKey)}
 
   def update(attribute:String,v:AnyRef):Unit = {
-    accountMap.foreach{ case(ai,dbo) =>
-      if( dbo.containsField(attribute)) {
-        dbo.put(attribute,v)
+    accountMap.foreach{ case(ai,ro) =>
+      if( ro.attributes.keySet.contains(attribute)) {
+        ro.attributes.put(attribute,v)
         ai.isDirty = true
       }
     }
@@ -99,16 +105,13 @@ class UserView(val user:User,
     update(resource.instanceName,attrName,v)
   }
 
-  // todo: Remove
-  private def normalizeAttribute(a:AnyRef):AnyRef = {
-    a match {
-      case l:List[AnyRef] =>  MongoDBList(l)
-      case _  => a
-    }
-  }
 
   def accountIndexIterator =  AccountIndexDAO.findByUserId(user.id)
 
+  /**
+   * Read the User View state from the Mongo Repo
+   *
+   */
   def refreshView = {
     accountMap.clear
     refreshRoleView
@@ -116,24 +119,30 @@ class UserView(val user:User,
     val accountIndexList = AccountIndexDAO.getAccountIndexList(user)
 
     accountIndexList.foreach{ ai =>
-      ResourceDAO.getResourceObject(ai) match {
-        case Some(d:DBObject) =>  accountMap.put(ai,d)
+      ResourceDAO(ai.resourceKey).findOneByID(ai.accountName) match {
+        case Some(ro:ResourceObject) =>  accountMap.put(ai,ro)
         case None => error("Account Index points to non existant resource object. AI=" + ai)
       }
     }
     accountMap
   }
 
-  def hasResourceAccount(resource:Resource) = {
-   accountIndexForResource(resource).size > 0
-  }
+  /**
+   * @return true if the user has the resource linked to their account
+   */
+  def hasResourceAccount(resource:Resource) = accountIndexForResource(resource).size > 0
 
+  /**
+   * @return the list of account indexes associated with this resource. Could be more than one
+   *   if the user has multiple accounts on the same resource
+   */
   def accountIndexForResource(resource:Resource) = {
      accountMap.keys.filter( ai => ai.resourceKey.equals(resource.resourceKey ))
   }
 
   def printAccounts() = {
-    accountMap.foreach{ case (ai,dbo) => println("Account " + ai + " vals=" + dbo)}
+    debug("User=" + user)
+    accountMap.foreach{ case (ai,ro) => debug("\t" + ai); debug("\t" + ro)}
   }
 
   /**
@@ -145,22 +154,20 @@ class UserView(val user:User,
   def ensureHasResource(resource:Resource,directAssignment:Boolean = true) = {
      if (! hasResourceAccount(resource)) {
           // add an ldap account
-          val dbo = resource.rule.newResourceObject(user)
+          val ro = resource.rule.newResourceObject(user)
           //val ai = AccountIndexDAO.addResourceObject(user,resource,dbo)
-          val ai = AccountIndex(Some(user.id),resource.config.instanceKey,MongoUtil.accountName(dbo))
-          accountMap.put(ai,dbo)
+          val ai = AccountIndex(Some(user.id),resource.config.instanceKey,ro.accountName)
+          accountMap.put(ai,ro)
           ai.isDirty = true
           if( directAssignment)
             user.directlyAssignedResources = resource.resourceKey :: user.directlyAssignedResources
-
      }
   }
 
   /**
-   * Remove a directly assigned resource - will trigger deletion of all resoruce accounts for this user!
+   * Remove a directly assigned resource - will trigger deletion of all resource accounts for this user!
    */
   def removeResource(resource:Resource):Unit = {
-
     if( ! user.isResourceDirectlyAssigned(resource)) {
       error("Can't unassign resource as it is not directly assigned. R=" + resource)
       return
@@ -182,19 +189,19 @@ class UserView(val user:User,
 
   /**
    *  flush the view out to MongoDB
-   *  Only the dirty elements are flushed?
+   *  Only the dirty account index elements are flushed
    *
-   *  Note that roles themselves are not managed by this View
+   *
    */
 
   def flush(flushUserObject:Boolean = true) = {
     if( flushUserObject)
       UserDAO.save(user)
 
-    accountMap.foreach{case (ai,dbo) =>
+    accountMap.foreach{case (ai,ro) =>
       if( ai.isDirty)  {
         AccountIndexDAO.save(ai)
-        ResourceDAO.saveResourceObject(ai.resourceKey,dbo)
+        ResourceDAO(ai.resourceKey).save(ro)
       }
     }
   }

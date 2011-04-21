@@ -22,7 +22,7 @@ import com.novus.salat.annotations._
 import com.novus.salat.global._
 import com.mongodb.casbah.Imports._
 import collection.mutable.HashMap
-import com.my2do.idm.dao.{ResourceDAO, AccountIndexDAO}
+import com.my2do.idm.dao.AccountIndexDAO
 import com.my2do.idm.connector.ConnectorConfig
 import com.my2do.idm.mongo.MongoUtil
 import com.my2do.idm.resource.Resource
