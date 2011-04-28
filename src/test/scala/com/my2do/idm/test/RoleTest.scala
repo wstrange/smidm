@@ -33,6 +33,7 @@ import com.my2do.idm.mongo.MongoUtil
 import com.my2do.idm.ComponentRegistry
 import com.my2do.idm.resource.Resource
 import com.my2do.idm.dao.RoleDAO
+import com.my2do.idmsvc.test.TestData
 
 
 class RoleTest extends FunTest {
@@ -45,11 +46,14 @@ class RoleTest extends FunTest {
     val u = User("test1", "Test", "Tester", department = "olddept", employeeId = "99")
 
     val ldap = Resource.ldapTest
-    val ldapkey = ldap.resourceKey
     val e1 = Entitlement(ldap.resourceKey, "departmentNumber", "newdept", AssignmentType.REPLACE)
     val e2 = Entitlement(ldap.resourceKey, "sn", "Added SN", AssignmentType.MERGE)
-    val r1 = Role("TestRole", None, entitlements = List(e1, e2))
+    var r1 = Role("TestRole", "Test", None, entitlements = List(e1, e2))
     RoleDAO.save(r1)
+
+    // read the role back
+    r1 = RoleDAO.findByName("TestRole").get
+
 
     var uv = new UserView(u)
     uv.ensureHasResource(ldap)
@@ -57,17 +61,18 @@ class RoleTest extends FunTest {
     // check view for expected old values (before the role is added)
     var dept = uv(ldap, "departmentNumber")
     var sn1 = uv(ldap, "sn").asInstanceOf[Seq[AnyRef]]
+    debug("Dept = " + dept)
     assert("olddept".equals(dept))
     // add the role
     uv.addRole(r1)
 
-    uv.printAccounts
+    uv.printDebug
     // check that entitlements got set
     dept = uv(ldap, "departmentNumber")
     assert("newdept".equals(dept))
     var sn = uv(ldap, "sn").asInstanceOf[Seq[String]]
     assert(sn.contains("Added SN"))
-    //uv.printAccounts
+    //uv.printDebug
 
     uv.flush() // persist
     // re-reconstruct the view - fetches values from store
@@ -76,8 +81,22 @@ class RoleTest extends FunTest {
     sn = uv(ldap, "sn").asInstanceOf[Seq[String]]
     assert(sn.contains("Added SN"))
 
-    // now remove a role
-    //uv2.
+    uv.removeRole(r1)
+
+    // SN should only contains the original value (Tester)
+    sn =  uv(ldap, "sn").asInstanceOf[Seq[String]]
+    assert( ! sn.contains("Added SN"))
+    assert( sn.contains("Tester"))
+    // departmentNumber attribute removed
+    assert( uv.get(ldap,"departmentNumber").isEmpty)
+    uv.printDebug()
+
+  }
+
+
+  test("Role Assignment Rules") {
+    MongoUtil.dropAndCreateDB
+    TestData.defineRoles
   }
 
 

@@ -21,7 +21,7 @@ import com.my2do.idm.connector.{ConnectorConfig}
 import com.my2do.idm.ComponentRegistry
 import com.my2do.idm.mongo.{MongoUtil, ICFacade}
 import config.{LDAP_Test, FlatFile_TestFile1}
-import com.my2do.idm.rules.{LDAPRules, FFRules, AccountRules}
+import com.my2do.idm.rules.{LDAPRule, FFRule, AccountRule}
 
 /**
  * 
@@ -34,11 +34,11 @@ import com.my2do.idm.rules.{LDAPRules, FFRules, AccountRules}
 object Resource {
 
   val resourceList:List[Resource] = List(
-    new Resource("flatfile1", FlatFile_TestFile1, FFRules,"ff1"),
-    new Resource("LDAPProd", LDAP_Test, LDAPRules,"ldap1"))
+    new Resource("flatfile1", FlatFile_TestFile1, FFRule,"ff1"),
+    new Resource("LDAPProd", LDAP_Test, LDAPRule,"ldap1"))
 
-  val flatfile1 = new Resource("flatfile1", FlatFile_TestFile1, FFRules,"ff1")
-  val ldapTest = new Resource("LDAPProd", LDAP_Test, LDAPRules,"ldap1")
+  val flatfile1 = new Resource("flatfile1", FlatFile_TestFile1, FFRule,"ff1")
+  val ldapTest = new Resource("LDAPProd", LDAP_Test, LDAPRule,"ldap1")
 
   def getResourceByInstanceKey(key:String) = Resource.resourceList.find{ r =>
     println("r=" + r)
@@ -47,7 +47,7 @@ object Resource {
 
 }
 
-class Resource(val instanceName:String, val config:ConnectorConfig,val rule:AccountRules, id:String ) {
+class Resource(val instanceName:String, val config:ConnectorConfig,val rule:AccountRule, id:String ) {
 
   private val facade =  ComponentRegistry.connectorManager.getFacade(config)
   private val icfacade = new ICFacade(facade,config)

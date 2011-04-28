@@ -46,6 +46,8 @@ case class Entitlement(resourceKey: String,
 
   /**
    * Apply this entitlement to the resource object
+   *
+   * todo: Should we always assume MERGE entitlesments will be lists?
    */
   def assign(ro:ResourceObject) = {
     assignmentType match {
@@ -60,6 +62,24 @@ case class Entitlement(resourceKey: String,
             list = list.+:(attrVal)
           ro.put(attribute,list  )
 
+    }
+  }
+
+  /**
+   * Unassign this entitlement
+   */
+  def unassign(ro:ResourceObject) = {
+     assignmentType match {
+      case REPLACE => ro.remove(attribute)
+      case MERGE =>  var list = ro.get(attribute).asInstanceOf[Seq[AnyRef]]
+          // todo: change to seq?
+          if( attrVal.isInstanceOf[Seq[AnyRef]]) {
+            val l2 = attrVal.asInstanceOf[Seq[AnyRef]]
+            list =  l2.filterNot( l2 contains)
+          }
+          else
+            list = list.filterNot(_ == attrVal)
+          ro.put(attribute,list  )
     }
   }
 }

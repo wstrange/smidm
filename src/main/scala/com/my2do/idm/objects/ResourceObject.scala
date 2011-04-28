@@ -40,7 +40,9 @@ case class ResourceObject(@Key("_id") accountName: String,
                           objectClass: String,
                           uid: String,   // The
                           var attributes: Map[String, AnyRef],
-                           var groups: List[String] = Nil){
+                          var groups: Option[List[String]] = None){
+  var isDirty:Boolean = false
+
   // After construction
   normalizeAttributes()
 
@@ -73,9 +75,14 @@ case class ResourceObject(@Key("_id") accountName: String,
    * @param attrName - Attribute Name (e.g. employeeNumber, etc..)
    * @param v - attribute value
    */
-  def put(attrName: String, v: AnyRef) = attributes = attributes + (attrName -> v)
+  def put(attrName: String, v: AnyRef) =  {
+    attributes = attributes + (attrName -> v)
+    isDirty = true
+  }
 
   def get(attrName: String) = attributes(attrName)
+
+  def remove(attrName:String) = attributes = (attributes - attrName)
 
   /**
    * Syntactic sugar

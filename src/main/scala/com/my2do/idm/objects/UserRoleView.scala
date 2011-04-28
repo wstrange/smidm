@@ -42,7 +42,11 @@ trait UserRoleView extends Logger {  this: UserView =>
      user.roleIdList.foreach( id => roleMap.put(id, RoleDAO.findOneByID(id).get))
   }
 
-  def addRole(role:Role) = {
+
+  def addRole(role:Role):Unit = {
+    if( hasRole(role))
+      return
+
     val resourceKeys = role.assignedResourceKeys
 
     debug("User obj=" + user)
@@ -53,24 +57,42 @@ trait UserRoleView extends Logger {  this: UserView =>
         // todo: Need to fix this - because the role assignmnet needs to record which role caused the assignment?
       }
       else {
-        user.roleAssignedResources = key :: user.roleAssignedResources
+        user = user.copy(roleAssignedResources = key :: user.roleAssignedResources )
         debug("Adding resource key=" + key)
         val resource = Resource.getResourceByInstanceKey(key).get
         ensureHasResource(resource,false)
-        user.roleAssignedResources = resource.resourceKey :: user.roleAssignedResources
+        user = user.copy(roleAssignedResources = (resource.resourceKey :: user.roleAssignedResources) )
       }
     }
     applyEntitlements(role)
     roleMap.put(role.id,role)
-    user.roleIdList = (role.id :: user.roleIdList).distinct
+    user = user.copy(roleIdList = (role.id :: user.roleIdList).distinct  )
   }
 
-  def applyEntitlements(role:Role) = {
+  def removeRole(r:Role) = {
+    unassignEntitlements(r)
+  }
+
+  def hasRole(r:Role) = user.roleIdList.contains(r.id)
+
+  private def applyEntitlements(role:Role) = {
     role.entitlements.foreach{ e =>
       resourceObjectsForResourceKey(e.resourceKey).foreach{ case(ai,ro) =>
         e.assign(ro)
       }
     }
+  }
+
+  private def unassignEntitlements(role:Role) = {
+    role.entitlements.foreach{ e =>
+       resourceObjectsForResourceKey(e.resourceKey).foreach{ case(ai,ro) =>
+        e.unassign(ro)
+       }
+    }
+  }
+
+  def assignedRolesByCategory(category:String):List[Role] = {
+    roleMap.values.filter( _.category.equals(category)).toList
   }
 
 }

@@ -35,6 +35,7 @@ object Role {
 }
 
 case class Role(name: String,
+                category:String,
                 var parentId: Option[ObjectId] = None,
                 var childRoles: List[ObjectId] = Nil,
                 var entitlements: List[Entitlement] = Nil,

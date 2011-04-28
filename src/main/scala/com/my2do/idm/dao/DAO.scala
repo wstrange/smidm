@@ -48,9 +48,3 @@ object UserDAO extends SalatDAO[User, ObjectId] with Logger {
 }
 
 
-object RoleDAO extends SalatDAO[Role,ObjectId] {
-  val _grater = grater[Role]
-  val collection = MongoUtil.roleCollection
-
-
-}

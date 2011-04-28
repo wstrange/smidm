@@ -29,7 +29,7 @@ import com.my2do.idm.objects.{ResourceObject, User}
  *
  */
 
-object FFRules extends AccountRules {
+object FFRule extends AccountRule {
 
 
   override def createUserFromAccountAttributes(a: ICAttributes): Option[User] = {

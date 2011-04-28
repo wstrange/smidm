@@ -48,7 +48,7 @@ object UserView {
   }
 }
 
-class UserView(val user:User,
+class UserView(var user:User,
                createMissingAccounts:Boolean = true) extends Logger with UserRoleView {
 
   // transient map of resource objects - keyed by the account index
@@ -70,6 +70,8 @@ class UserView(val user:User,
     None
   }
 
+  def get(r:Resource,attribute:String):Option[AnyRef] = get(r.resourceKey,attribute)
+
   /**
    * Get the attribute assoicated with the resource
    */
@@ -78,10 +80,9 @@ class UserView(val user:User,
   /**
    * Get the user extended attribute.
    */
-  def apply(attrName:String) = user.attributes(attrName)
+  def apply(attrName:String) = user.attributes.get(attrName)
 
-  def resourceObjectsForResourceKey(resourceKey:String) = accountMap.filter{ case(ai,ro) => ai.resourceKey.equals(resourceKey)}
-
+ /*
   def update(attribute:String,v:AnyRef):Unit = {
     accountMap.foreach{ case(ai,ro) =>
       if( ro.attributes.keySet.contains(attribute)) {
@@ -89,6 +90,11 @@ class UserView(val user:User,
         ai.isDirty = true
       }
     }
+  }
+  */
+
+  def update(expression:String,v:AnyRef):Unit = {
+    // use reflection to update values
   }
 
   def update(resourceString:String, attrName:String, v:AnyRef):Unit = {
@@ -105,6 +111,13 @@ class UserView(val user:User,
     update(resource.instanceName,attrName,v)
   }
 
+  def resourceObjectsForResourceKey(resourceKey:String) = accountMap.filter{ case(ai,ro) => ai.resourceKey.equals(resourceKey)}
+
+
+  def getResourceObjects(resource:Resource) = {
+      val ro = resourceObjectsForResourceKey(resource.resourceKey)
+      ro.values.toIndexedSeq
+  }
 
   def accountIndexIterator =  AccountIndexDAO.findByUserId(user.id)
 
@@ -140,7 +153,7 @@ class UserView(val user:User,
      accountMap.keys.filter( ai => ai.resourceKey.equals(resource.resourceKey ))
   }
 
-  def printAccounts() = {
+  def printDebug() = {
     debug("User=" + user)
     accountMap.foreach{ case (ai,ro) => debug("\t" + ai); debug("\t" + ro)}
   }
@@ -160,7 +173,7 @@ class UserView(val user:User,
           accountMap.put(ai,ro)
           ai.isDirty = true
           if( directAssignment)
-            user.directlyAssignedResources = resource.resourceKey :: user.directlyAssignedResources
+            user = user.copy( directlyAssignedResources = (resource.resourceKey :: user.directlyAssignedResources))
      }
   }
 
@@ -174,7 +187,7 @@ class UserView(val user:User,
     }
     if( user.isResourceRoleAssigned(resource)) {
       info("Resource will be unassigned - but account cant be deleted as it assigned through a role")
-      user.unassignResource(resource)
+      unassignResource(resource)
       return
     }
 
@@ -184,13 +197,16 @@ class UserView(val user:User,
       ai.needsSync = true
       ai.isDirty = true
     }
-    user.unassignResource(resource)
+    unassignResource(resource)
+  }
+
+  private def unassignResource(r:Resource) = {
+    user = user.copy( directlyAssignedResources = user.directlyAssignedResources.filterNot( x => x.equals(r.resourceKey)))
   }
 
   /**
    *  flush the view out to MongoDB
-   *  Only the dirty account index elements are flushed
-   *
+   *  Only the dirty account index elements and resource objects are flushed
    *
    */
 
@@ -199,7 +215,12 @@ class UserView(val user:User,
       UserDAO.save(user)
 
     accountMap.foreach{case (ai,ro) =>
-      if( ai.isDirty)  {
+      // if the linked resource object is dirty flag it for recon
+      if( ro.isDirty)  {
+        ai.needsSync = true
+        ai.isDirty = true
+      }
+      if( ai.isDirty )  {
         AccountIndexDAO.save(ai)
         ResourceDAO(ai.resourceKey).save(ro)
       }

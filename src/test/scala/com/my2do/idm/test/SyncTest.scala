@@ -27,7 +27,6 @@ package com.my2do.idm.test
 
 import com.my2do.idm.objects._
 
-import com.my2do.idm.sync.SyncManager
 import com.my2do.idm.connector.util._
 import com.my2do.idm.mongo.MongoUtil
 
@@ -35,13 +34,20 @@ import com.my2do.idm.dao.UserDAO
 import com.my2do.idm.ComponentRegistry
 import com.my2do.idm.resource.Resource
 import com.my2do.idm.rules.{correlateByLDAPUid, correlateByAccountName}
+import com.my2do.idmsvc.test.TestData
+import com.my2do.idm.sync.{ReconManager, SyncManager}
 
 class SyncTest extends FunTest {
 
   val syncManager: SyncManager = ComponentRegistry.syncManager
 
+
+
+
   test("Load from Resource") {
     MongoUtil.dropAndCreateDB
+
+
     // Create a test user to correlate against
     val u = User("test1", "Test", "Tester", employeeId = "99")
     UserDAO.save(u)
@@ -53,7 +59,7 @@ class SyncTest extends FunTest {
     //assert(count > 50)
     // run a second time
     //syncManager.loadFromResource(LDAP_Prod, LDAPCorrelator, createUserIfMissing = true)
-    // todo: What do we test?
+    // todo: What do we want to test?
   }
 
 
@@ -62,36 +68,64 @@ class SyncTest extends FunTest {
    */
   test("Sync from Flat File") {
     MongoUtil.dropAndCreateDB
+    TestData.defineRoles
+
+
+
 
     val flatfile = Resource.flatfile1
     val ldapResource = Resource.ldapTest
 
-    // create a closure to perform the sync transformations
+
+    // load any old users in ldap - this will
+    var count = syncManager.loadFromResource(ldapResource, correlateByLDAPUid, createUserIfMissing = true)
+
+
+    // create a transform closure to perform the sync transformations
     // this is where you implement your sync logic to decide which attribute goes where
-    val f = {
+    val transform = {
       (u: UserView, a: ICAttributes) =>
       // update user attributes
-        u.user.department = a("department").asInstanceOf[String]
-        u.user.email = a("email").asInstanceOf[String]
-        u("test") = u.user.email
-        u.user.managerId = a("managerId").asInstanceOf[String]
-        // set the LDAP employeeNumber according to some funky calculation..
-        u(ldapResource, "employeeNumber") = "C" + u.user.department
+        u.user("department") = a("department")
+        u.user("email") = a("email")
+        u.user("managerId") = a("managerId")
+        // test setting an extended attribute
+        u.user("attribute.attr1") = 1.asInstanceOf[AnyRef]
 
-        debug("Roles =" + a("roles"))
+        u.ensureHasResource(ldapResource)
+        // set the LDAP employeeNumber according to some funky calculation..
+        // assumes the user has an ldap account
+        // if the createMissingAccounts flag is set on the sync process the account will get created
+        //u(ldapResource, "employeeNumber") = "C" + u.user.department
+        val ldapAccount = u.getResourceObjects(ldapResource)(0)
+        ldapAccount("employeeNumber") = "C" + u.user.employeeId
+
 
         // test some extended attributes
-
-        u.user.attributes = Map("attr1" -> "foo", "attr2" -> 1.asInstanceOf[AnyRef])
+        u.user.attributes.put("attr2", "foo")
 
         // should have the ldap account assigned
         assert(u.user.isResourceDirectlyAssigned(ldapResource))
-        u.printAccounts
+        u.printDebug
     }
-    syncManager.sync(flatfile, f, correlateByAccountName, createMissingAccounts = true) // trigger creation of any uncorrelated accounts
+
+
+    syncManager.sync(flatfile, transform, correlateByAccountName, RuleDefinitions.DeptAssignment, createMissingAccounts = true) // trigger creation of any uncorrelated accounts
 
     val u = UserDAO.findByAccountName("test1")
     debug("Got back a user=" + u.get)
+    val uv2 = new UserView(u.get)
+    uv2.printDebug()
+
+    // check to see if the user got put in the Marketing Group as a result of the Role Assignment
+    //val g = uv2(ldapResource,"groups").asInstanceOf[Seq[String]]
+    //assert( g.contains(TestData.marketingGroupEntitlement.attrVal))
+
+    // run the recon manager to flush out changes
+
+    new ReconManager().recon(ldapResource)
+
+
 
   }
 }

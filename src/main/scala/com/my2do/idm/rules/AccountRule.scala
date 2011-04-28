@@ -36,13 +36,13 @@ import com.my2do.idm.objects.{ResourceObject, User}
  * 
  */
 
-trait AccountRules extends Logger {
+trait AccountRule extends Logger {
 
 
   /**
    * Given a set of account attributes - create the base account.
    * The default is to create the account using the account name
-   * This shouild be overridden in Config
+   * This should be overridden in Config
    *
    * @return an Option[User] or None if the user can not be created
    */

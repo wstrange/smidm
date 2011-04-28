@@ -1,3 +1,4 @@
 accountName,firstName,lastName,email,department,employeeId,managerId,roles
-test1,Fred,Flinstone,fred@foo.com,sales,9000,9001,peon|employee
-test2,Wilma,Flinstone,wilma@foo.com,marketing,9001,0,manager|employee
+test1,Fred,Flinstone,fred@foo.com,marketing,9000,9001,peon|employee
+test2,Wilma,Flinstone,wilma@foo.com,sales,9001,0,manager|employee
+test3,Barney,Rubble,barney@foo.com,engineering,9002,9000,manager|employee

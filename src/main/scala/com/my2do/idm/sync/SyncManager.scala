@@ -17,19 +17,13 @@
 
 package com.my2do.idm.sync
 
-import javax.inject.Inject
-
 import com.my2do.idm.objects._
 import net.liftweb.common.Logger
 import com.my2do.idm.connector.util.ICAttributes
 import scala._
-import com.my2do.idm.mongo.{MongoUtil}
-
-
-import com.mongodb.casbah.Imports._
 import com.my2do.idm.resource.Resource
 import com.my2do.idm.dao.{ResourceDAO, UserDAO, AccountIndexDAO}
-import com.my2do.idm.rules.CorrelationRule
+import com.my2do.idm.rules.{RoleAssignmentRule, CorrelationRule}
 
 /**
  *
@@ -44,10 +38,10 @@ class SyncManager extends Logger {
   type SyncFunc = (User, ICAttributes) => Unit
 
 
-  def loadFromResource(resource:Resource, rule:CorrelationRule, createUserIfMissing: Boolean = false): Int = {
+  def loadFromResource(resource: Resource, rule: CorrelationRule, createUserIfMissing: Boolean = false): Int = {
     var count = 0
 
-    val icf =resource.getFacade
+    val icf = resource.getFacade
 
     val collection = resource.mongoCollection
 
@@ -59,10 +53,10 @@ class SyncManager extends Logger {
 
 
         rdao.findByAccountName(name) match {
-          case Some(x:ResourceObject) =>
+          case Some(x: ResourceObject) =>
             info("Account exists - it will not be reloaded. account=" + name)
-          case _ =>   // does not exist - create a new entry
-            val o = ResourceObject(name,"__ACCOUNT__", a.getUuid, attributes = a.attributeMap)
+          case _ => // does not exist - create a new entry
+            val o = ResourceObject(name, "__ACCOUNT__", a.getUuid, attributes = a.attributeMap)
             debug("Saving resource object  =" + o)
             rdao.save(o)
             count += 1
@@ -74,11 +68,14 @@ class SyncManager extends Logger {
         if (user == None && createUserIfMissing) {
           user = resource.rule.createUserFromAccountAttributes(a)
           user match {
-            case Some(u: User) => val r = UserDAO.save(u)
-            if (!r.ok) {
-              error("Error trying to save user:" + r.getErrorMessage)
-              user = None
-            }
+            case Some(u: User) =>
+              u.directlyAssignedResources  = resource.resourceKey :: u.directlyAssignedResources
+              info("Creating user from resource account. User=" + u)
+              val r = UserDAO.save(u)
+              if (!r.ok) {
+                error("Error trying to save user:" + r.getErrorMessage)
+                user = None
+              }
             case None => error("Could not create user from account. attrs=" + a)
           }
         }
@@ -115,19 +112,23 @@ class SyncManager extends Logger {
     }
   }
 
-  def sync(resource:Resource, transformFunction: (UserView,ICAttributes) => Unit,
-           rule:CorrelationRule,
-           createMissingAccounts:Boolean = true) = {
+  def sync(resource: Resource, transformFunction: (UserView, ICAttributes) => Unit,
+           correlationRule: CorrelationRule,
+           roleAssignmentRule: RoleAssignmentRule,
+           createMissingAccounts: Boolean = true) = {
 
-    resource.getFacade.foreachAccount { a: ICAttributes =>
-        var user = rule.correlate(a)
+    resource.getFacade.foreachAccount {
+      a: ICAttributes =>
+        var user = correlationRule.correlate(a)
         if (user.isEmpty && createMissingAccounts)
           user = resource.rule.createUserFromAccountAttributes(a)
 
-        if( user.isDefined) {
-           val u = new UserView(user.get)
-           transformFunction(u,a)
-           u.flush(flushUserObject = true)
+        if (user.isDefined) {
+          val u = new UserView(user.get)
+          transformFunction(u, a)
+          val (rolesToAdd, rolesToRemove) = roleAssignmentRule.evaluateRoles(u, a.attributeMap)
+          debug("Roles to add=" + rolesToAdd + " Roles to remove =" + rolesToRemove)
+          u.flush()
         }
         else
           info("Skipped update because no user correlation found. attrs=" + a)

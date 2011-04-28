@@ -110,8 +110,10 @@ class ICFacade(val facade: ConnectorFacade, config: ConnectorConfig) extends Log
 
   def create(obj: ResourceObject): Option[String] = {
     try {
-      debug("Create Op")
-      val uid = facade.create(ObjectClass.ACCOUNT, resourceObjectToAttrSet(obj), null)
+      val attrs =  resourceObjectToAttrSet(obj)
+      attrs.add( normalize(Name.NAME,obj.accountName))
+      debug("Create Op name=" + obj.accountName + "\n\t\tvalues=" + attrs)
+      val uid = facade.create(ObjectClass.ACCOUNT,attrs , null)
       Some(uid.getUidValue)
     }
     catch {
@@ -121,8 +123,11 @@ class ICFacade(val facade: ConnectorFacade, config: ConnectorConfig) extends Log
   }
 
   def update(obj: ResourceObject, existingAttrs: ICAttributes): Option[String] = {
-    debug("Update Op")
-    val u = facade.update(ObjectClass.ACCOUNT, new Uid(obj.uid), resourceObjectToAttrSet(obj), null)
+    val attrs =  resourceObjectToAttrSet(obj, existingAttrs.attributeMap)
+
+    debug("Update Op name=" + obj.accountName + "\n\t\tAttrs=" + attrs)
+    val u = facade.update(ObjectClass.ACCOUNT, new Uid(obj.uid), attrs, null)
+
     if (u != null && u.getUidValue != null)
       Some(u.getUidValue)
     None
@@ -138,13 +143,25 @@ class ICFacade(val facade: ConnectorFacade, config: ConnectorConfig) extends Log
     Some(new ConnectorObjectWrapper(obj, config.schemaForObjectClass(ObjectClass.ACCOUNT)))
   }
 
-  private def resourceObjectToAttrSet(obj: ResourceObject): java.util.Set[Attribute] = {
+  private def resourceObjectToAttrSet(obj: ResourceObject, existingAttributes:Map[String,AnyRef] = Map()): java.util.Set[Attribute] = {
     val s = new java.util.HashSet[Attribute]()
     obj.attributes.foreach {
-      case (name, value) => s.add(normalize(name, value))
+      case (name, value) =>
+        // must skip special attributes
+        if( ! isSpecial(name)) {
+          // optimization:
+          // if the attribute already exists and the value is unchanged - skip it
+          // todo: This dooes not work on Multi-valued attributes cuz equals will not work
+          val a = existingAttributes.get(name)
+          if( ! (a.isDefined  && a.get.equals(value)))
+            s.add(normalize(name, value))
+        }
     }
+    //s.add(normalize(Name.NAME, obj.accountName))
     s
   }
+
+  private def isSpecial(name:String) =  (name.equals(Uid.NAME) || name.equals(Name.NAME))
 
   private def normalize(name: String, v: AnyRef): Attribute = {
     val attr = new AttributeBuilder()

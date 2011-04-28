@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 - Warren Strange
+ * Copyright (c) 2011 Warren Strange
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,30 +15,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.my2do.idmsvc.test
+package com.my2do.idm.dao
 
+import com.my2do.idm.mongo.MongoUtil
+import com.mongodb.casbah.Imports._
+import com.novus.salat._
+import com.novus.salat.global._
+import dao.SalatDAO
 import com.my2do.idm.objects._
+import collection.mutable.ListBuffer
+import net.liftweb.common.Logger
+import com.my2do.idm.resource.Resource
+import net.liftweb.common.Logger
 
 /**
- * 
+ *
  * User: warren
- * Date: 3/24/11
- * Time: 2:46 PM
- * 
+ * Date: 4/2/11
+ * Time: 4:20 PM
+ *
  */
 
-object DataGenerator  {
+object RoleDAO extends SalatDAO[Role,ObjectId] {
+  val _grater = grater[Role]
+  val collection = MongoUtil.roleCollection
 
-  /*
-  def createSampleUser(name:String, firstName:String = "First", lastName:String = "last") = {
-    val u = new User()
-    u.accountName = name
-    u.firstName = firstName
-    u.lastName = lastName
-
-
-    u
-  }
-
-  */
+  def findByName(name:String):Option[Role]  = findOne(Map("name" -> name))
+  def findByCategory(category:String) = find(Map("category" -> category))
 }
+
+

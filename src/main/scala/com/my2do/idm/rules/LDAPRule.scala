@@ -29,7 +29,7 @@ import com.my2do.idm.objects.{ResourceObject, User}
  *
  */
 
-object LDAPRules extends AccountRules {
+object LDAPRule extends AccountRule {
 
   override def createUserFromAccountAttributes(a: ICAttributes): Option[User] = {
     val accountName = a.firstValueAsString("uid")

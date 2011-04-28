@@ -63,10 +63,10 @@ class MongoTest extends FunTest {
 
   test("Role DAO") {
     MongoUtil.dropAndCreateDB
-    val p = Role("parent")
+    val p = Role("parent","testCategory")
 
-    val itrole = Role("itrole1", Some(p.id))
-    val itrole2 = Role("ITRole2", Some(p.id))
+    val itrole = Role("itrole1", "testCategory", Some(p.id))
+    val itrole2 = Role("ITRole2", "testCategory", Some(p.id))
     p.childRoles = List(itrole.id,itrole2.id)
 
     val e1 = Entitlement("ldap","groups","cn=foo,bar=bah", AssignmentType.MERGE)
