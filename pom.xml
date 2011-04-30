@@ -23,6 +23,40 @@
             <id>forgerock</id>
             <url>http://repo.forgerock.org</url>
         </repository>
+
+         <repository>
+            <id>scala-tools</id>
+            <url>http://scala-tools.org/repo-releases/</url>
+        </repository>
+        <repository>
+            <id>scala-tools-snaps</id>
+
+            <url>http://scala-tools.org/repo-snapshots/</url>
+        </repository>
+
+        <!--
+       <repository>
+            <id>Novus Release Repository</id>
+            <url>http://repo.novus.com/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        -->
+        <repository>
+            <id>Novus Scala Tools Snapshot Repository</id>
+            <url>http://repo.novus.com/snapshots/</url>
+            <releases>
+
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <dependencies>

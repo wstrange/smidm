@@ -25,6 +25,7 @@ object LDAP_Test extends LdapConnectorDefaultConfig {
   override val instanceKey = "ldapProd_apr11"
   //override val host = "localhost"
   override val principal = "cn=Directory Manager"
+  override val port = 1389
   override val credentials:GuardedString = new GuardedString("password".toCharArray)
   override val baseContexts = Array("dc=example,dc=com")
 }
