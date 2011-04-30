@@ -83,7 +83,9 @@ class SyncTest extends FunTest {
 
     // create a transform closure to perform the sync transformations
     // this is where you implement your sync logic to decide which attribute goes where
+
     val transform = {
+      // userview is the runtime view of the user, ICAttributes are the incoming attributes to sync
       (u: UserView, a: ICAttributes) =>
       // update user attributes
         u.user("department") = a("department")
