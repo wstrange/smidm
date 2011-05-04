@@ -15,20 +15,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package config
+package com.my2do.idm.dao
 
-import org.identityconnectors.common.security.GuardedString
+import com.my2do.idm.mongo.MongoUtil
+import com.mongodb.casbah.Imports._
+import com.novus.salat._
+import com.novus.salat.global._
+import dao.SalatDAO
+import com.my2do.idm.objects._
+import net.liftweb.common.Logger
+
+/**
+ *
+ * User: warren
+ * Date: 4/2/11
+ * Time: 4:20 PM
+ *
+ */
+
+object UserDAO extends SalatDAO[User, ObjectId] with Logger {
+  val _grater = grater[User]
+  val collection = MongoUtil.userCollection
+
+  def findByEmployeeId(id: String): Option[User] = this.findOne(MongoDBObject("employeeId" -> id))
+
+  def findByAccountName(name: String): Option[User] = this.findOne(MongoDBObject("accountName" -> name))
 
 
-object LDAP_Test extends LdapConnectorDefaultConfig {
-
-  override val instanceKey = "ldapProd_apr11"
-  //override val host = "localhost"
-  override val principal = "cn=Directory Manager"
-  override val port = 1389
-  override val credentials:GuardedString = new GuardedString("password".toCharArray)
-  override val baseContexts = Array("dc=example,dc=com")
-
-  override val groupAttribute = this.groupMemberAttribute
 }
+
 

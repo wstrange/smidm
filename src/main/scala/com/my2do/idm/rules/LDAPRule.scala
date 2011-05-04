@@ -20,6 +20,7 @@ package com.my2do.idm.rules
 import com.my2do.idm.dao.UserDAO
 import com.my2do.idm.connector.util.ICAttributes
 import com.my2do.idm.objects.{ResourceObject, User}
+import net.liftweb.common.Logger
 
 /**
  *
@@ -29,7 +30,7 @@ import com.my2do.idm.objects.{ResourceObject, User}
  *
  */
 
-object LDAPRule extends AccountRule {
+object LDAPRule extends AccountRule with Logger {
 
   override def createUserFromAccountAttributes(a: ICAttributes): Option[User] = {
     val accountName = a.firstValueAsString("uid")
@@ -41,7 +42,7 @@ object LDAPRule extends AccountRule {
     // check for unique empId?
     val existingU = UserDAO.findByEmployeeId(empId)
     if (existingU != None) {
-      error("An exisiting user exists with thesame employee id!. id=" + empId)
+      error("An exisiting user exists with the same employee id!. id=" + empId)
       return None
     }
     Some(User(accountName, givenName, lastName, empId))
@@ -61,8 +62,7 @@ object LDAPRule extends AccountRule {
 
     val name = "uid=" + u.accountName + ",ou=People,dc=example,dc=com"
 
-    // todo: Fix the __ACCOUNT__ hardwired....
-    ResourceObject(name, "__ACCOUNT__", u.accountName, attrs)
+    ResourceObject(name, u.accountName, attrs)
   }
 
 }

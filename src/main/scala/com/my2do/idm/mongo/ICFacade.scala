@@ -48,7 +48,7 @@ class ICFacade(val facade: ConnectorFacade, config: ConnectorConfig) extends Log
   def foreachAccount(f: (ICAttributes) => Unit) = foreachObject(ObjectClass.ACCOUNT, f)
 
   /**
-   * iterate over groups
+   * iterate over member
    */
   def foreachGroup(f: (ICAttributes) => Unit) = foreachObject(ObjectClass.GROUP, f)
 
@@ -151,7 +151,7 @@ class ICFacade(val facade: ConnectorFacade, config: ConnectorConfig) extends Log
         if( ! isSpecial(name)) {
           // optimization:
           // if the attribute already exists and the value is unchanged - skip it
-          // todo: This dooes not work on Multi-valued attributes cuz equals will not work
+          // todo: This does not work on Multi-valued attributes cuz equals will not work
           val a = existingAttributes.get(name)
           if( ! (a.isDefined  && a.get.equals(value)))
             s.add(normalize(name, value))

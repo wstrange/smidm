@@ -25,14 +25,13 @@ package com.my2do.idm.test
  *
  */
 
-import com.my2do.idm.objects._
-
 import com.my2do.idm.mongo.MongoUtil
 
 import com.my2do.idm.dao.UserDAO
 import com.my2do.idm.ComponentRegistry
 import com.my2do.idm.resource.Resource
 import com.my2do.idm.sync.{ReconManager, SyncManager}
+import com.my2do.idm.objects._
 
 class ReconTest extends FunTest {
   val reconManager = new ReconManager()
@@ -50,7 +49,7 @@ class ReconTest extends FunTest {
     // run the recon manager
     // this will trigger sync out to the real resource
     // check the ldap logs to see the create
-    val count = reconManager.recon(resource)
+    val count = reconManager.recon(resource, ObjectClass.account)
     uv.refreshView
 
     assert(count == 1) // how many accounts were reconed
@@ -61,6 +60,15 @@ class ReconTest extends FunTest {
     uv.flush()
 
     // run recon manager again - will trigger delete of the account
-    reconManager.recon(resource)
+    reconManager.recon(resource, ObjectClass.account)
   }
+
+
+  /*
+  test("Recon Group Test") {
+    MongoUtil.dropAndCreateDB  // for testing create a fresh repo
+    //reconManager.recon(resource,ObjectClass.GROUP_NAME)
+
+  }
+  */
 }

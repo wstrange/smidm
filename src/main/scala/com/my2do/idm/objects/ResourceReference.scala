@@ -35,6 +35,9 @@ object ResourceReference {
   val flatFile1 = ResourceReference("flatfile", Resource.flatfile1.instanceName)
 }
 
+/**
+ * To do: Use this to store resource config?
+ */
 case class ResourceReference(resourceName:String, instanceKey:String,@Key("_id") id: ObjectId = new ObjectId()) {
   val resource = Resource.getResourceByInstanceKey(instanceKey)
 }

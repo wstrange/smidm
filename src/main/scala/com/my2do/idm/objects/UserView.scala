@@ -23,7 +23,7 @@ import com.mongodb.casbah.Imports._
 import com.my2do.idm.resource.Resource
 import com.my2do.idm.mongo.MongoUtil
 import net.liftweb.common.Logger
-import com.my2do.idm.dao.{ResourceDAO, UserDAO, AccountIndexDAO}
+import com.my2do.idm.dao.{ResourceDAO, UserDAO, SyncIndexDAO}
 
 /**
  *
@@ -52,7 +52,7 @@ class UserView(var user:User,
                createMissingAccounts:Boolean = true) extends Logger with UserRoleView {
 
   // transient map of resource objects - keyed by the account index
-  private var accountMap   = new HashMap[AccountIndex,ResourceObject]
+  private var accountMap   = new HashMap[SyncIndex,ResourceObject]
 
   refreshView // on construction we populate the list of resource accounts
 
@@ -119,7 +119,7 @@ class UserView(var user:User,
       ro.values.toIndexedSeq
   }
 
-  def accountIndexIterator =  AccountIndexDAO.findByUserId(user.id)
+  def accountIndexIterator =  SyncIndexDAO.findByOwnerId(user.id)
 
   /**
    * Read the User View state from the Mongo Repo
@@ -129,12 +129,13 @@ class UserView(var user:User,
     accountMap.clear
     refreshRoleView
 
-    val accountIndexList = AccountIndexDAO.getAccountIndexList(user)
+    val accountIndexList = SyncIndexDAO.getSyncIndexList(user)
 
     accountIndexList.foreach{ ai =>
-      ResourceDAO(ai.resourceKey).findOneByID(ai.accountName) match {
+
+     ai.getResourceObject match {
         case Some(ro:ResourceObject) =>  accountMap.put(ai,ro)
-        case None => error("Account Index points to non existant resource object. AI=" + ai)
+        case None => error("Sync Index points to non existant resource object. AI=" + ai)
       }
     }
     accountMap
@@ -168,8 +169,8 @@ class UserView(var user:User,
      if (! hasResourceAccount(resource)) {
           // add an ldap account
           val ro = resource.rule.newResourceObject(user)
-          //val ai = AccountIndexDAO.addResourceObject(user,resource,dbo)
-          val ai = AccountIndex(Some(user.id),resource.config.instanceKey,ro.accountName)
+          //val ai = SyncIndexDAO.addResourceObject(user,resource,dbo)
+          val ai = SyncIndex(Some(user.id),resource.config.instanceKey,ro.accountName)
           accountMap.put(ai,ro)
           ai.isDirty = true
           if( directAssignment)
@@ -221,7 +222,7 @@ class UserView(var user:User,
         ai.isDirty = true
       }
       if( ai.isDirty )  {
-        AccountIndexDAO.save(ai)
+        SyncIndexDAO.save(ai)
         ResourceDAO(ai.resourceKey).save(ro)
       }
     }

@@ -1,7 +1,10 @@
 
 
 
-Group support - test
+Group support
+    - Could have ResourceObject include an optional group object
+                Assumes that resouruce supports a GROUP schema?
+                Convenience used for handling special case of Group and Account (common use case)
 
 Roles - merging / removing
 
@@ -9,3 +12,5 @@ Test Data generator
 
 
 ICAttributes should implement Map interface
+
+Complete functional test -

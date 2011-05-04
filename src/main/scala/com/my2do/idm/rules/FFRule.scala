@@ -20,6 +20,7 @@ package com.my2do.idm.rules
 import com.my2do.idm.dao.UserDAO
 import com.my2do.idm.connector.util.ICAttributes
 import com.my2do.idm.objects.{ResourceObject, User}
+import net.liftweb.common.Logger
 
 /**
  *
@@ -29,7 +30,7 @@ import com.my2do.idm.objects.{ResourceObject, User}
  *
  */
 
-object FFRule extends AccountRule {
+object FFRule extends AccountRule with Logger {
 
 
   override def createUserFromAccountAttributes(a: ICAttributes): Option[User] = {

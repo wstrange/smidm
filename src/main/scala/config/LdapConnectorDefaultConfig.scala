@@ -64,7 +64,7 @@ abstract class LdapConnectorDefaultConfig extends ConnectorConfig {
    val passwordAttribute = "userPassword"
    // Use Blocks - When performing operations on large numbers of accounts, the accounts are processed in blocks to reduce the amount of memory used by the operation. Select this option to process accounts in blocks.
    val useBlocks = true
-   // Maintain POSIX Group Membership - When enabled and a user is renamed or deleted, update any POSIX groups to which the user belongs to reflect the new name. Otherwise, the LDAP resource must maintain referential integrity with respect to group membership.
+   // Maintain POSIX Group Membership - When enabled and a user is renamed or deleted, update any POSIX member to which the user belongs to reflect the new name. Otherwise, the LDAP resource must maintain referential integrity with respect to group membership.
    val maintainPosixGroupMembership = false
    // Failover Servers - List all servers that should be used for failover in case the preferred server fails. If the preferred server fails, JNDI will connect to the next available server in the list. List all servers in the form of "ldap://ldap.example.com:389/", which follows the standard LDAP v3 URLs described in RFC 2255. Only the host and port parts of the URL are relevant in this setting.
    val failover = Array("")
@@ -72,7 +72,7 @@ abstract class LdapConnectorDefaultConfig extends ConnectorConfig {
    val ssl = false
    // Principal - The distinguished name with which to authenticate to the LDAP server.
    val principal = ""
-   // Base Contexts - One or more starting points in the LDAP tree that will be used when searching the tree. Searches are performed when discovering users from the LDAP server or when looking for the groups of which a user is a member.
+   // Base Contexts - One or more starting points in the LDAP tree that will be used when searching the tree. Searches are performed when discovering users from the LDAP server or when looking for the member of which a user is a member.
    val baseContexts = Array("")
    // Read Schema - If true, the connector will read the schema from the server. If false, the connector will provide a default schema based on the objects classes in the configuration. This property must be true in order to use extended objects classes.
    val readSchema = true
@@ -94,7 +94,7 @@ abstract class LdapConnectorDefaultConfig extends ConnectorConfig {
    val blockSize = 100
    // Uid Attribute - The name of the LDAP attribute which is mapped to the Uid attribute.
    val uidAttribute = "entryUUID"
-   // Maintain LDAP Group Membership - When enabled and a user is renamed or deleted, update any LDAP groups to which the user belongs to reflect the new name. Otherwise, the LDAP resource must maintain referential integrity with respect to group membership.
+   // Maintain LDAP Group Membership - When enabled and a user is renamed or deleted, update any LDAP member to which the user belongs to reflect the new name. Otherwise, the LDAP resource must maintain referential integrity with respect to group membership.
    val maintainLdapGroupMembership = false
    // Respect Resource Password Policy Change-After-Reset - When this resource is specified in a Login Module (i.e., this resource is a pass-through authentication target) and the resource's password policy is configured for change-after-reset, a user whose resource account password has been administratively reset will be required to change that password after successfully authenticating.
    val respectResourcePasswordPolicyChangeAfterReset = false

@@ -2,9 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c59bc522-cabd-4580-8af5-85186051837a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/SyncIndex.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/GroupTest.scala" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/AccountIndex.scala" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/AccountIndexDAO.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/SyncIndexDAO.scala" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/DAO.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/UserDAO.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smidm.iws" afterPath="$PROJECT_DIR$/smidm.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/connector/ConnectorConfig.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/connector/ConnectorConfig.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/ResourceDAO.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/ResourceDAO.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/mongo/ICFacade.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/mongo/ICFacade.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/mongo/MongoUtil.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/mongo/MongoUtil.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/ResourceObject.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/ResourceObject.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/ResourceReference.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/ResourceReference.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/UserView.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/UserView.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/resource/Resource.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/resource/Resource.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/AccountRule.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/AccountRule.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/CorrelationRule.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/CorrelationRule.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/FFRule.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/FFRule.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/LDAPRule.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/LDAPRule.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/ReconManager.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/ReconManager.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/SyncManager.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/SyncManager.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/config/LDAP_Test.scala" afterPath="$PROJECT_DIR$/src/main/scala/config/LDAP_Test.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/config/LdapConnectorDefaultConfig.scala" afterPath="$PROJECT_DIR$/src/main/scala/config/LdapConnectorDefaultConfig.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/resources/TODO" afterPath="$PROJECT_DIR$/src/test/resources/TODO" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/MongoTest.scala" afterPath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/MongoTest.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ReconTest.scala" afterPath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ReconTest.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ResourceDAOTest.scala" afterPath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ResourceDAOTest.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/SyncTest.scala" afterPath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/SyncTest.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/TestData.scala" afterPath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/TestData.scala" />
     </list>
     <ignored path="smidm.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -63,37 +88,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SyncTest.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/SyncTest.scala">
+      <file leaf-file-name="TestData.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/TestData.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="92" column="26" selection-start="2628" selection-end="2628" vertical-scroll-proportion="0.0">
+            <state line="67" column="61" selection-start="2248" selection-end="2248" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
+      <file leaf-file-name="ResourceDAOTest.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ResourceDAOTest.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="77" selection-start="1969" selection-end="1969" vertical-scroll-proportion="0.0">
+            <state line="32" column="71" selection-start="720" selection-end="720" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LDAP_Test.scala" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/config/LDAP_Test.scala">
+      <file leaf-file-name="GroupTest.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/GroupTest.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="15" selection-start="976" selection-end="976" vertical-scroll-proportion="1.0742706">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="README" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/README">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="54" selection-start="1763" selection-end="1763" vertical-scroll-proportion="0.0">
+            <state line="65" column="6" selection-start="1811" selection-end="1811" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -102,7 +118,43 @@
       <file leaf-file-name="ReconTest.scala" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ReconTest.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="52" column="44" selection-start="1593" selection-end="1621" vertical-scroll-proportion="0.0">
+            <state line="62" column="47" selection-start="1977" selection-end="1977" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SyncTest.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/SyncTest.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="68" column="17" selection-start="1855" selection-end="1855" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResourceDAO.scala" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/ResourceDAO.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="43" column="42" selection-start="1246" selection-end="1246" vertical-scroll-proportion="0.15138593">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Logger.class" pinned="false" current="false" current-in-tab="false">
+        <entry file="jar://$M2_REPO$/net/liftweb/lift-common_2.8.1/2.2/lift-common_2.8.1-2.2.jar!/net/liftweb/common/Logger.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="41" column="0" selection-start="3349" selection-end="3349" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Resource.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/resource/Resource.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="42" column="2" selection-start="1323" selection-end="1323" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -111,43 +163,16 @@
       <file leaf-file-name="UserView.scala" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/UserView.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="209" column="6" selection-start="6834" selection-end="6834" vertical-scroll-proportion="0.0">
+            <state line="225" column="0" selection-start="7131" selection-end="7131" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserRoleView.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/UserRoleView.scala">
+      <file leaf-file-name="FFRule.scala" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/FFRule.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="87" column="7" selection-start="2867" selection-end="2867" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ICFacade.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/mongo/ICFacade.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="157" column="8" selection-start="4891" selection-end="4891" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ReconManager.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/ReconManager.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="0" selection-start="1653" selection-end="1653" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ResourceObject.scala" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/ResourceObject.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="80" column="8" selection-start="2622" selection-end="2622" vertical-scroll-proportion="0.0">
+            <state line="32" column="45" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -167,22 +192,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/RuleDefinitions.scala" />
-        <option value="$PROJECT_DIR$/src/test/resources/TODO" />
-        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/RoleDAO.scala" />
-        <option value="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/RoleTest.scala" />
-        <option value="$PROJECT_DIR$/src/test/resources/test1.csv" />
-        <option value="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/TestData.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/AccountRule.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/User.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/SyncManager.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/AccountIndexDAO.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/AccountIndex.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/ResourceObject.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/ReconManager.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/UserView.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/mongo/ICFacade.scala" />
-        <option value="$PROJECT_DIR$/README" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/SyncIndex.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/SyncIndexDAO.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/SyncManager.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/FFRule.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/TestData.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ResourceDAOTest.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/GroupTest.scala" />
+        <option value="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ReconTest.scala" />
         <option value="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/SyncTest.scala" />
-        <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/main/scala/config/LDAP_Test.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/resource/Resource.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/ResourceDAO.scala" />
       </list>
     </option>
   </component>
@@ -270,27 +295,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Favorites" />
       <pane id="PackagesPane">
         <subPane>
           <PATH>
@@ -301,300 +305,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="smidm" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="config" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="RoleAssignmentRule.scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rules" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resource" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Resource.scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="objects" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="UserView.scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="objects" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="objects" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="User.scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="mongo" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="dao" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="connector" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ConnectorManager.scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="connector" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="connector" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="smidm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com.my2do.idm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="connector" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageElementNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ConnectorObjectWrapper.scala" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -825,6 +535,27 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Favorites" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="smidm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="smidm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="smidm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -833,7 +564,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="fileTemplates" />
+    <property name="options.lastSelected" value="editor.preferences.appearance" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
@@ -845,20 +576,14 @@
     <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.my2do.idm.test" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.my2do.idm.dao" />
     </key>
   </component>
   <component name="RunManager" selected="ScalaTest.SyncTest">
-    <configuration default="false" name="Scala Console" type="ScalaScriptConsoleRunConfiguration" factoryName="Scala Console" temporary="true">
-      <module name="smidm" />
-      <setting name="vmparams" value="" />
-      <setting name="consoleArgs" value="" />
-      <setting name="workingDirectory" value="$PROJECT_DIR$" />
-      <RunnerSettings RunnerId="Run" />
-      <ConfigurationWrapper RunnerId="Run" />
-      <method />
-    </configuration>
     <configuration default="false" name="ResourceDAOTest" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
       <module name="smidm" />
       <setting name="path" value="com.my2do.idm.test.ResourceDAOTest" />
@@ -890,6 +615,30 @@
       <setting name="vmparams" value="-Dorg.identityconnectors.common.logging.class=com.my2do.idm.connector.util.SLF4JLogger" />
       <setting name="params" value="" />
       <setting name="version" value="true" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="GroupTest" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
+      <module name="smidm" />
+      <setting name="path" value="com.my2do.idm.test.GroupTest" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="-Dorg.identityconnectors.common.logging.class=com.my2do.idm.connector.util.SLF4JLogger" />
+      <setting name="params" value="" />
+      <setting name="version" value="true" />
+      <setting name="workingDirectory" value="$PROJECT_DIR$" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="MongoTest" type="ScalaTestRunConfiguration" factoryName="ScalaTest" temporary="true">
+      <module name="smidm" />
+      <setting name="path" value="com.my2do.idm.test.MongoTest" />
+      <setting name="package" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="version" value="false" />
       <setting name="workingDirectory" value="$PROJECT_DIR$" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
@@ -1081,20 +830,21 @@
       <module name="smidm" />
       <setting name="path" value="com.my2do.idm.test.SyncTest" />
       <setting name="package" value="" />
-      <setting name="vmparams" value="" />
+      <setting name="vmparams" value="-Dorg.identityconnectors.common.logging.class=com.my2do.idm.connector.util.SLF4JLogger" />
       <setting name="params" value="" />
-      <setting name="version" value="false" />
+      <setting name="version" value="true" />
       <setting name="workingDirectory" value="$PROJECT_DIR$" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
       <method />
     </configuration>
-    <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Scala Console.Scala Console" />
-      <item index="1" class="java.lang.String" itemvalue="ScalaTest.ResourceDAOTest" />
-      <item index="2" class="java.lang.String" itemvalue="ScalaTest.RoleTest" />
-      <item index="3" class="java.lang.String" itemvalue="ScalaTest.SyncTest" />
-      <item index="4" class="java.lang.String" itemvalue="ScalaTest.ViewTest" />
+    <list size="6">
+      <item index="0" class="java.lang.String" itemvalue="ScalaTest.ResourceDAOTest" />
+      <item index="1" class="java.lang.String" itemvalue="ScalaTest.RoleTest" />
+      <item index="2" class="java.lang.String" itemvalue="ScalaTest.ViewTest" />
+      <item index="3" class="java.lang.String" itemvalue="ScalaTest.GroupTest" />
+      <item index="4" class="java.lang.String" itemvalue="ScalaTest.MongoTest" />
+      <item index="5" class="java.lang.String" itemvalue="ScalaTest.SyncTest" />
     </list>
     <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
       <Host>localhost</Host>
@@ -1117,7 +867,7 @@
     <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
     <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
     <option name="FORCE_UPDATE" value="false" />
-    <configuration useDefault="true">C:\Users\warren\AppData\Roaming\Subversion</configuration>
+    <configuration useDefault="true">$USER_HOME$/.subversion_IDEA</configuration>
     <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
   </component>
   <component name="TaskManager">
@@ -1129,25 +879,25 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="175" width="1440" height="905" extended-state="6" />
+    <frame x="0" y="180" width="1440" height="901" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28157896" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3263158" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3026316" sideWeight="0.9928109" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34219986" sideWeight="0.6" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3350108" sideWeight="0.0" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19626169" sideWeight="0.6" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21180555" sideWeight="0.65816325" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34183672" sideWeight="0.64917326" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32692307" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1203,90 +953,86 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/connector/util/ConnectorObjectWrapper.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="6" selection-start="1175" selection-end="1175" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ViewTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="20" selection-start="1036" selection-end="1036" vertical-scroll-proportion="0.7655914" />
-      </provider>
-    </entry>
-    <entry file="jar://$M2_REPO$/org/identityconnectors/connector-framework/1.1.5559/connector-framework-1.1.5559.jar!/org/identityconnectors/framework/common/objects/Name.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="41" selection-start="305" selection-end="305" vertical-scroll-proportion="0.36329588" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/SyncManager.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="77" column="52" selection-start="2519" selection-end="2519" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/User.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="64" column="20" selection-start="2137" selection-end="2137" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/AccountRule.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="44" column="16" selection-start="1399" selection-end="1399" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ReconTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="44" selection-start="1593" selection-end="1621" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/UserView.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="209" column="6" selection-start="6834" selection-end="6834" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/UserRoleView.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="87" column="7" selection-start="2867" selection-end="2867" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/mongo/ICFacade.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="157" column="8" selection-start="4891" selection-end="4891" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/ReconManager.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="0" selection-start="1653" selection-end="1653" vertical-scroll-proportion="0.0" />
+        <state line="45" column="58" selection-start="1367" selection-end="1367" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="jar://$M2_REPO$/org/scala-lang/scala-library/2.8.1/scala-library-2.8.1.jar!/scala/collection/LinearSeqOptimized.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="15" selection-start="856" selection-end="856" vertical-scroll-proportion="0.3319149" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/SyncIndex.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="68" column="50" selection-start="2824" selection-end="2824" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/SyncIndexDAO.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="73" selection-start="2477" selection-end="2477" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/ResourceObject.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="80" column="8" selection-start="2622" selection-end="2622" vertical-scroll-proportion="0.0" />
+        <state line="53" column="11" selection-start="1943" selection-end="1943" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/sync/SyncManager.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="54" selection-start="1763" selection-end="1763" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="93" column="29" selection-start="2956" selection-end="2956" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/TestData.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="67" column="61" selection-start="2248" selection-end="2248" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ResourceDAOTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="71" selection-start="720" selection-end="720" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/GroupTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="6" selection-start="1811" selection-end="1811" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/ReconTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="62" column="47" selection-start="1977" selection-end="1977" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/SyncTest.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="92" column="26" selection-start="2628" selection-end="2628" vertical-scroll-proportion="0.0">
+        <state line="68" column="17" selection-start="1855" selection-end="1855" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="jar://$M2_REPO$/net/liftweb/lift-common_2.8.1/2.2/lift-common_2.8.1-2.2.jar!/net/liftweb/common/Logger.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="0" selection-start="3349" selection-end="3349" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/UserView.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="225" column="0" selection-start="7131" selection-end="7131" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/rules/FFRule.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="32" column="45" selection-start="1002" selection-end="1002" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/resource/Resource.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="2" selection-start="1323" selection-end="1323" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/dao/ResourceDAO.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="77" selection-start="1969" selection-end="1969" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/config/LDAP_Test.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="27" column="15" selection-start="976" selection-end="976" vertical-scroll-proportion="1.0742706">
+        <state line="43" column="42" selection-start="1246" selection-end="1246" vertical-scroll-proportion="0.15138593">
           <folding />
         </state>
       </provider>

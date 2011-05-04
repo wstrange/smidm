@@ -20,9 +20,9 @@ package com.my2do.idm.sync
 import com.my2do.idm.objects._
 import net.liftweb.common.Logger
 import com.my2do.idm.connector.util.ICAttributes
-import scala._
+import scala.collection.JavaConversions._
 import com.my2do.idm.resource.Resource
-import com.my2do.idm.dao.{ResourceDAO, UserDAO, AccountIndexDAO}
+import com.my2do.idm.dao.{ResourceDAO, UserDAO, SyncIndexDAO}
 import com.my2do.idm.rules.{RoleAssignmentRule, CorrelationRule}
 
 /**
@@ -43,20 +43,20 @@ class SyncManager extends Logger {
 
     val icf = resource.getFacade
 
-    val collection = resource.mongoCollection
+    //val collection = resource.mongoCollection
 
-    val rdao = ResourceDAO(resource)
+    val rdao = resource.dao
 
     icf.foreachAccount {
       a =>
         val name = a.getName
 
 
-        rdao.findByAccountName(name) match {
+        rdao.findByAccountName(name, ObjectClass.account) match {
           case Some(x: ResourceObject) =>
             info("Account exists - it will not be reloaded. account=" + name)
           case _ => // does not exist - create a new entry
-            val o = ResourceObject(name, "__ACCOUNT__", a.getUuid, attributes = a.attributeMap)
+            val o = ResourceObject(name, a.getUuid, attributes = a.attributeMap)
             debug("Saving resource object  =" + o)
             rdao.save(o)
             count += 1
@@ -84,8 +84,25 @@ class SyncManager extends Logger {
     return count
   }
 
-  def updateAccountIndex(user: Option[User], resource: Resource, accountName: String) = {
-    val r = AccountIndexDAO.findByAccountName(resource.resourceKey, accountName)
+  def loadGroupsFromResource(resource:Resource) = {
+
+    val dao = resource.dao
+
+    resource.getFacade.foreachGroup{  a =>
+      val name = a.getName
+      val groupAttr = resource.config.groupAttribute
+      val members = a(groupAttr).asInstanceOf[java.util.List[String]]
+
+      val o = ResourceObject(name, a.getUuid, attributes = a.attributeMap, Some(members.toList))
+      o.objectClass = ObjectClass.group
+      debug("Saving resource group object  =" + o)
+      dao.save(o)
+    }
+  }
+
+
+  private def updateAccountIndex(user: Option[User], resource: Resource, accountName: String) = {
+    val r = SyncIndexDAO.findByAccountName(resource.resourceKey, accountName)
 
     val userId = user match {
       case Some(u: User) => Some(u.id)
@@ -97,17 +114,17 @@ class SyncManager extends Logger {
         + resource.resourceKey + "," + accountName)
 
     if (r.count == 0) {
-      val a = AccountIndex(userId, resource.resourceKey, accountName, needsSync = false)
-      debug("Creating AccountIndex entry a=" + a)
-      AccountIndexDAO.save(a)
+      val a = SyncIndex(userId, resource.resourceKey, accountName, needsSync = false)
+      debug("Creating SyncIndex entry a=" + a)
+      SyncIndexDAO.save(a)
     }
     else {
       val account = r.next()
       debug("Found existing account=" + account)
-      if (account.userId == None && userId.isDefined) {
-        account.userId = userId
+      if (account.ownerId == None && userId.isDefined) {
+        account.ownerId = userId
         info("Linking User " + user + " to account " + account)
-        AccountIndexDAO.save(account)
+        SyncIndexDAO.save(account)
       }
     }
   }

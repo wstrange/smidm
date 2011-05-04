@@ -21,8 +21,8 @@ import com.my2do.idm.resource.Resource
 import net.liftweb.common.Logger
 import com.mongodb.casbah.Imports._
 import com.my2do.idm.mongo.{ICFacade, MongoUtil}
-import com.my2do.idm.dao.{ResourceDAO, AccountIndexDAO}
-import com.my2do.idm.objects.{ResourceObject, AccountIndex}
+import com.my2do.idm.dao.{ResourceDAO, SyncIndexDAO}
+import com.my2do.idm.objects.{ObjectClass, ResourceObject, SyncIndex}
 
 /**
  *
@@ -34,16 +34,16 @@ import com.my2do.idm.objects.{ResourceObject, AccountIndex}
 
 class ReconManager extends Logger {
 
-  def recon(resource: Resource) = {
+  def recon(resource: Resource, objectClass:ObjectClass) = {
 
     var count = 0
 
-    val q = AccountIndexDAO.findByResourceNeedSynced(resource)
+    val q = SyncIndexDAO.findByResourceNeedsSynced(resource,objectClass)
 
     while (q.hasNext) {
       val ai = q.next
 
-      val obj = ResourceDAO(resource).findOneByID(ai.accountName).get
+      val obj = resource.dao.findByAccountName(ai.accountName,objectClass).get
 
       if (ai.delete)
         deleteResourceObject(resource, ai, obj)
@@ -54,18 +54,18 @@ class ReconManager extends Logger {
   }
 
 
-  def updateResourceObject(resource:Resource, ai: AccountIndex, o: ResourceObject): Boolean = {
+  def updateResourceObject(resource:Resource, ai: SyncIndex, o: ResourceObject): Boolean = {
     debug("recon account index =" + ai + " obj=" + o)
 
     val uid = resource.getFacade.save(o)  // save to the real resource using ICF framework
     if (uid.isDefined) {
       ai.needsSync = false
       ai.lastSync = System.currentTimeMillis
-      AccountIndexDAO.save(ai)
+      SyncIndexDAO.save(ai)
 
 
       // todo: We could optimize this to only save if UID has changed?
-      ResourceDAO(resource).save(o)
+      resource.dao.save(o)
       debug("Synced account " + ai.accountName)
       return true
     }
@@ -74,10 +74,10 @@ class ReconManager extends Logger {
     false
   }
 
-  def deleteResourceObject(resource:Resource, ai: AccountIndex, obj: ResourceObject) = {
+  def deleteResourceObject(resource:Resource, ai: SyncIndex, obj: ResourceObject) = {
     resource.getFacade.delete(obj)
-    ResourceDAO(resource).remove(obj)
+    resource.dao.remove(obj)
     // todo: Put remove method in AI DAO - so it cascades
-    AccountIndexDAO.remove(ai)
+    SyncIndexDAO.remove(ai)
   }
 }

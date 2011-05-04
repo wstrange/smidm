@@ -120,14 +120,11 @@ class SyncTest extends FunTest {
     uv2.printDebug()
 
     // check to see if the user got put in the Marketing Group as a result of the Role Assignment
-    //val g = uv2(ldapResource,"groups").asInstanceOf[Seq[String]]
+    //val g = uv2(ldapResource,"member").asInstanceOf[Seq[String]]
     //assert( g.contains(TestData.marketingGroupEntitlement.attrVal))
 
     // run the recon manager to flush out changes
 
-    new ReconManager().recon(ldapResource)
-
-
-
+    new ReconManager().recon(ldapResource,ObjectClass.account)
   }
 }

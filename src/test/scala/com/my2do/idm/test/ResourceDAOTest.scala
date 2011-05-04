@@ -21,17 +21,17 @@ class ResourceDAOTest   extends FunTest {
 
     MongoUtil.dropAndCreateDB
 
-    val rdao =  ResourceDAO(resource)
+    val rdao =  resource.dao
 
-    val obj = ResourceObject("uid=foo","__ACCOUNT__", "1345",
+    val obj = ResourceObject("uid=foo", "1345",
       Map( "sn" -> List("fred", "fredious"),
       "employeeNumber" -> "1234"))
 
     val id = rdao.save(obj)
-    val obj2 = rdao.findByAccountName( obj.accountName)
+    val obj2 = rdao.findByAccountName( obj.accountName, obj.objectClass).get
 
     debug("got back " + obj2)
-    val sn = obj2.get.attributes("sn").asInstanceOf[Seq[AnyRef]]
+    val sn = obj2("sn").asInstanceOf[Seq[AnyRef]]
 
     debug("SN=" + sn + " obj=" + sn.getClass)
     sn.foreach( x => println(x))

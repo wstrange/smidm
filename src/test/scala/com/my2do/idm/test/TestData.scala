@@ -17,11 +17,11 @@
 
 package com.my2do.idmsvc.test
 
-import com.my2do.idm.objects._
 import util.Random
-import com.my2do.idm.dao.RoleDAO
 import com.my2do.idm.resource.Resource
 import net.liftweb.common.Logger
+import com.my2do.idm.objects._
+import com.my2do.idm.dao.{UserDAO, RoleDAO}
 
 /**
  *
@@ -36,9 +36,13 @@ object TestData extends Logger {
 
   val departments = Vector("marketing", "sales", "engineering")
   val ldap = Resource.ldapTest
-  val marketingGroupEntitlement = Entitlement(ldap.resourceKey, "groups", "cn=MarketingUsers,ou=Groups,dc=example,dc=com", AssignmentType.MERGE)
+  val marketingGroupEntitlement = Entitlement(ldap.resourceKey, "member", "cn=MarketingUsers,ou=Groups,dc=example,dc=com", AssignmentType.MERGE)
 
   def randomDept = departments(Random.nextInt(departments.size))
+
+  val orgSuffix = ",dc=example,dc=com"
+  val groupSuffix = ",ou=Groups" + orgSuffix
+  val userSuffix = ",ou=People" + orgSuffix
 
   // some sample users
   val user = 0 to 10 map (i => User("user" + i, "First", "Last" + i, "e900" + i, randomDept, "user" + i + "@test.com"))
@@ -55,6 +59,15 @@ object TestData extends Logger {
     RoleDAO.save(Role("SalesUser", "DepartmentRole", None))
 
   }
+
+  val group = 0 to 10 map {i =>
+    ResourceObject("testgroup" + i + groupSuffix,  "testgroup" +i,
+              Map("uniqueMember" -> List(user(i).accountName+userSuffix)))}
+
+
+  def defineGroups = { group.foreach( g =>  ldap.dao.save(g))}
+
+  def defineUsers = user.foreach( u => UserDAO.save(u))
 
 
 }

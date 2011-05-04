@@ -45,17 +45,15 @@ object  MongoUtil  {
   val accountIndexCollection = db("accounts")
   val roleCollection = db("roles")
 
-
-  def collectionForResourceKey(name:String) = {
-
-     val c = db("Resource" + name)
-    // account names should be unique...
+  /*
+  def collectionForResource(resource:Resource, objectClass:String) = {
+    val c = db("R"+objectClass + resource.config.instanceKey)
     if( c.isEmpty )
       c.ensureIndex( MongoDBObject(MongoUtil.NAME_ATTRIBUTE_STRING -> "1"), "nameIndex", true)
+
     c
   }
-
-  def collectionForResource(resource:Resource) = collectionForResourceKey(resource.config.instanceKey)
+  */
 
   /**
    * The __NAME__ is an artifact of the ICF connector framework. It is a special attribute name used to

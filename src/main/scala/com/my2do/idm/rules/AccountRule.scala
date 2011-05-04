@@ -17,39 +17,36 @@
 
 package com.my2do.idm.rules
 
-import com.my2do.idm.dao.UserDAO
 
 import com.my2do.idm.connector.util.ICAttributes
-import net.liftweb.common.Logger
 import com.my2do.idm.objects.{ResourceObject, User}
 
 /**
- *
- * Basic functions to correlate users against an account, create a user object from account attributes
- * and create a stub account given a user object
- *
- * Subclasses will override this class and implement rules appropriate for the account type
- *
- * User: warren
- * Date: 4/7/11
- * Time: 4:35 PM
- * 
- */
+  *
+  * Trait that defines how to:
+  *
+  * - create a template/skeleton resource object from a user repo entry
+  *
+  * Subclasses will override this class and implement rules appropriate for the account type
+  *
+  * User: warren
+  *
+  */
 
-trait AccountRule extends Logger {
+trait AccountRule {
 
 
   /**
-   * Given a set of account attributes - create the base account.
-   * The default is to create the account using the account name
-   * This should be overridden in Config
-   *
-   * @return an Option[User] or None if the user can not be created
-   */
+    * Given a set of account attributes - create the base account.
+    * The default is to create the account using the account name
+    * This should be overridden for most resource types
+    *
+    * @return an Option[User] or None if the user can not be created
+    */
 
-  def createUserFromAccountAttributes(a:ICAttributes):Option[User] = {
-    Some(User(a.getName,"",""))
+  def createUserFromAccountAttributes(a: ICAttributes): Option[User] = {
+    Some(User(a.getName, "", ""))
   }
 
-  def newResourceObject(u:User):ResourceObject   = null // default - no object is created
+  def newResourceObject(u: User): ResourceObject = null // default - no object is created
 }

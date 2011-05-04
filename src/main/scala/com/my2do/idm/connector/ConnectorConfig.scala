@@ -82,6 +82,10 @@ abstract class ConnectorConfig extends Logger {
   var objectClasses = new HashSet[ObjectClass]
   private var apiConfig: APIConfiguration = _
 
+  /**
+    * Name of Group Attribute (e.g. uniqueMember for ldap). Not all Connectors will support groups
+   */
+  val groupAttribute:String  = "nogroups"
 
   var isConfigured = false
 

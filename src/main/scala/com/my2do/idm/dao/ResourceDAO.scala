@@ -25,10 +25,6 @@ import net.liftweb.common.Logger
 
 import com.novus.salat._
 import com.novus.salat.global._
-import dao.SalatDAO
-
-
-
 import com.my2do.idm.resource.Resource
 
 /**
@@ -40,18 +36,39 @@ import com.my2do.idm.resource.Resource
  */
 
 
-object ResourceDAO {
-  def apply(resource:Resource) = new ResourceDAO(resource.resourceKey)
-  def apply(resourceKey:String) = new ResourceDAO(resourceKey)
-
+object ResourceDAO extends Logger {
+  def apply(resourceKey:String) = {
+    assert(resourceKey != null)
+    val r = Resource.resourceList.find{r:Resource => r.resourceKey.equals(resourceKey)}
+    new ResourceDAO(r.get)
+  }
 }
 
-
-class ResourceDAO(resource:String) extends SalatDAO[ResourceObject, String] with Logger {
+class ResourceDAO(resource:Resource) extends Logger {
   val _grater = grater[ResourceObject]
-  val collection = MongoUtil.collectionForResourceKey(resource)
 
-  def findByAccountName(id:String) = findOneByID(id)
+
+  def save(ro:ResourceObject) = {
+    val c = resource.collectionForObjectClass(ro.objectClass)
+    val dbo = _grater.asDBObject(ro)
+    debug("Saving object=" + dbo)
+    val result = c.save(dbo)
+    result
+  }
+
+  def findByAccountName(id:String, o:ObjectClass):Option[ResourceObject] = {
+    val c =   resource.collectionForObjectClass(o)
+    val r = c.findOneByID(id)
+    r match {
+      case x:DBObject => Some(_grater.asObject(x))
+      case _ => None
+    }
+  }
+
+  def remove(ro:ResourceObject) = {
+    val c =   resource.collectionForObjectClass(ro.objectClass)
+    val result = c.remove(MongoDBObject("_id" -> ro.accountName))
+  }
 
 }
 
