@@ -66,7 +66,7 @@ case class SyncIndex(var ownerId: Option[ObjectId] = None,
 
   def getResourceObject():Option[ResourceObject] = {
     val dao = ResourceDAO(resourceKey)
-    dao.findByAccountName(accountName,objectClass)
+    dao.findByName(accountName,objectClass)
   }
 }
 

@@ -36,6 +36,9 @@
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
   <component name="FacetAutodetectingManager">
     <autodetection-disabled>
       <facet-type id="scala">
@@ -295,15 +298,15 @@
         <root url="jar://$M2_REPO$/com/mongodb/casbah/casbah-query_2.8.1/2.1.2/casbah-query_2.8.1-2.1.2-sources.jar!/" />
       </SOURCES>
     </library>
-    <library name="Maven: com.novus:salat-core_2.8.1:0.0.7-SNAPSHOT">
+    <library name="Maven: com.novus:salat-core_2.8.1:0.0.8-SNAPSHOT">
       <CLASSES>
-        <root url="jar://$M2_REPO$/com/novus/salat-core_2.8.1/0.0.7-SNAPSHOT/salat-core_2.8.1-0.0.7-SNAPSHOT.jar!/" />
+        <root url="jar://$M2_REPO$/com/novus/salat-core_2.8.1/0.0.8-SNAPSHOT/salat-core_2.8.1-0.0.8-SNAPSHOT.jar!/" />
       </CLASSES>
       <JAVADOC>
-        <root url="jar://$M2_REPO$/com/novus/salat-core_2.8.1/0.0.7-SNAPSHOT/salat-core_2.8.1-0.0.7-SNAPSHOT-javadoc.jar!/" />
+        <root url="jar://$M2_REPO$/com/novus/salat-core_2.8.1/0.0.8-SNAPSHOT/salat-core_2.8.1-0.0.8-SNAPSHOT-javadoc.jar!/" />
       </JAVADOC>
       <SOURCES>
-        <root url="jar://$M2_REPO$/com/novus/salat-core_2.8.1/0.0.7-SNAPSHOT/salat-core_2.8.1-0.0.7-SNAPSHOT-sources.jar!/" />
+        <root url="jar://$M2_REPO$/com/novus/salat-core_2.8.1/0.0.8-SNAPSHOT/salat-core_2.8.1-0.0.8-SNAPSHOT-sources.jar!/" />
       </SOURCES>
     </library>
     <library name="Maven: commons-logging:commons-logging:1.1.1">

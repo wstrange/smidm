@@ -28,7 +28,7 @@ class ResourceDAOTest   extends FunTest {
       "employeeNumber" -> "1234"))
 
     val id = rdao.save(obj)
-    val obj2 = rdao.findByAccountName( obj.accountName, obj.objectClass).get
+    val obj2 = rdao.findByName( obj.accountName, obj.objectClass).get
 
     debug("got back " + obj2)
     val sn = obj2("sn").asInstanceOf[Seq[AnyRef]]

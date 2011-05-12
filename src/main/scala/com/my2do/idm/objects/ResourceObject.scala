@@ -19,9 +19,11 @@ package com.my2do.idm.objects
 
 import com.mongodb.casbah.Imports._
 import com.novus.salat.annotations._
-import org.identityconnectors.framework.common.objects.{ ObjectClass => icfObj }
-
-
+import org.identityconnectors.framework.common.objects.{ObjectClass => icfObj}
+import com.my2do.idm.resource.Resource
+import scala.Some
+import com.my2do.idm.SyncException
+import net.liftweb.common.Logger
 
 case class ObjectClass(name:String)
 
@@ -54,13 +56,19 @@ object ObjectClass {
 case class ResourceObject(@Key("_id") accountName: String,
                           uid: String,
                           var attributes: Map[String, AnyRef],
-                          var member: Option[List[String]] = None) {
+                          @Ignore objectClass:ObjectClass = ObjectClass.account,
+                          @Ignore resource:Resource = null) extends Logger {
+
+  // transient attributes - not persisted
+
   var isDirty: Boolean = false
+
+
 
   // todo: do we need to persist this?
   // should we make this an enum  ?
   // do we need this?
-  var objectClass:ObjectClass = ObjectClass.account
+ // var objectClass:ObjectClass = ObjectClass.account
 
   // After construction
   normalizeAttributes()
@@ -114,5 +122,40 @@ case class ResourceObject(@Key("_id") accountName: String,
     * So you can do userView("firstName") = "Freddy"
     */
   def update(attrName: String, v: AnyRef) = put(attrName, v)
+
+  /**
+    * Group operations..
+   */
+
+  def isMemberOfGroup(name:String) = {
+    resource.dao.findByName(name,ObjectClass.group) match {
+      case Some(go:ResourceObject) =>  go.groupAttribute.contains(accountName)
+      case _ => false
+    }
+  }
+
+  private def groupAttribute():List[AnyRef] = {
+    get("uniqueMember").asInstanceOf[List[AnyRef]]
+  }
+
+  def addToGroup(name:String) = {
+    resource.dao.findByName(name,ObjectClass.group) match {
+      case Some(go:ResourceObject) => go.addMember(accountName)
+      case _ =>  throw new SyncException("No group such group with name=" + name)
+    }
+  }
+
+  def addMember(name:String) = {
+
+    debug("Add " + name + "To group " + accountName)
+    val l = name :: groupAttribute()
+    put("uniqueMember", l.distinct)
+
+    debug("New group members=" + groupAttribute)
+
+    resource.dao.save(this)
+  }
+
+
 
 }

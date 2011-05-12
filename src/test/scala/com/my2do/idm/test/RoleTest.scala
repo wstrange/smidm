@@ -76,7 +76,7 @@ class RoleTest extends FunTest {
 
     uv.flush() // persist
     // re-reconstruct the view - fetches values from store
-    uv = UserView(u.id)
+    uv = UserView(u.accountName)
     // ensure the entitlements got persisted / restored
     sn = uv(ldap, "sn").asInstanceOf[Seq[String]]
     assert(sn.contains("Added SN"))

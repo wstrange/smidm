@@ -18,11 +18,12 @@
 package com.my2do.idm.dao
 
 import com.my2do.idm.mongo.MongoUtil
-import com.mongodb.casbah.Imports._
 import com.novus.salat._
 import com.novus.salat.global._
-import dao.SalatDAO
+import com.novus.salat.annotations._
+import com.mongodb.casbah.Imports._
 import com.my2do.idm.objects._
+import dao.SalatDAO
 import net.liftweb.common.Logger
 
 /**
@@ -33,14 +34,11 @@ import net.liftweb.common.Logger
  *
  */
 
-object UserDAO extends SalatDAO[User, ObjectId] with Logger {
-  val _grater = grater[User]
-  val collection = MongoUtil.userCollection
+object UserDAO extends SalatDAO[User, ObjectId](collection = MongoUtil.userCollection) with Logger {
 
   def findByEmployeeId(id: String): Option[User] = this.findOne(MongoDBObject("employeeId" -> id))
 
   def findByAccountName(name: String): Option[User] = this.findOne(MongoDBObject("accountName" -> name))
-
 
 }
 

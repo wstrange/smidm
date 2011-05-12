@@ -66,19 +66,37 @@ trait UserRoleView extends Logger {  this: UserView =>
     }
     applyEntitlements(role)
     roleMap.put(role.id,role)
-    user = user.copy(roleIdList = (role.id :: user.roleIdList).distinct  )
+
+  }
+
+  // update user object with roleMap
+  def flushRole()  = {
+
+    user = user.copy(roleIdList = roleMap.keys.toList )
   }
 
   def removeRole(r:Role) = {
     unassignEntitlements(r)
+    roleMap.remove(r.id)
   }
 
-  def hasRole(r:Role) = user.roleIdList.contains(r.id)
+  def removeRoles(roles:Seq[Role]) = roles.foreach( removeRole(_))
+  def addRoles(roles:Seq[Role]) = roles.foreach( addRole(_))
+
+  def hasRole(r:Role) = roleMap.contains(r.id)
+
+  def hasRoleName(name:String) = {
+    RoleDAO.findByName(name) match {
+      case Some(r:Role) =>   hasRole(r)
+      case _ => false
+    }
+  }
 
   private def applyEntitlements(role:Role) = {
     role.entitlements.foreach{ e =>
       resourceObjectsForResourceKey(e.resourceKey).foreach{ case(ai,ro) =>
-        e.assign(ro)
+        //e.assign(ro)
+        debug("TODO Assign Entitlement =" + e + " to " + ro.accountName)
       }
     }
   }

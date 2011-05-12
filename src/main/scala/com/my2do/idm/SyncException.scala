@@ -15,29 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.my2do.idm.dao
+package com.my2do.idm
 
-import com.my2do.idm.mongo.MongoUtil
-
-import com.my2do.idm.objects._
-import com.novus.salat.dao.SalatDAO
-import com.novus.salat._
-import com.novus.salat.global._
-import com.novus.salat.annotations._
-import com.mongodb.casbah.Imports._
 
 /**
-  *
-  * User: warren
-  * Date: 4/2/11
-  * Time: 4:20 PM
-  *
-  */
+ * Created by IntelliJ IDEA.
+ * User: warren
+ * Date: 12/05/11
+ * Time: 4:32 PM
+ * To change this template use File | Settings | File Templates.
+ */
 
-object RoleDAO extends SalatDAO[Role, ObjectId](collection = MongoUtil.roleCollection) {
-  def findByName(name: String): Option[Role] = findOne(Map("name" -> name))
-
-  def findByCategory(category: String) = find(Map("category" -> category))
+class SyncException(msg:String, t:Throwable) extends RuntimeException(msg,t) {
+  def this(msg:String) = this(msg,null)
+  def this(t:Throwable) = this(null,t)
 }
-
-

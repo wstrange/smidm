@@ -42,7 +42,7 @@ object  MongoUtil  {
   val db =   mongo("test")
 
   val userCollection = db("users")
-  val accountIndexCollection = db("accounts")
+  val syncIndexCollection = db("syncIndex")
   val roleCollection = db("roles")
 
   /*
@@ -85,7 +85,7 @@ object  MongoUtil  {
     userCollection.ensureIndex(MongoDBObject("accountName" -> "1"), "account", true)
 
     // compound index to lookup accounts by resource name and accountName
-    accountIndexCollection.ensureIndex(MongoDBObject("resourceKey" -> "1", "accountName" -> "1"), "accountIndex", true)
+    syncIndexCollection.ensureIndex(MongoDBObject("resourceKey" -> "1", "accountName" -> "1"), "accountIndex", true)
   }
 
   def dropAndCreateDB = {

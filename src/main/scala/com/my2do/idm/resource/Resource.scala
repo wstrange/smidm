@@ -24,6 +24,7 @@ import config.{LDAP_Test, FlatFile_TestFile1}
 import com.my2do.idm.rules.{LDAPRule, FFRule, AccountRule}
 import com.my2do.idm.dao.ResourceDAO
 import com.my2do.idm.objects.{ObjectClass}
+import com.mongodb.casbah.commons.MongoDBObject
 
 /**
  * 
@@ -60,7 +61,11 @@ class Resource(val instanceName:String,val config:ConnectorConfig,val rule:Accou
   val manageGroups = supportedObjectClasses.contains(ObjectClass.group)
 
 
-  def collectionForObjectClass(o:ObjectClass) =  MongoUtil.db(o.name + config.instanceKey)
+  def collectionForObjectClass(o:ObjectClass) =  {
+    val c = MongoUtil.db(o.name + config.instanceKey)
+    c.ensureIndex( MongoDBObject("_id" -> "1"), "nameIndex", true)
+    c
+  }
 
 
   val dao = new ResourceDAO(this)

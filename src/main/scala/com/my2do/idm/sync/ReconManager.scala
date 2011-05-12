@@ -42,8 +42,8 @@ class ReconManager extends Logger {
 
     while (q.hasNext) {
       val ai = q.next
-
-      val obj = resource.dao.findByAccountName(ai.accountName,objectClass).get
+      debug("Sync object=" + ai)
+      val obj = resource.dao.findByName(ai.accountName,objectClass).get
 
       if (ai.delete)
         deleteResourceObject(resource, ai, obj)

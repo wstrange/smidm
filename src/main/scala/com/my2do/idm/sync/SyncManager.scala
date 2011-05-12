@@ -47,12 +47,10 @@ class SyncManager extends Logger {
 
     val rdao = resource.dao
 
-    icf.foreachAccount {
-      a =>
+    icf.foreachAccount { a =>
         val name = a.getName
 
-
-        rdao.findByAccountName(name, ObjectClass.account) match {
+        rdao.findByName(name, ObjectClass.account) match {
           case Some(x: ResourceObject) =>
             info("Account exists - it will not be reloaded. account=" + name)
           case _ => // does not exist - create a new entry
@@ -93,8 +91,8 @@ class SyncManager extends Logger {
       val groupAttr = resource.config.groupAttribute
       val members = a(groupAttr).asInstanceOf[java.util.List[String]]
 
-      val o = ResourceObject(name, a.getUuid, attributes = a.attributeMap, Some(members.toList))
-      o.objectClass = ObjectClass.group
+      val o = ResourceObject(name, a.getUuid, attributes = a.attributeMap,ObjectClass.group,resource)
+
       debug("Saving resource group object  =" + o)
       dao.save(o)
     }
@@ -145,6 +143,8 @@ class SyncManager extends Logger {
           transformFunction(u, a)
           val (rolesToAdd, rolesToRemove) = roleAssignmentRule.evaluateRoles(u, a.attributeMap)
           debug("Roles to add=" + rolesToAdd + " Roles to remove =" + rolesToRemove)
+          u.removeRoles(rolesToRemove)
+          u.addRoles(rolesToAdd)
           u.flush()
         }
         else

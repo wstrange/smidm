@@ -22,9 +22,9 @@ import org.identityconnectors.framework.api.ConnectorFacade
 import com.my2do.idm.connector.ConnectorConfig
 import com.my2do.idm.connector.util.ICAttributes
 import com.my2do.idm.connector.util.ConnectorObjectWrapper
-import org.identityconnectors.framework.common.objects._
 import net.liftweb.common.Logger
 import com.my2do.idm.objects.ResourceObject
+import org.identityconnectors.framework.common.objects._
 
 /**
  *
@@ -113,7 +113,8 @@ class ICFacade(val facade: ConnectorFacade, config: ConnectorConfig) extends Log
       val attrs =  resourceObjectToAttrSet(obj)
       attrs.add( normalize(Name.NAME,obj.accountName))
       debug("Create Op name=" + obj.accountName + "\n\t\tvalues=" + attrs)
-      val uid = facade.create(ObjectClass.ACCOUNT,attrs , null)
+      val objClass = new ObjectClass(obj.objectClass.name)
+      val uid = facade.create(objClass,attrs , null)
       Some(uid.getUidValue)
     }
     catch {
@@ -126,11 +127,14 @@ class ICFacade(val facade: ConnectorFacade, config: ConnectorConfig) extends Log
     val attrs =  resourceObjectToAttrSet(obj, existingAttrs.attributeMap)
 
     debug("Update Op name=" + obj.accountName + "\n\t\tAttrs=" + attrs)
-    val u = facade.update(ObjectClass.ACCOUNT, new Uid(obj.uid), attrs, null)
+    val objClass = new ObjectClass(obj.objectClass.name)
+    val u = facade.update(objClass, new Uid(obj.uid), attrs, null)
 
+    //debug("Return value=" + u)
     if (u != null && u.getUidValue != null)
       Some(u.getUidValue)
-    None
+    else
+      None
   }
 
   def getObj(id: String): Option[ICAttributes] = {
@@ -151,7 +155,8 @@ class ICFacade(val facade: ConnectorFacade, config: ConnectorConfig) extends Log
         if( ! isSpecial(name)) {
           // optimization:
           // if the attribute already exists and the value is unchanged - skip it
-          // todo: This does not work on Multi-valued attributes cuz equals will not work
+          // todo: This does not work on Multi-valued attributes cuz equals will not work !
+          // need to go into the list values and compare
           val a = existingAttributes.get(name)
           if( ! (a.isDefined  && a.get.equals(value)))
             s.add(normalize(name, value))
@@ -175,10 +180,11 @@ class ICFacade(val facade: ConnectorFacade, config: ConnectorConfig) extends Log
   }
 
   def delete(obj: ResourceObject) = {
-    //val uid = new Uid(entity.accountUid)
-    //facade.delete(entity.connectorObjectClass, uid, null)
+    val objClass = new ObjectClass(obj.objectClass.name)
     val uid = new Uid(obj.uid)
-    val r = facade.delete(ObjectClass.ACCOUNT, uid, null)
+    val r = facade.delete(objClass, uid, null)
+    debug("Delete obj=" + obj + " result=" +r)
+    r
   }
 
 

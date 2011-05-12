@@ -46,24 +46,26 @@ class GroupTest extends FunTest {
 
   test("Load Group objects") {
     MongoUtil.dropAndCreateDB
-    //TestData.defineGroups
+
     TestData.defineUsers
+    TestData.defineGroups
 
 
-    // Create a test user to correlate against
-    //val u = User("test1", "Test", "Tester", employeeId = "99")
-    //UserDAO.save(u)
+    val ldap = Resource.ldapTest
 
-    val resource = Resource.ldapTest
+    var count = syncManager.loadGroupsFromResource(ldap)
 
-    var count = syncManager.loadGroupsFromResource(resource)
+    new ReconManager().recon(ldap,ObjectClass.account)
+    new ReconManager().recon(ldap,ObjectClass.group)
 
     // todo - test sync back of group objects - test deserialization
 
-    val dao = resource.dao
+    //val dao = resource.dao
 
     //val objs = dao.find( MongoDBObject.empty )
     //objs.foreach { o => debug("Obj=" + "\n\t\t member=" + o.member.get)}
+
+    TestData.deleteGroups
 
 
   }

@@ -14,3 +14,18 @@ Test Data generator
 ICAttributes should implement Map interface
 
 Complete functional test -
+
+Implement concurrency - actors for recon?
+
+Optimize ICF update - only send deltas
+
+Auditing / Entitlements  - service layer
+
+
+Is it easier to register "profiles" with Sync Manager. Cuts down on api complexity
+
+Sync profile = sync rules + source? + correlation + schedule + auditing, error handling, etc.
+
+Sync profile - can also have security attached?
+
+

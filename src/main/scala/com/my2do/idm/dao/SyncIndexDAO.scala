@@ -34,21 +34,20 @@ import net.liftweb.common.Logger
  *
  */
 
-object SyncIndexDAO extends SalatDAO[SyncIndex, ObjectId] with Logger {
-  val _grater = grater[SyncIndex]
-  val collection = MongoUtil.accountIndexCollection
+object SyncIndexDAO extends SalatDAO[SyncIndex, ObjectId] (collection = MongoUtil.syncIndexCollection) with Logger {
 
   def findByOwnerId(obj: ObjectId, objectClass:ObjectClass = ObjectClass.account) =
-    this.find(MongoDBObject("ownerId" -> obj, "objectClass" -> objectClass))
+    this.find(MongoDBObject("ownerId" -> obj, "objectClass.name" -> objectClass.name))
 
   def findByAccountName(collectionName: String, accountName: String) =
     this.find(MongoDBObject("resourceKey" -> collectionName, "accountName" -> accountName))
 
-  def findByResourceNeedsSynced(resource:Resource, objectClass:ObjectClass) =
-    this.find(MongoDBObject("resourceKey" -> resource.resourceKey,
-            "needsSync" ->true,
-            "objectClass" -> objectClass
-      ))
+  def findByResourceNeedsSynced(resource:Resource, objectClass:ObjectClass) =  {
+    val key =  MongoDBObject("resourceKey" -> resource.resourceKey, "needsSync" ->true,
+            "objectClass.name" -> objectClass.name)
+    debug("Find by key=" + key)
+    this.find(key)
+  }
 
 
   /**

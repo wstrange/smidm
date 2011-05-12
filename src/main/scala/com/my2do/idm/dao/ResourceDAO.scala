@@ -26,6 +26,7 @@ import net.liftweb.common.Logger
 import com.novus.salat._
 import com.novus.salat.global._
 import com.my2do.idm.resource.Resource
+import com.mongodb.casbah.commons.MongoDBObject
 
 /**
  *
@@ -51,16 +52,19 @@ class ResourceDAO(resource:Resource) extends Logger {
   def save(ro:ResourceObject) = {
     val c = resource.collectionForObjectClass(ro.objectClass)
     val dbo = _grater.asDBObject(ro)
-    debug("Saving object=" + dbo)
+    debug("Collection = " + c.getName() + " Saving object=" + dbo)
     val result = c.save(dbo)
+    val e = result.getError
+    if( e != null) debug("Result = " + result + " err=" + result.getError)
     result
   }
 
-  def findByAccountName(id:String, o:ObjectClass):Option[ResourceObject] = {
+  def findByName(id:String, o:ObjectClass):Option[ResourceObject] = {
     val c =   resource.collectionForObjectClass(o)
+    //debug("Find id=" + id + " in collection=" + c.getName)
     val r = c.findOneByID(id)
     r match {
-      case x:DBObject => Some(_grater.asObject(x))
+      case Some(x:DBObject) => Some(_grater.asObject(x).copy(objectClass = o,resource = this.resource))
       case _ => None
     }
   }

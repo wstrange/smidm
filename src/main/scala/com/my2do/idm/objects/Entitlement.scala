@@ -40,14 +40,16 @@ case class Entitlement(resourceKey: String,
                        attribute: String,
                        attrVal: AnyRef,
                        assignmentType: AssignmentType.Value,
+                       objectClass: ObjectClass = ObjectClass.account,
                        @Key("_id") id: ObjectId = new ObjectId())  {
+
 
   import AssignmentType._
 
   /**
    * Apply this entitlement to the resource object
    *
-   * todo: Should we always assume MERGE entitlesments will be lists?
+   * todo: Should we always assume MERGE entitlements will be lists?
    */
   def assign(ro:ResourceObject) = {
     assignmentType match {

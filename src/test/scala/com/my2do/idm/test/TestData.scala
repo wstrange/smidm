@@ -20,8 +20,9 @@ package com.my2do.idmsvc.test
 import util.Random
 import com.my2do.idm.resource.Resource
 import net.liftweb.common.Logger
+import com.my2do.idm.dao.{SyncIndexDAO, UserDAO, RoleDAO}
 import com.my2do.idm.objects._
-import com.my2do.idm.dao.{UserDAO, RoleDAO}
+import com.my2do.idm.sync.ReconManager
 
 /**
  *
@@ -45,13 +46,13 @@ object TestData extends Logger {
   val userSuffix = ",ou=People" + orgSuffix
 
   // some sample users
-  val user = 0 to 10 map (i => User("user" + i, "First", "Last" + i, "e900" + i, randomDept, "user" + i + "@test.com"))
+  val user = 0 to 2 map (i => User("user" + i, "First", "Last" + i, "e900" + i, randomDept, "user" + i + "@test.com"))
 
   def defineRoles = {
 
     //val e1 = Entitlement(ldap.resourceKey, "departmentNumber", "newdept", AssignmentType.REPLACE)
 
-    val r1 = Role("MarketingUser", "DepartmentRole", None, entitlements = List(marketingGroupEntitlement))
+    val r1 = Role("MarketingUser", "DepartmentRole",  entitlements = List(marketingGroupEntitlement))
 
     val x = RoleDAO.save(r1)
      debug("Creating role=" +r1 + "x=" +x)
@@ -60,14 +61,45 @@ object TestData extends Logger {
 
   }
 
-  val group = 0 to 10 map {i =>
-    ResourceObject("testgroup" + i + groupSuffix,  "testgroup" +i,
-              Map("uniqueMember" -> List(user(i).accountName+userSuffix)))}
+  val group = 0 to 2 map {i =>
+    ResourceObject("cn=testgrp" + i + groupSuffix,  "testgroup" +i,
+              Map("uniqueMember" -> List("uid="+user(i).accountName+userSuffix)),objectClass = ObjectClass.group,ldap)}
 
 
-  def defineGroups = { group.foreach( g =>  ldap.dao.save(g))}
+  def defineGroups = {
+    group.foreach{ g =>
+      ldap.dao.save(g)
+      SyncIndexDAO.save(SyncIndex(None, ldap.resourceKey, g.accountName, needsSync = true, objectClass = ObjectClass.group))
+    }
+  }
 
-  def defineUsers = user.foreach( u => UserDAO.save(u))
+  def defineUsers = {
+    user.foreach{u =>
+      val uv = new UserView(u)
+      uv.ensureHasResource(ldap)
+      uv.flush()
+    }
+  }
+
+
+  def deleteGroups = {
+    group.foreach { g =>
+      val r = SyncIndexDAO.findByAccountName(ldap.resourceKey,g.accountName)
+      r.foreach{ i =>
+        i.delete = true
+        i.needsSync = true
+        SyncIndexDAO.save(i)
+      }
+      new ReconManager().recon(ldap,ObjectClass.group)
+    }
+
+    def deleteUsers() = {
+
+    }
+
+  }
+
+
 
 
 }

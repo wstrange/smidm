@@ -60,6 +60,7 @@ case class User(var accountName: String,
                 //var attributes:mutable.Map[String,AnyRef] = new HashMap[String,AnyRef](),
                 // Scala mutable Maps dont serialize/deserialze nicely to mongo - until then we use a Java HashMap
                 val attributes:java.util.HashMap[String,AnyRef] = new java.util.HashMap[String,AnyRef](),
+                //val attributes:mutable.HashMap[String,AnyRef] = new mutable.HashMap[String,AnyRef] (),
                 var directlyAssignedResources:List[String] = Nil,
                 var roleAssignedResources:List[String] = Nil,
                 var roleIdList:List[ObjectId] = Nil,

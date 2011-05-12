@@ -24,30 +24,27 @@ import com.my2do.idm.resource.Resource
 import com.my2do.idm.mongo.MongoUtil
 import net.liftweb.common.Logger
 import com.my2do.idm.dao.{ResourceDAO, UserDAO, SyncIndexDAO}
+import com.my2do.idm.objects.ResourceRef
 
 /**
  *
- * This represents a dynamic runtime construction of the user and their accounts
- *
- *
- * User: warren
- * Date: 4/13/11
- * Time: 12:16 PM
- *
- * @param user - User repo object
- * @param createMissingAccounts - if true any view expressions that refer to missing accounts will trigger
- *    the creation and assignment of the account. For example, view(ldapResource,"sn") = "test"
- *    would cause ldapResource to be created and assigned to the user (if it was missing).
- * 
+ * Companion UserView - factory methods
  */
 
 object UserView {
-  def apply(id:ObjectId) = {
-    val u = UserDAO.findOneByID(id).get
-    new UserView(u)
+  def apply(accountName:String) = {
+    val u = UserDAO.findByAccountName(accountName)
+    new UserView(u.get)
   }
 }
 
+/**
+  * This represents a dynamic runtime construction of the user and their accounts
+  *@param user - User repo object
+ * @param createMissingAccounts - if true any view expressions that refer to missing accounts will trigger
+ *    the creation and assignment of the account. For example, view(ldapResource,"sn") = "test"
+ *    would cause ldapResource to be created and assigned to the user (if it was missing).
+ */
 class UserView(var user:User,
                createMissingAccounts:Boolean = true) extends Logger with UserRoleView {
 
@@ -126,6 +123,7 @@ class UserView(var user:User,
    *
    */
   def refreshView = {
+
     accountMap.clear
     refreshRoleView
 
@@ -138,6 +136,10 @@ class UserView(var user:User,
         case None => error("Sync Index points to non existant resource object. AI=" + ai)
       }
     }
+
+    debug("Refresh User View")
+    printDebug()
+
     accountMap
   }
 
@@ -212,11 +214,24 @@ class UserView(var user:User,
    */
 
   def flush(flushUserObject:Boolean = true) = {
-    if( flushUserObject)
+    if( flushUserObject) {
+      this.flushRole()
       UserDAO.save(user)
+
+
+    }
 
     accountMap.foreach{case (ai,ro) =>
       // if the linked resource object is dirty flag it for recon
+
+      // todo: Test
+      val rx = ResourceRef(ai.resourceKey,ro.accountName,ro.objectClass,null)
+
+      ResourceRefDAO.save(rx)
+
+      val l = ResourceRefDAO.childObjects.findByParentId(rx.id).toList
+      debug("Child list=" + l)
+
       if( ro.isDirty)  {
         ai.needsSync = true
         ai.isDirty = true
