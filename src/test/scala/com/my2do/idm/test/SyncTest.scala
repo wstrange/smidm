@@ -33,9 +33,13 @@ import com.my2do.idm.resource.Resource
 import com.my2do.idm.rules.{correlateByLDAPUid, correlateByAccountName}
 import com.my2do.idmsvc.test.TestData
 import com.my2do.idm.sync.{ReconManager, SyncManager}
-import com.my2do.idm.objects._
+import com.my2do.idm.objects._ 
 import com.my2do.idm.dao.{ResourceDAO, UserDAO, RoleDAO}
+import org.scalatest.junit.JUnitRunner
+import org.junit.runner.RunWith
 
+
+@RunWith(classOf[JUnitRunner])
 class SyncTest extends FunTest {
 
   val syncManager: SyncManager = ComponentRegistry.syncManager

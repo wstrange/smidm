@@ -24,7 +24,6 @@ import com.my2do.idm.resource.Resource
 import com.my2do.idm.mongo.MongoUtil
 import net.liftweb.common.Logger
 import com.my2do.idm.dao.{ResourceDAO, UserDAO, SyncIndexDAO}
-import com.my2do.idm.objects.ResourceRef
 
 /**
  *
