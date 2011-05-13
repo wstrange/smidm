@@ -134,10 +134,17 @@ case class ResourceObject(@Key("_id") accountName: String,
     }
   }
 
+  /**
+    *  Assumes this is a group object
+    * @return the group attribute - which is a list of the the group members.
+   */
   private def groupAttribute():List[AnyRef] = {
-    get("uniqueMember").asInstanceOf[List[AnyRef]]
+    get(groupMemberAttributeName).asInstanceOf[List[AnyRef]]
   }
 
+  /**
+    * @param the name of the group object to add this account to
+   */
   def addToGroup(name:String) = {
     resource.dao.findByName(name,ObjectClass.group) match {
       case Some(go:ResourceObject) => go.addMember(accountName)
@@ -145,17 +152,23 @@ case class ResourceObject(@Key("_id") accountName: String,
     }
   }
 
-  def addMember(name:String) = {
-
+  /**
+    * Add a member to this object. Assumes we are of objectclass group.
+    *
+   */
+  private def addMember(name:String) = {
+    resource.config.groupAttribute
     debug("Add " + name + "To group " + accountName)
     val l = name :: groupAttribute()
-    put("uniqueMember", l.distinct)
+    put(groupMemberAttributeName, l.distinct)
 
     debug("New group members=" + groupAttribute)
 
     resource.dao.save(this)
   }
 
+
+  def groupMemberAttributeName = resource.config.groupAttribute
 
 
 }

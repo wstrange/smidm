@@ -1,11 +1,6 @@
 
 
 
-Group support
-    - Could have ResourceObject include an optional group object
-                Assumes that resouruce supports a GROUP schema?
-                Convenience used for handling special case of Group and Account (common use case)
-
 Roles - merging / removing
 
 Test Data generator
@@ -28,4 +23,7 @@ Sync profile = sync rules + source? + correlation + schedule + auditing, error h
 
 Sync profile - can also have security attached?
 
+Should SyncIndex flags really be in each resoruce object? What is the advantage of storing in SyncIndex?
+
+Advantage of decoupling - recon is simpler?  Its job is to mirror ResourceObjects to the resource.
 
