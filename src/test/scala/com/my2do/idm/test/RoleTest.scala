@@ -26,16 +26,16 @@ package com.my2do.idm.test
  */
 
 import com.my2do.idm.objects._
-
 import com.my2do.idm.sync.SyncManager
 import com.my2do.idm.mongo.MongoUtil
-
 import com.my2do.idm.ComponentRegistry
 import com.my2do.idm.resource.Resource
 import com.my2do.idm.dao.RoleDAO
 import com.my2do.idmsvc.test.TestData
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
-
+@RunWith(classOf[JUnitRunner])
 class RoleTest extends FunTest {
 
   val syncManager: SyncManager = ComponentRegistry.syncManager
