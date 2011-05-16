@@ -7,7 +7,7 @@
         <option name="compilerLibraryName" value="Maven: org.scala-lang:scala-compiler-bundle:WrappedArray(2.8.1)" />
         <option name="deprecationWarnings" value="true" />
         <option name="maximumHeapSize" value="1024" />
-        <option name="vmOptions" value="-DpackageLinkDefs=file:///home/warren/src/workspace/smidm/target/packageLinkDefs.properties" />
+        <option name="vmOptions" value="-DpackageLinkDefs=file:///home/warren/src/smidm/target/packageLinkDefs.properties" />
       </configuration>
     </facet>
   </component>
@@ -23,9 +23,9 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: com.novus:salat-core_2.8.1:0.0.8-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.5.3" level="project" />
     <orderEntry type="library" name="Maven: com.mongodb.casbah:casbah-core_2.8.1:2.1.2" level="project" />
     <orderEntry type="library" name="Maven: com.mongodb.casbah:casbah-commons_2.8.1:2.1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.mongodb:mongo-java-driver:2.5.3" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: org.scalaj:scalaj-collection_2.8.0:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.8.1" level="project" />
