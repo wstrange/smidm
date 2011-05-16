@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c59bc522-cabd-4580-8af5-85186051837a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.classpath" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.project" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.scala_dependencies" afterPath="$PROJECT_DIR$/.scala_dependencies" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smidm.iml" afterPath="$PROJECT_DIR$/smidm.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smidm.ipr" afterPath="$PROJECT_DIR$/smidm.ipr" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/smidm.iws" afterPath="$PROJECT_DIR$/smidm.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/User.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/User.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/UserView.scala" afterPath="$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/UserView.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/MongoTest.scala" afterPath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/MongoTest.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/RoleTest.scala" afterPath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/RoleTest.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/SyncTest.scala" afterPath="$PROJECT_DIR$/src/test/scala/com/my2do/idm/test/SyncTest.scala" />
-    </list>
+    <list default="true" id="c59bc522-cabd-4580-8af5-85186051837a" name="Default" comment="" />
     <ignored path="smidm.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -117,7 +103,7 @@
       <file leaf-file-name="User.scala" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/User.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="59" column="36" selection-start="1712" selection-end="1712" vertical-scroll-proportion="1.9666667">
+            <state line="9" column="100" selection-start="432" selection-end="432" vertical-scroll-proportion="0.3206651">
               <folding />
             </state>
           </provider>
@@ -1047,20 +1033,20 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="0" width="1448" height="904" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28157896" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39923468" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36710528" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30131578" sideWeight="0.9928109" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1675054" sideWeight="0.67105263" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1675054" sideWeight="0.63289475" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39683682" sideWeight="0.54557824" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27390367" sideWeight="0.67105263" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.27390367" sideWeight="0.63289475" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43421054" sideWeight="0.64917326" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1095,7 +1081,7 @@
     <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed to Map" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'master' of github.com:wstrange/smidm&#10;&#10;Conflicts:&#10;&#9;src/main/scala/com/my2do/idm/objects/User.scala&#10;&#9;src/main/scala/com/my2do/idm/objects/UserView.scala&#10;" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1114,6 +1100,7 @@
     <MESSAGE value="refactor - moving objectclass into resourceobject" />
     <MESSAGE value="added group operations" />
     <MESSAGE value="changed to Map" />
+    <MESSAGE value="Merge branch 'master' of github.com:wstrange/smidm&#10;&#10;Conflicts:&#10;&#9;src/main/scala/com/my2do/idm/objects/User.scala&#10;&#9;src/main/scala/com/my2do/idm/objects/UserView.scala&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1216,7 +1203,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/com/my2do/idm/objects/User.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="36" selection-start="1712" selection-end="1712" vertical-scroll-proportion="1.9666667">
+        <state line="9" column="100" selection-start="432" selection-end="432" vertical-scroll-proportion="0.3206651">
           <folding />
         </state>
       </provider>
