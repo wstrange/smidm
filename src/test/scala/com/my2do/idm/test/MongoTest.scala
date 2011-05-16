@@ -21,6 +21,9 @@ package com.my2do.idm.test
 import com.my2do.idm.mongo.MongoUtil
 import com.my2do.idm.objects._
 import com.my2do.idm.dao._
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
+
 
 /**
  *
@@ -30,13 +33,20 @@ import com.my2do.idm.dao._
  *
  */
 
+@RunWith(classOf[JUnitRunner]) 
 class MongoTest extends FunTest {
 
 
   val db = MongoUtil.db
+  
+  test("Simple Test") {
+    
+    val u = User("test1", "test", "tester")
+    UserDAO.save(u)
+  }
 
 
-  test("SalatDAO test") {
+  ignore("SalatDAO test") {
 
     MongoUtil.dropAndCreateDB
 

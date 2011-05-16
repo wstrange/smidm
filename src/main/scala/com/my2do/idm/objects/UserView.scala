@@ -24,6 +24,7 @@ import com.my2do.idm.resource.Resource
 import com.my2do.idm.mongo.MongoUtil
 import net.liftweb.common.Logger
 import com.my2do.idm.dao.{ResourceDAO, UserDAO, SyncIndexDAO}
+
 /**
  *
  * Companion UserView - factory methods
@@ -222,6 +223,13 @@ class UserView(var user:User,
     accountMap.foreach{case (ai,ro) =>
       // if the linked resource object is dirty flag it for recon
 
+      // todo: Test
+      val rx = ResourceRef(ai.resourceKey,ro.accountName,ro.objectClass,null)
+
+      ResourceRefDAO.save(rx)
+
+      val l = ResourceRefDAO.childObjects.findByParentId(rx.id).toList
+      debug("Child list=" + l)
 
       if( ro.isDirty)  {
         ai.needsSync = true
